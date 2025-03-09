@@ -1,0 +1,492 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(243 244 246);
+  overflow: hidden;
+  position: relative;
+  margin-left: 4rem; /* Match the sidebar width */
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 4rem;
+  background-color: rgb(30 41 59);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  z-index: 30;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.button {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 200ms;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.button:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.buttonLoading {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.iconSpin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tooltipContainer {
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.tooltip {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  margin-left: 0.75rem;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 200ms;
+  pointer-events: none;
+  z-index: 31;
+}
+
+.tooltipContainer:hover .tooltip {
+  opacity: 1;
+}
+
+.tooltipContent {
+  background-color: rgb(30 41 59);
+  color: white;
+  font-size: 0.875rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  white-space: nowrap;
+}
+
+.tooltipContent::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 4px;
+  border-style: solid;
+  border-color: transparent rgb(30 41 59) transparent transparent;
+}
+
+/* Update the main class to match the form entries container */
+.main {
+  flex: 1;
+  width: 100%;
+  padding: 2rem; /* Match the form entries container padding */
+  overflow-y: auto;
+}
+
+/* Update the content class to match the form entries container */
+.content {
+  max-width: 1200px; /* Match the form entries container max-width */
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  padding: 2rem; /* Match the form entries container padding */
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 600;
+  color: rgb(31 41 55);
+  margin-bottom: 2rem;
+}
+
+.emptyState {
+  text-align: center;
+  color: rgb(107 114 128);
+  padding: 3rem 0;
+  font-size: 0.875rem;
+}
+
+.resultsContainer {
+  width: 100%;
+}
+
+/* Update the formGrid to fit within the container better */
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 230px);
+  gap: 2rem;
+  padding: 1rem 0;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.noResults {
+  text-align: center;
+  color: rgb(107 114 128);
+  padding: 3rem 0;
+}
+
+/* Detail Modal Styles */
+.detailOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.detailModal {
+  background-color: white;
+  border-radius: 0.5rem;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  animation: slideIn 0.2s ease-out;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.detailHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgb(229 231 235);
+}
+
+.detailTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgb(30 41 59);
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: rgb(107 114 128);
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  line-height: 1;
+}
+
+.closeButton:hover {
+  background-color: rgb(243 244 246);
+  color: rgb(31 41 55);
+}
+
+.detailContent {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.detailSection {
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(31 41 55);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgb(229 231 235);
+}
+
+.detailRow {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.detailLabel {
+  font-weight: 500;
+  color: rgb(75 85 99);
+  width: 40%;
+}
+
+.detailValue {
+  color: rgb(31 41 55);
+}
+
+.detailFooter {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgb(229 231 235);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.viewButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: rgb(30 41 59);
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.viewButton:hover {
+  background-color: rgb(51 65 85);
+}
+
+.viewIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Add A4 Modal Styles */
+.a4ModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  animation: fadeIn 0.2s ease-out;
+  padding: 2rem;
+}
+
+.a4ModalContainer {
+  position: relative;
+  max-height: 95vh;
+  overflow: auto;
+  background-color: rgb(243 244 246);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.closeModalButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: white;
+  border: none;
+  border-radius: 9999px;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  z-index: 10;
+  transition: background-color 0.2s;
+}
+
+.closeModalButton:hover {
+  background-color: rgb(243 244 246);
+}
+
+.closeIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: rgb(107 114 128);
+}
+
+.printButton {
+  position: absolute;
+  top: 1rem;
+  right: 4rem;
+  background-color: white;
+  border: none;
+  border-radius: 9999px;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  z-index: 10;
+  transition: background-color 0.2s;
+}
+
+.printButton:hover {
+  background-color: rgb(243 244 246);
+}
+
+.printIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: rgb(107 114 128);
+}
+
+/* A4 Paper Styles */
+.a4Paper {
+  width: 210mm;
+  height: 297mm;
+  background-color: white;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  border-radius: 0.125rem;
+  position: relative;
+  padding: 20mm; /* Standard A4 margin */
+  box-sizing: border-box;
+}
+
+.a4Content {
+  width: 170mm;
+  margin: 0 auto;
+  position: relative;
+  height: 100%;
+  font-size: 12pt;
+  line-height: 1.8;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.a4MainContent {
+  flex: 1;
+}
+
+.a4Title {
+  font-size: 16pt;
+  font-weight: 600;
+  color: rgb(31 41 55);
+  margin-bottom: 10mm;
+  text-align: center;
+}
+
+.a4Paragraph {
+  margin: 8mm 0;
+  text-indent: 10mm;
+  line-height: 2.5;
+  text-align: justify;
+}
+
+.a4Section {
+  margin: 8mm 0;
+}
+
+.a4SectionTitle {
+  font-size: 14pt;
+  font-weight: 600;
+  color: rgb(31 41 55);
+  margin-bottom: 5mm;
+}
+
+.a4FieldGroup {
+  display: flex;
+  gap: 2mm;
+  align-items: center;
+  margin-bottom: 6mm;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.a4FieldGroup label {
+  min-width: max-content;
+}
+
+.a4UnderlineInput {
+  border-bottom: 1px solid rgb(203 213 225);
+  padding: 0.25rem 0;
+  min-width: 200px;
+  text-align: center;
+  font-family: inherit;
+  font-size: 12pt;
+  color: rgb(31 41 55);
+  display: inline-block;
+}
+
+.a4AddressInput {
+  min-width: 350px;
+}
+
+.a4SignatureSection {
+  margin-top: auto;
+  padding-top: 16mm;
+  display: flex;
+  justify-content: space-between;
+  gap: 8mm;
+}
+
+.a4SignatureField {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}

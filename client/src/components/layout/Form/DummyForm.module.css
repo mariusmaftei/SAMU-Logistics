@@ -1,0 +1,64 @@
+/* Base container styles */
+.formContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(243 244 246);
+  padding: 2rem;
+}
+
+/* A4 paper dimensions and styling */
+.a4Paper {
+  width: 210mm; /* Standard A4 width */
+  height: 297mm; /* Standard A4 height */
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  position: relative;
+  padding: 5rem;
+  /* Intentionally left blank as requested */
+}
+
+.innerContainer {
+  height: 100%;
+  font-family: "Roboto Slab", serif;
+}
+
+.formDateContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.subtitleTable {
+  border: solid 4px black;
+  text-align: center;
+  font-size: 2rem;
+  font-style: oblique;
+}
+
+/* Print styles */
+@media print {
+  .formContainer {
+    padding: 0 !important;
+    background-color: white !important;
+  }
+
+  .a4Paper {
+    width: 210mm !important;
+    height: 297mm !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+
+  /* Set page size */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+}

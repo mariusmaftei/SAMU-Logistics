@@ -1,0 +1,486 @@
+/* 
+* Payment Order Form - Optimized CSS
+* A clean, organized stylesheet specifically for the payment order form
+*/
+
+/* Base container styles with responsive scaling */
+.formContainer {
+  position: relative;
+  width: 210mm; /* A4 width */
+  height: 297mm; /* A4 height */
+  background: white;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  max-width: 100%; /* Ensure it doesn't overflow the viewport */
+  transform-origin: top center; /* Scale from the top center */
+}
+
+/* Image and overlay positioning */
+.imageWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.formOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+/* Base input field styles */
+.inputField {
+  position: absolute;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 11pt;
+  padding: 0;
+  color: rgb(31 41 55);
+  transition: background-color 0.2s ease;
+}
+
+/* Override browser autofill styles */
+.inputField:-webkit-autofill,
+.inputField:-webkit-autofill:hover,
+.inputField:-webkit-autofill:focus,
+.inputField:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  -webkit-text-fill-color: rgb(31 41 55) !important;
+  transition: background-color 5000s ease-in-out 0s;
+  background-color: transparent !important;
+}
+
+/* Firefox autofill override */
+.inputField:autofill {
+  background-color: transparent !important;
+  color: rgb(31 41 55) !important;
+}
+
+.expensesNatureContainer {
+  position: absolute;
+  top: 242px;
+  left: 300px;
+  width: 340px;
+  z-index: 3;
+}
+
+/* Fix dropdown styling to avoid double text */
+.expensesNature {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 11pt;
+  color: transparent; /* Keep text transparent in the select element */
+  -webkit-text-fill-color: transparent; /* Keep text transparent in the select element */
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 4;
+  transition: background-color 0.2s ease;
+}
+
+/* Make dropdown options visible when dropdown is open */
+.expensesNature option {
+  color: rgb(31 41 55); /* Visible text for dropdown options */
+  background-color: white;
+  font-size: 11pt;
+  padding: 8px;
+}
+
+/* Override browser autofill styles for select */
+.expensesNature:-webkit-autofill,
+.expensesNature:-webkit-autofill:hover,
+.expensesNature:-webkit-autofill:focus,
+.expensesNature:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+  background-color: transparent !important;
+}
+
+.printSelectText {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  text-align: center;
+  font-size: 11pt;
+  font-family: inherit;
+  color: rgb(31 41 55);
+  pointer-events: none;
+  z-index: 3;
+  padding-top: 2px;
+}
+
+.expensesNatureContainer.empty .printSelectText {
+  color: rgb(156 163 175);
+  opacity: 0.7;
+}
+
+/* Header section fields - KEEPING USER'S POSITIONS */
+.fromEmittingDate {
+  text-align: center;
+  top: 115px;
+  right: 155px;
+  width: 150px;
+}
+
+/* Main content fields - KEEPING USER'S POSITIONS */
+.billNumber {
+  top: 295px;
+  left: 365px;
+  width: calc(100% - 700px);
+  text-align: center;
+}
+
+.billDateField {
+  top: 295px;
+  right: 190px;
+  width: 140px;
+  text-align: center;
+}
+
+.leiPayment {
+  text-align: center;
+  top: 4010px;
+  right: 230px;
+  width: 100px;
+}
+
+.amount {
+  text-align: center;
+  top: 410px;
+  right: 210px;
+  width: 122px;
+}
+
+.amountToPlay {
+  text-align: center;
+  top: 578px;
+  right: 267px;
+  width: 122px;
+}
+
+/* Beneficiary section fields - KEEPING USER'S POSITIONS */
+.beneficiaryName {
+  text-align: center;
+  top: 721px;
+  left: 160px;
+  width: 226px;
+}
+
+.beneficiaryAddress {
+  text-align: center;
+  top: 745px;
+  left: 160px;
+  width: 226px;
+}
+
+/* Bank and treasury information - KEEPING USER'S POSITIONS */
+.bankNumber {
+  text-align: left;
+  top: 693px;
+  right: 90px;
+  width: 175px;
+}
+
+.treasuryNumber {
+  text-align: left;
+  top: 720px;
+  right: 90px;
+  width: 160px;
+}
+
+.bankCodeField {
+  text-align: center;
+  top: 745px;
+  right: 90px;
+  width: 205px;
+}
+
+/* Signature fields - KEEPING USER'S POSITIONS */
+.dateSignatureField {
+  width: 100px;
+  text-align: center;
+}
+
+.compartmentDateField {
+  top: 965px;
+  left: 400px;
+}
+
+.orderPaymentDate {
+  text-align: center;
+  top: 928px;
+  left: 365px;
+  width: 125px;
+}
+
+.cfppDateField {
+  top: 965px;
+  right: 100px;
+}
+
+.creditorDateField {
+  top: 1095px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Responsive styles for different screen sizes */
+@media (max-width: 1200px) {
+  .formContainer {
+    transform: scale(0.9);
+    margin-top: -15px; /* Adjust for the scaling */
+    margin-bottom: -15px; /* Adjust for the scaling */
+  }
+}
+
+@media (max-width: 1000px) {
+  .formContainer {
+    transform: scale(0.8);
+    margin-top: -30px; /* Adjust for the scaling */
+    margin-bottom: -30px; /* Adjust for the scaling */
+  }
+}
+
+@media (max-width: 800px) {
+  .formContainer {
+    transform: scale(0.7);
+    margin-top: -45px; /* Adjust for the scaling */
+    margin-bottom: -45px; /* Adjust for the scaling */
+  }
+}
+
+@media (max-width: 700px) {
+  .formContainer {
+    transform: scale(0.6);
+    margin-top: -60px; /* Adjust for the scaling */
+    margin-bottom: -60px; /* Adjust for the scaling */
+  }
+}
+
+@media (max-width: 600px) {
+  .formContainer {
+    transform: scale(0.5);
+    margin-top: -75px; /* Adjust for the scaling */
+    margin-bottom: -75px; /* Adjust for the scaling */
+  }
+}
+
+@media (max-width: 500px) {
+  .formContainer {
+    transform: scale(0.4);
+    margin-top: -90px; /* Adjust for the scaling */
+    margin-bottom: -90px; /* Adjust for the scaling */
+  }
+}
+
+@media (max-width: 400px) {
+  .formContainer {
+    transform: scale(0.35);
+    margin-top: -100px; /* Adjust for the scaling */
+    margin-bottom: -100px; /* Adjust for the scaling */
+  }
+}
+
+/* Add more aggressive scaling for very small mobile screens */
+@media (max-width: 375px) {
+  .formContainer {
+    transform: scale(0.3);
+    margin-top: -110px;
+    margin-bottom: -110px;
+  }
+}
+
+@media (max-width: 320px) {
+  .formContainer {
+    transform: scale(0.25);
+    margin-top: -120px;
+    margin-bottom: -120px;
+  }
+}
+
+/* Add touch-friendly adjustments for mobile */
+@media (max-width: 768px) {
+  /* Make input fields slightly larger for touch targets */
+  .inputField {
+    font-size: 12pt; /* Slightly larger font for better readability */
+  }
+
+  /* Add a subtle highlight to focused inputs for better visibility on mobile */
+  .inputField:focus {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  }
+
+  /* Improve dropdown usability on mobile */
+  .expensesNature {
+    font-size: 12pt;
+    padding: 2px 0;
+  }
+
+  .expensesNature option {
+    padding: 10px; /* Larger padding for touch targets */
+  }
+
+  /* Ensure the form is centered on mobile */
+  .formContainer {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Add a mobile-specific container class that can be toggled */
+.mobileView {
+  height: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transform-origin: top center;
+  padding-bottom: 50px; /* Add some padding at the bottom for scrolling */
+}
+
+/* Print styles - optimized for exact positioning */
+@media print {
+  /* Basic reset for print */
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Reset any responsive scaling for print */
+  .formContainer {
+    transform: none !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+  }
+
+  /* Hide UI elements */
+  .header,
+  .sidebar,
+  .action-buttons {
+    display: none !important;
+  }
+
+  /* Form container positioning */
+  .formContainer {
+    display: block !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background-color: white !important;
+    transform: none !important;
+    transform-origin: top left !important;
+    page-break-after: always !important;
+  }
+
+  /* Image wrapper and image */
+  .imageWrapper {
+    display: block !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .formImage {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 auto !important;
+    object-fit: contain !important;
+  }
+
+  /* Form overlay */
+  .formOverlay {
+    display: block !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Input fields */
+  .inputField,
+  .expensesNature {
+    display: block !important;
+    position: absolute !important;
+    background: transparent !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    font-size: 11pt !important;
+    border: none !important;
+    outline: none !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    vertical-align: top !important;
+  }
+
+  /* Dropdown positioning for print - adjusted to match screen display */
+  .expensesNatureContainer {
+    position: absolute !important;
+    top: 239px !important; /* Adjusted to fix print preview alignment */
+    left: 300px !important;
+    width: 340px !important;
+    z-index: 3 !important;
+  }
+
+  /* Make dropdown text visible during printing */
+  .printSelectText {
+    display: block !important;
+    color: rgb(31 41 55) !important;
+    -webkit-text-fill-color: rgb(31 41 55) !important;
+    background: transparent !important;
+    z-index: 1001 !important;
+  }
+
+  /* Hide dropdown arrow in print */
+  .expensesNature {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+
+  /* Set page size */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+}

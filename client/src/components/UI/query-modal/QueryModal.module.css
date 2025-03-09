@@ -1,0 +1,151 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 0.5rem;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  animation: slideIn 0.2s ease-out;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgb(229 231 235);
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgb(30 41 59);
+  margin: 0;
+}
+
+.closeButton {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  color: rgb(107 114 128);
+  transition: all 200ms;
+}
+
+.closeButton:hover {
+  background-color: rgb(243 244 246);
+  color: rgb(31 41 55);
+}
+
+.closeIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.form {
+  padding: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1.25rem;
+}
+
+.formGroup label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgb(55 65 81);
+  margin-bottom: 0.5rem;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgb(209 213 219);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  transition: all 200ms;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: rgb(30 41 59);
+  box-shadow: 0 0 0 1px rgb(30 41 59);
+}
+
+.dateRangeContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.dateRangeContainer .formGroup {
+  flex: 1;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.queryButton,
+.cancelButton {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 200ms;
+}
+
+.queryButton {
+  background-color: rgb(30 41 59);
+  color: white;
+}
+
+.queryButton:hover {
+  background-color: rgb(51 65 85);
+}
+
+.cancelButton {
+  background-color: white;
+  color: rgb(30 41 59);
+  border: 1px solid rgb(203 213 225);
+}
+
+.cancelButton:hover {
+  background-color: rgb(243 244 246);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

@@ -1,0 +1,247 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 4rem;
+  background-color: rgb(30 41 59); /* Matches header color */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  z-index: 30;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Reduced from 0.75rem */
+  margin-top: 0.5rem; /* Reduced from 1rem */
+}
+
+.button {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 200ms;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+/* Remove individual button colors on hover since we want consistent styling */
+.buttonSave:hover,
+.buttonPrint:hover,
+.buttonPdf:hover,
+.buttonReset:hover {
+  color: white; /* Keep text white on hover */
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Completely revamped tooltip styles */
+.tooltipContainer {
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: 0.25rem; /* Add small margin between buttons */
+  display: flex;
+  justify-content: center;
+}
+
+.tooltip {
+  position: fixed; /* Changed to fixed to avoid overflow issues */
+  left: 4rem; /* Position right after the sidebar */
+  transform: translateY(-50%);
+  background-color: rgb(30 41 59);
+  color: white;
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Add arrow to tooltip */
+.tooltip::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent rgb(30 41 59) transparent transparent;
+}
+
+/* Form Type Selector Styles */
+.formTypeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Reduced from 0.75rem */
+  width: 100%;
+  padding: 0;
+  margin-top: 3.5rem; /* Reduced from 4rem */
+  align-items: center;
+}
+
+.formTypeLabel {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.7rem; /* Reduced from 0.75rem */
+  text-align: center;
+  margin-bottom: 0.25rem; /* Reduced from 0.5rem */
+  width: 100%;
+}
+
+.formTypeButton {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 200ms;
+  background-color: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.formTypeButton.active {
+  background-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+.formTypeButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.buttonText {
+  display: none; /* Hide text, show only on hover for larger screens */
+}
+
+.divider {
+  width: 80%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 0.5rem 0; /* Reduced from 1rem */
+}
+
+@media print {
+  .sidebar {
+    display: none;
+  }
+}
+
+/* Add responsive styles for smaller screens */
+@media (max-width: 640px) {
+  .buttonContainer {
+    gap: 0.25rem; /* Reduced from 0.5rem */
+  }
+
+  .button {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .icon {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  .formTypeButton {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
+/* Add styles for mobile devices */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 3.5rem; /* Slightly narrower on mobile */
+  }
+
+  .button {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .formTypeButton {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Ensure tooltips are properly positioned on mobile */
+  .tooltip {
+    left: 3.5rem;
+  }
+}
+
+/* Add styles for iPhone SE and other small devices */
+@media (max-width: 375px) {
+  .sidebar {
+    width: 3rem;
+  }
+
+  .button {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .formTypeButton {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .buttonContainer,
+  .formTypeContainer {
+    gap: 0.25rem;
+  }
+
+  .icon {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}
+
+/* Add styles for PDF generation */
+.pdf-text-overlay {
+  position: absolute;
+  background: transparent;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+body.generating-pdf .formContainer {
+  position: relative !important;
+  transform: none !important;
+  margin: 0 !important;
+  width: 210mm !important;
+  height: 297mm !important;
+}
+
+body.generating-pdf input,
+body.generating-pdf select {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}

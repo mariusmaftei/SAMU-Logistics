@@ -1,0 +1,36 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Coverage directory
+coverage/
+
+# Temporary files
+tmp/
+*.tmp
+*.swp
+*.swo
+
+# Other potentially sensitive or unnecessary files
+*.bak

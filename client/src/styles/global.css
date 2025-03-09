@@ -1,0 +1,279 @@
+/* Reset CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* HTML and Body base styles */
+html,
+body {
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden; /* Changed from overflow-x: hidden */
+}
+
+/* Custom print variables */
+:root {
+  --print-width: 210mm;
+  --print-height: 297mm;
+}
+
+/* Ensure proper height handling */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Remove list styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Button reset */
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Utility classes */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Remove Tailwind imports */
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+/* Theme variables */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 3.9%;
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 96.1%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+  --accent: 0 0% 96.1%;
+  --accent-foreground: 0 0% 9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 89.8%;
+  --input: 0 0% 89.8%;
+  --ring: 0 0% 3.9%;
+  --radius: 0.5rem;
+}
+
+/* Dark mode */
+.dark {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 14.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 14.9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 0 0% 14.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --input: 0 0% 14.9%;
+  --ring: 0 0% 83.1%;
+}
+
+/* Update print styles to ensure proper positioning */
+@media print {
+  html,
+  body {
+    height: auto !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background-color: white !important;
+    position: relative !important;
+  }
+
+  #root {
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    position: relative !important;
+  }
+
+  /* Hide navigation and UI elements */
+  .header,
+  .sidebar,
+  .action-buttons {
+    display: none !important;
+  }
+
+  /* Reset container styles */
+  .container {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    background-color: white !important;
+    position: relative !important;
+  }
+
+  /* Make sure main content is visible */
+  .main {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: relative !important;
+  }
+
+  /* Ensure form inputs maintain their position */
+  input,
+  select {
+    position: absolute !important;
+    background: transparent !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Form container specific print styles */
+  .formContainer {
+    width: 100% !important;
+    height: 100% !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    transform-origin: top left !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  .imageWrapper {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .formImage {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+
+  .formOverlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Set page size */
+  @page {
+    size: auto;
+    margin: 0;
+  }
+
+  /* Add a class for when we're printing */
+  body.printing * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Additional print styles for form inputs */
+  input,
+  select,
+  textarea {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    border: none !important;
+    background: transparent !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+
+  /* Print text overlay styles */
+  .print-text-overlay {
+    position: absolute !important;
+    background: transparent !important;
+    pointer-events: none !important;
+    z-index: 1000 !important;
+    color: rgb(31 41 55) !important;
+    display: block !important;
+  }
+
+  /* Special styles for dropdown overlays */
+  .dropdown-overlay {
+    position: fixed !important;
+    display: block !important;
+    z-index: 1001 !important;
+    background: transparent !important;
+    color: rgb(31 41 55) !important;
+  }
+
+  /* Make the printSelectText visible during printing */
+  .printSelectText {
+    display: block !important;
+    color: rgb(31 41 55) !important;
+    -webkit-text-fill-color: rgb(31 41 55) !important;
+    background: transparent !important;
+    z-index: 1001 !important;
+  }
+
+  /* Hide any UI elements that might interfere */
+  button,
+  nav,
+  .sidebar,
+  .header {
+    display: none !important;
+  }
+}

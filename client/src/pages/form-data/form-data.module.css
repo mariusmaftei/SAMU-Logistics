@@ -1,0 +1,286 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(243 244 246);
+  overflow: hidden;
+  position: relative;
+  margin-left: 4rem; /* Match the sidebar width */
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 4rem;
+  background-color: rgb(30 41 59);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  z-index: 30;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.button {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 200ms;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.tooltipContainer {
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.tooltip {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  margin-left: 0.75rem;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 200ms;
+  pointer-events: none;
+  z-index: 31;
+}
+
+.tooltipContainer:hover .tooltip {
+  opacity: 1;
+}
+
+.tooltipContent {
+  background-color: rgb(30 41 59);
+  color: white;
+  font-size: 0.875rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  white-space: nowrap;
+}
+
+.tooltipContent::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 4px;
+  border-style: solid;
+  border-color: transparent rgb(30 41 59) transparent transparent;
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.content {
+  max-width: 1400px; /* Increased from 1200px to accommodate more columns */
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  padding: 1.5rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 600;
+  color: rgb(31 41 55);
+  margin-bottom: 1.5rem;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto; /* Enable horizontal scrolling for small screens */
+  border-radius: 0.375rem;
+  border: 1px solid rgb(229 231 235);
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+  font-size: 0.875rem;
+  min-width: 1000px; /* Ensure table doesn't get too compressed */
+}
+
+.table th {
+  position: sticky;
+  top: 0;
+  background-color: rgb(249 250 251);
+  padding: 0.75rem 0.5rem;
+  font-weight: 600;
+  color: rgb(31 41 55);
+  border-bottom: 1px solid rgb(229 231 235);
+  white-space: nowrap;
+  text-align: left;
+  z-index: 10;
+}
+
+.table td {
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid rgb(229 231 235);
+  color: rgb(55 65 81);
+  vertical-align: middle;
+}
+
+/* Optimized column widths */
+.table th:nth-child(1),
+.table td:nth-child(1) {
+  width: 20%;
+} /* Name */
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  width: 25%;
+} /* Address */
+.table th:nth-child(3),
+.table td:nth-child(3) {
+  width: 20%;
+} /* Account Number */
+.table th:nth-child(4),
+.table td:nth-child(4) {
+  width: 15%;
+} /* Treasury */
+.table th:nth-child(5),
+.table td:nth-child(5) {
+  width: 10%;
+} /* RO Code */
+.table th:nth-child(6),
+.table td:nth-child(6) {
+  width: 10%;
+} /* Actions */
+
+/* Handle long content */
+.table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 0; /* Forces text truncation */
+}
+
+/* Hover effect for rows */
+.table tbody tr:hover {
+  background-color: rgb(249 250 251);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.actionButton {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  transition: all 200ms;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actionIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.editButton {
+  color: rgb(59 130 246);
+  background-color: rgb(239 246 255);
+}
+
+.editButton:hover {
+  background-color: rgb(219 234 254);
+}
+
+.deleteButton {
+  color: rgb(239 68 68);
+  background-color: rgb(254 242 242);
+}
+
+.deleteButton:hover {
+  background-color: rgb(254 226 226);
+}
+
+.buttonAdd {
+  margin-bottom: 1rem;
+}
+
+.buttonAdd:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .content {
+    padding: 1rem;
+  }
+
+  .table {
+    font-size: 0.75rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem 0.375rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .sidebar {
+    display: none;
+  }
+
+  .container {
+    margin-left: 0;
+  }
+
+  .main {
+    padding: 0;
+  }
+
+  .content {
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .tableContainer {
+    border: none;
+  }
+
+  .table th {
+    background-color: #f9fafb !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
