@@ -1,0 +1,115 @@
+/* Dropdown wrapper */
+.dropdownWrapper {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+
+/* Input container */
+.inputContainer {
+  position: relative;
+  width: 100%;
+}
+
+/* Input field */
+.dropdownInput {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 11pt;
+  padding: 0;
+  color: rgb(31 41 55);
+  transition: background-color 0.2s ease;
+  text-align: center;
+  padding-right: 20px;
+}
+
+/* Dropdown menu */
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  z-index: 100;
+  margin-top: 4px;
+}
+
+/* Search container */
+.searchContainer {
+  position: sticky;
+  top: 0;
+  padding: 0.5rem;
+  background-color: rgb(249 250 251);
+  border-bottom: 1px solid rgb(229 231 235);
+  z-index: 1;
+}
+
+.searchInputWrapper {
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgb(156 163 175);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.375rem 0.5rem 0.375rem 2rem;
+  font-size: 0.875rem;
+  border: 1px solid rgb(209 213 219);
+  border-radius: 0.25rem;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: rgb(59 130 246);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+/* Dropdown items */
+.dropdownItem {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdownItem:hover {
+  background-color: rgb(243 244 246);
+}
+
+.selectedItem {
+  background-color: rgb(243 244 246);
+}
+
+.noResults {
+  padding: 0.75rem;
+  color: rgb(107 114 128);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+/* Print styles */
+@media print {
+  .dropdownInput {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    background-color: transparent !important;
+  }
+}

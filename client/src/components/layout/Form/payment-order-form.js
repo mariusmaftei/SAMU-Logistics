@@ -2,13 +2,16 @@ import { useRef, useEffect, useState } from "react";
 import styles from "../Form/payment-order-form.module.css";
 import { useFormEntries } from "../../../context/FormEntriesContext";
 import OPimage from "../../../assets/images/ordonantare-de-plata.png";
+import BeneficiaryDropdown from "../../UI/Dropdown/Dropdown";
 
 export default function PaymentOrderForm({ formData, handleInputChange }) {
   const containerRef = useRef(null);
   const imageRef = useRef(null);
   const [selectedOptionText, setSelectedOptionText] = useState("");
 
-  const { getBeneficiaryByName } = useFormEntries();
+  const { getBeneficiaryByName, formEntries } = useFormEntries();
+
+  const inputColor = "rgba(31, 129, 248, 0.52)";
 
   // Handle numeric input for expense nature, legal commitment, and amount due
   const handleNumericInput = (e) => {
@@ -157,9 +160,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     fillDateFieldsOnInput(name, value, prevValue);
   };
 
-  // Update the fillFormFields function to correctly use data from context
-  // Replace the existing fillFormFields function with this updated version
-
   // Function to fill form fields based on beneficiary data
   const fillFormFields = (beneficiaryName) => {
     if (!beneficiaryName) return;
@@ -190,9 +190,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
       });
     }
   };
-
-  // Update the handleBeneficiaryNameChange function to use context data
-  // Replace the existing handleBeneficiaryNameChange function with this updated version
 
   // Handle beneficiary name change
   const handleBeneficiaryNameChange = (e) => {
@@ -296,6 +293,40 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           }
         }
 
+        // Handle beneficiary dropdown for printing
+        if (formData.beneficiaryName) {
+          const beneficiaryInput = containerRef.current.querySelector(
+            `[name="beneficiaryName"]`
+          );
+          if (beneficiaryInput) {
+            const rect = beneficiaryInput.getBoundingClientRect();
+            const containerRect = containerRef.current.getBoundingClientRect();
+
+            // Calculate position relative to the container
+            const top = rect.top - containerRect.top;
+            const left = rect.left - containerRect.left;
+
+            const overlay = document.createElement("div");
+            overlay.className = "print-text-overlay";
+            overlay.textContent = formData.beneficiaryName;
+            overlay.style.position = "absolute";
+            overlay.style.left = `${left}px`;
+            overlay.style.top = `${top}px`;
+            overlay.style.width = `${rect.width}px`;
+            overlay.style.height = `${rect.height}px`;
+            overlay.style.textAlign = "center";
+            overlay.style.fontSize = "11pt";
+            overlay.style.fontFamily = "inherit";
+            overlay.style.color = "rgb(31 41 55)";
+            overlay.style.zIndex = "1000";
+            overlay.style.pointerEvents = "none";
+            overlay.style.display = "none"; // Only show during printing
+
+            overlay.dataset.for = "beneficiaryName";
+            containerRef.current.appendChild(overlay);
+          }
+        }
+
         // Add a style tag for print media
         let styleTag = document.getElementById("print-overlay-styles");
         if (!styleTag) {
@@ -328,6 +359,13 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
               left: 0 !important;
               width: 100% !important;
               height: 100% !important;
+            }
+            .beneficiary-dropdown-container {
+              background-color: transparent !important;
+            }
+            .beneficiary-dropdown-container button,
+            .beneficiary-dropdown-container .dropdown-menu {
+              display: none !important;
             }
           }
         `;
@@ -421,12 +459,18 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     };
   }, []);
 
+  // Format beneficiaries data for the dropdown
+  const beneficiariesForDropdown = formEntries.map((entry) => ({
+    id: entry.id || String(Math.random()),
+    fullName: entry.fullName,
+  }));
+
   return (
     <div className={styles.formContainer} ref={containerRef}>
       <div className={styles.imageWrapper}>
         <img
           ref={imageRef}
-          src={OPimage}
+          src={OPimage || "/placeholder.svg"}
           alt="Payment Order Form Template"
           className={styles.formImage}
         />
@@ -442,9 +486,8 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           style={{
             backgroundColor: formData.dateIssued
               ? "transparent"
-              : "rgba(191, 219, 254, 0.3)",
+              : `${inputColor}`,
           }}
-          placeholder="DD.MM.YYYY"
           maxLength={10}
           inputMode="numeric"
           autoComplete="off"
@@ -471,18 +514,17 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
             style={{
               backgroundColor: formData.number
                 ? "transparent"
-                : "rgba(191, 219, 254, 0.3)",
+                : `${inputColor}`,
             }}
             autoComplete="off"
           >
-            <option value="">Select type</option>
-            <option value="MEDICAMENTATIE">MEDICAMENTATIE</option>
+            <option value="MEDICAMENTATIE">MEDICAMENTE</option>
             <option value="MATERIALE SANITARE">MATERIALE SANITARE</option>
           </select>
 
           {/* This span will be visible all the time */}
           <span className={styles.printSelectText}>
-            {selectedOptionText || "Select type"}
+            {selectedOptionText || "Selectați opțiunea"}
           </span>
         </div>
 
@@ -502,7 +544,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           style={{
             backgroundColor: formData.expenseNature
               ? "transparent"
-              : "rgba(191, 219, 254, 0.3)",
+              : `${inputColor}`,
           }}
           inputMode="decimal"
           autoComplete="off"
@@ -517,14 +559,13 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           style={{
             backgroundColor: formData.billDate
               ? "transparent"
-              : "rgba(191, 219, 254, 0.3)",
+              : `${inputColor}`,
           }}
-          placeholder="DD.MM.YYYY"
           maxLength={10}
           inputMode="numeric"
           autoComplete="off"
         />
-        {/* NEW INPUT ADDED */}
+
         <input
           type="text"
           name="amount"
@@ -539,9 +580,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           }}
           className={`${styles.inputField} ${styles.amount}`}
           style={{
-            backgroundColor: formData.amount
-              ? "transparent"
-              : "rgba(191, 219, 254, 0.3)",
+            backgroundColor: formData.amount ? "transparent" : `${inputColor}`,
           }}
           inputMode="decimal"
           placeholder="0.00"
@@ -551,20 +590,20 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
         <input
           type="text"
           name="amountDue"
-          value={formData.amountDue || ""}
+          value={formData.amount || ""}
           onChange={(e) => {
-            handleNumericInput(e);
-            fillDateFieldsOnInput(
-              e.target.name,
-              e.target.value,
-              formData[e.target.name]
-            );
+            // Update both amount and amountDue with the same value
+            handleInputChange({
+              target: {
+                name: "amount",
+                value: e.target.value,
+              },
+            });
+            fillDateFieldsOnInput("amount", e.target.value, formData.amount);
           }}
           className={`${styles.inputField} ${styles.amountToPlay}`}
           style={{
-            backgroundColor: formData.amountDue
-              ? "transparent"
-              : "rgba(191, 219, 254, 0.3)",
+            backgroundColor: formData.amount ? "transparent" : `${inputColor}`,
           }}
           inputMode="decimal"
           placeholder="0.00"
@@ -587,7 +626,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           style={{
             backgroundColor: formData.bankNumber
               ? "transparent"
-              : "rgba(191, 219, 254, 0.3)",
+              : `${inputColor}`,
           }}
           autoComplete="off"
         />
@@ -608,7 +647,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           style={{
             backgroundColor: formData.treasuryNumber
               ? "transparent"
-              : "rgba(191, 219, 254, 0.3)",
+              : `${inputColor}`,
           }}
           autoComplete="off"
         />
@@ -627,27 +666,26 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           }}
           className={`${styles.inputField} ${styles.bankCodeField}`}
           style={{
-            backgroundColor: formData.roCode
-              ? "transparent"
-              : "rgba(191, 219, 254, 0.3)",
+            backgroundColor: formData.roCode ? "transparent" : `${inputColor}`,
           }}
-          placeholder="RO Code"
           autoComplete="off"
         />
 
-        <input
-          type="text"
+        {/* Replace the beneficiary name input with the dropdown component */}
+        <BeneficiaryDropdown
           name="beneficiaryName"
           value={formData.beneficiaryName || ""}
           onChange={handleBeneficiaryNameChange}
           onPaste={handlePaste}
           className={`${styles.inputField} ${styles.beneficiaryName}`}
           style={{
-            backgroundColor: formData.beneficiaryName
-              ? "transparent"
-              : "rgba(209, 250, 229, 0.5)",
+            top: "721px",
+            left: "160px",
+            width: "226px",
+            textAlign: "center",
+            height: "auto",
           }}
-          autoComplete="off"
+          beneficiaries={beneficiariesForDropdown}
         />
 
         <input
@@ -664,27 +702,8 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           }}
           className={`${styles.inputField} ${styles.beneficiaryAddress}`}
           style={{
-            backgroundColor: formData.address
-              ? "transparent"
-              : "rgba(191, 219, 254, 0.3)",
+            backgroundColor: formData.address ? "transparent" : `${inputColor}`,
           }}
-          autoComplete="off"
-        />
-
-        <input
-          type="text"
-          name="departmentDate"
-          value={formData.departmentDate || ""}
-          onChange={handleDateInput}
-          className={`${styles.inputField} ${styles.orderPaymentDate}`}
-          style={{
-            backgroundColor: formData.departmentDate
-              ? "transparent"
-              : "rgba(191, 219, 254, 0.3)",
-          }}
-          placeholder="DD.MM.YYYY"
-          maxLength={10}
-          inputMode="numeric"
           autoComplete="off"
         />
       </div>

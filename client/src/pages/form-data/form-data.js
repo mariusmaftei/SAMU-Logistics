@@ -96,7 +96,7 @@ export default function FormData() {
       {/* Main content */}
       <main className={styles.main}>
         <div className={styles.content}>
-          <h1 className={styles.title}>Form Entries</h1>
+          <h1 className={styles.title}>Intrări Formular</h1>
 
           {error && <div className={styles.errorMessage}>{error}</div>}
 
@@ -107,12 +107,12 @@ export default function FormData() {
               <table className={styles.table}>
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Account Number</th>
-                    <th>Treasury Number</th>
-                    <th>RO Code</th>
-                    <th>Actions</th>
+                    <th>Nume</th>
+                    <th>Adresa beneficiarului</th>
+                    <th>Nr. cont</th>
+                    <th>Trezorerie</th>
+                    <th>Cod</th>
+                    <th>Editeaza/Sterge</th>
                   </tr>
                 </thead>
                 <tbody>

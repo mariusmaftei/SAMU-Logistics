@@ -81,9 +81,9 @@
 
 .expensesNatureContainer {
   position: absolute;
-  top: 242px;
-  left: 300px;
-  width: 340px;
+  top: 244px;
+  left: 284px;
+  width: 350px;
   z-index: 3;
 }
 
@@ -140,28 +140,28 @@
 }
 
 .expensesNatureContainer.empty .printSelectText {
-  color: rgb(156 163 175);
-  opacity: 0.7;
+  color: rgb(0, 0, 0);
+  font-weight: 500;
 }
 
 /* Header section fields - KEEPING USER'S POSITIONS */
 .fromEmittingDate {
   text-align: center;
-  top: 115px;
+  top: 116px;
   right: 155px;
   width: 150px;
 }
 
 /* Main content fields - KEEPING USER'S POSITIONS */
 .billNumber {
-  top: 295px;
+  top: 296px;
   left: 365px;
   width: calc(100% - 700px);
   text-align: center;
 }
 
 .billDateField {
-  top: 295px;
+  top: 296px;
   right: 190px;
   width: 140px;
   text-align: center;
@@ -191,14 +191,14 @@
 /* Beneficiary section fields - KEEPING USER'S POSITIONS */
 .beneficiaryName {
   text-align: center;
-  top: 721px;
-  left: 160px;
+  right: 0;
   width: 226px;
+  cursor: pointer;
 }
 
 .beneficiaryAddress {
   text-align: center;
-  top: 745px;
+  top: 746px;
   left: 160px;
   width: 226px;
 }
@@ -206,23 +206,26 @@
 /* Bank and treasury information - KEEPING USER'S POSITIONS */
 .bankNumber {
   text-align: left;
-  top: 693px;
+  top: 694px;
   right: 90px;
-  width: 175px;
+  width: 184px;
+  padding-left: 10px;
 }
 
 .treasuryNumber {
   text-align: left;
-  top: 720px;
+  top: 722px;
   right: 90px;
-  width: 160px;
+  width: 170px;
+  padding-left: 10px;
 }
 
 .bankCodeField {
   text-align: center;
-  top: 745px;
+  top: 746px;
   right: 90px;
-  width: 205px;
+  width: 207px;
+  padding-left: 10px;
 }
 
 /* Signature fields - KEEPING USER'S POSITIONS */

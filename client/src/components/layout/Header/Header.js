@@ -87,7 +87,7 @@ export default function Header() {
               onClick={closeMenu}
             >
               <FileText className={styles.navIcon} />
-              <span>Form</span>
+              <span>Formular</span>
             </Link>
           </li>
           <li>
@@ -99,7 +99,7 @@ export default function Header() {
               onClick={closeMenu}
             >
               <Database className={styles.navIcon} />
-              <span>Form Data</span>
+              <span>Intrări Formular</span>
             </Link>
           </li>
           <li>
@@ -111,7 +111,7 @@ export default function Header() {
               onClick={closeMenu}
             >
               <Package className={styles.navIcon} />
-              <span>Inventory</span>
+              <span>Deconectare</span>
             </Link>
           </li>
           <li>

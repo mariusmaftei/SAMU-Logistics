@@ -37,5 +37,4 @@ Thumbs.db
 .vscode/
 .idea/
 
-# React build artifacts
-public/
+ 

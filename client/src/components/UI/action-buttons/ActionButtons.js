@@ -56,8 +56,8 @@ export default function ActionButtons({
     // Show confirmation modal first
     setModalConfig({
       isOpen: true,
-      title: "Download PDF",
-      message: "Do you want to download this document as PDF?",
+      title: "Descarca PDF",
+      message: "Doriți să descărcați acest document ca PDF?",
       onConfirm: () => {
         // Close the modal
         closeModal();
@@ -108,9 +108,9 @@ export default function ActionButtons({
   const handleReset = () => {
     setModalConfig({
       isOpen: true,
-      title: "Reset Form",
+      title: "Resetează formularul",
       message:
-        "Are you sure you want to clear all form fields? This action cannot be undone.",
+        "Sigur doriți să ștergeți toate câmpurile formularului? Această acțiune nu poate fi anulată.",
       onConfirm: () => {
         onReset?.();
         closeModal();
@@ -318,7 +318,7 @@ export default function ActionButtons({
               ref={(el) => (tooltipRefs.current["pdf"] = el)}
               style={{ opacity: activeTooltip === "pdf" ? 1 : 0 }}
             >
-              Download as PDF
+              Descarcare PDF
             </div>
           </div>
 
@@ -340,7 +340,7 @@ export default function ActionButtons({
               ref={(el) => (tooltipRefs.current["reset"] = el)}
               style={{ opacity: activeTooltip === "reset" ? 1 : 0 }}
             >
-              Clear form fields
+              Șterge câmpurile formularului
             </div>
           </div>
         </div>
