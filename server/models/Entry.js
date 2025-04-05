@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
 
 const Entry = sequelize.define(
-  "Furnizori",
+  "Furnizor",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -10,30 +10,29 @@ const Entry = sequelize.define(
       autoIncrement: true,
     },
     Nume_Furnizor: {
-      // prev  fullName
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false,
     },
     Adresa_Furnizor: {
-      type: DataTypes.STRING, //prev  address
-      allowNull: false,
+      type: DataTypes.STRING(100),
+      allowNull: true, // In your SQL, this field is nullable.
     },
     CUI_CUI_CIF: {
-      type: DataTypes.STRING, // prev treasuryNumber
-      allowNull: false,
+      type: DataTypes.STRING(20),
+      allowNull: true, // SQL field is nullable.
     },
     Trezorerie_Furnizor: {
-      type: DataTypes.STRING, // prev  accountNumber
-      allowNull: false,
+      type: DataTypes.STRING(30),
+      allowNull: true, // SQL field is nullable.
     },
     NR_CONT_IBAN: {
-      type: DataTypes.STRING, // prev  roCode
-      allowNull: false,
+      type: DataTypes.STRING(100),
+      allowNull: true, // SQL field is nullable.
     },
   },
   {
-    tableName: "furnizor",
-    timestamps: true,
+    tableName: "Furnizor", // Matches your SQL table name.
+    timestamps: true, // Sequelize will manage createdAt and updatedAt fields.
   }
 );
 

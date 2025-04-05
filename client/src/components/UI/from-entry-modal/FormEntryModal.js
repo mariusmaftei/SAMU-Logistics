@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 import styles from "../from-entry-modal/FormEntryModal.module.css";
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/entry";
+const API_URL = "https://samu-logistic-server.onrender.com/entry";
 
 export default function AddEntryModal({ isOpen, onClose, onSave }) {
   const [newEntry, setNewEntry] = useState({
