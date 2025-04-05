@@ -7,7 +7,7 @@ import setupAssociations from "./models/setupAssociations.js";
 import entryRoute from "./routes/entry.js";
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.use(express.json());
 app.use(cors());

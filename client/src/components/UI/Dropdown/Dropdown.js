@@ -23,7 +23,9 @@ export default function BeneficiaryDropdown({
       setFilteredBeneficiaries(beneficiaries);
     } else {
       const filtered = beneficiaries.filter((beneficiary) =>
-        beneficiary.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+        beneficiary.Nume_Furnizor.toLowerCase().includes(
+          searchTerm.toLowerCase()
+        )
       );
       setFilteredBeneficiaries(filtered);
     }
@@ -119,12 +121,14 @@ export default function BeneficiaryDropdown({
                 <div
                   key={beneficiary.id}
                   className={`${styles.dropdownItem} ${
-                    value === beneficiary.fullName ? styles.selectedItem : ""
+                    value === beneficiary.Nume_Furnizor
+                      ? styles.selectedItem
+                      : ""
                   }`}
-                  onClick={() => handleSelect(beneficiary.fullName)}
+                  onClick={() => handleSelect(beneficiary.Nume_Furnizor)}
                 >
-                  <span>{beneficiary.fullName}</span>
-                  {value === beneficiary.fullName && (
+                  <span>{beneficiary.Nume_Furnizor}</span>
+                  {value === beneficiary.Nume_Furnizor && (
                     <Check size={16} className="text-green-500" />
                   )}
                 </div>

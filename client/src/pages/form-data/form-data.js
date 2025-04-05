@@ -125,15 +125,17 @@ export default function FormData() {
                   ) : (
                     formEntries.map((entry) => (
                       <tr key={entry.id}>
-                        <td title={entry.fullName}>{entry.fullName}</td>
-                        <td title={entry.address}>{entry.address}</td>
-                        <td title={entry.accountNumber}>
-                          {entry.accountNumber}
+                        <td title={entry.Nume_Furnizor}>
+                          {entry.Nume_Furnizor}
                         </td>
-                        <td title={entry.treasuryNumber}>
-                          {entry.treasuryNumber}
+                        <td title={entry.Adresa_Furnizor}>
+                          {entry.Adresa_Furnizor}
                         </td>
-                        <td title={entry.roCode}>{entry.roCode}</td>
+                        <td title={entry.CUI_CUI_CIF}>{entry.CUI_CUI_CIF}</td>
+                        <td title={entry.Trezorerie_Furnizor}>
+                          {entry.Trezorerie_Furnizor}
+                        </td>
+                        <td title={entry.NR_CONT_IBAN}>{entry.NR_CONT_IBAN}</td>
                         <td>
                           <div className={styles.actions}>
                             <button

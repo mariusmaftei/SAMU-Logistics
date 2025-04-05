@@ -2,37 +2,38 @@ import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
 
 const Entry = sequelize.define(
-  "Entry", // Changed from "Post" to "Entry" to avoid table name conflict
+  "Furnizori",
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    fullName: {
+    Nume_Furnizor: {
+      // prev  fullName
       type: DataTypes.STRING,
       allowNull: false,
     },
-    address: {
-      type: DataTypes.STRING,
+    Adresa_Furnizor: {
+      type: DataTypes.STRING, //prev  address
       allowNull: false,
     },
-    treasuryNumber: {
-      type: DataTypes.STRING,
+    CUI_CUI_CIF: {
+      type: DataTypes.STRING, // prev treasuryNumber
       allowNull: false,
     },
-    accountNumber: {
-      type: DataTypes.STRING,
+    Trezorerie_Furnizor: {
+      type: DataTypes.STRING, // prev  accountNumber
       allowNull: false,
     },
-    roCode: {
-      type: DataTypes.STRING,
+    NR_CONT_IBAN: {
+      type: DataTypes.STRING, // prev  roCode
       allowNull: false,
     },
   },
   {
+    tableName: "furnizor",
     timestamps: true,
-    tableName: "Entries", // Explicitly set the table name to avoid conflicts
   }
 );
 

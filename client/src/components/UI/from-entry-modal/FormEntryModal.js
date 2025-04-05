@@ -7,11 +7,11 @@ const API_URL = "http://localhost:8080/entry";
 
 export default function AddEntryModal({ isOpen, onClose, onSave }) {
   const [newEntry, setNewEntry] = useState({
-    fullName: "",
-    address: "",
-    treasuryNumber: "",
-    accountNumber: "",
-    roCode: "",
+    Nume_Furnizor: "",
+    Adresa_Furnizor: "",
+    CUI_CUI_CIF: "",
+    Trezorerie_Furnizor: "",
+    NR_CONT_IBAN: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -27,11 +27,11 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
       const response = await axios.post(API_URL, newEntry);
       onSave(response.data);
       setNewEntry({
-        fullName: "",
-        address: "",
-        treasuryNumber: "",
-        accountNumber: "",
-        roCode: "",
+        Nume_Furnizor: "",
+        Adresa_Furnizor: "",
+        CUI_CUI_CIF: "",
+        Trezorerie_Furnizor: "",
+        NR_CONT_IBAN: "",
       });
       onClose();
     } catch (err) {
@@ -77,12 +77,12 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
               <h3 className={styles.sectionTitle}>Personal Information</h3>
 
               <div className={styles.formGroup}>
-                <label htmlFor="fullName">Full Name</label>
+                <label htmlFor="Nume_Furnizor">Full Name</label>
                 <input
                   type="text"
-                  id="fullName"
-                  name="fullName"
-                  value={newEntry.fullName}
+                  id="Nume_Furnizor"
+                  name="Nume_Furnizor"
+                  value={newEntry.Nume_Furnizor}
                   onChange={handleChange}
                   required
                   className={styles.input}
@@ -91,12 +91,12 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="address">Address</label>
+                <label htmlFor="Adresa_Furnizor">Address</label>
                 <input
                   type="text"
                   id="address"
-                  name="address"
-                  value={newEntry.address}
+                  name="Adresa_Furnizor"
+                  value={newEntry.Adresa_Furnizor}
                   onChange={handleChange}
                   required
                   className={styles.input}
@@ -111,12 +111,12 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
 
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
-                  <label htmlFor="treasuryNumber">Treasury Number</label>
+                  <label htmlFor="CUI_CUI_CIF">Treasury Number</label>
                   <input
                     type="text"
                     id="treasuryNumber"
-                    name="treasuryNumber"
-                    value={newEntry.treasuryNumber}
+                    name="CUI_CUI_CIF"
+                    value={newEntry.CUI_CUI_CIF}
                     onChange={handleChange}
                     required
                     className={styles.input}
@@ -125,12 +125,12 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label htmlFor="roCode">RO Code</label>
+                  <label htmlFor="NR_CONT_IBAN">RO Code</label>
                   <input
                     type="text"
                     id="roCode"
-                    name="roCode"
-                    value={newEntry.roCode}
+                    name="NR_CONT_IBAN"
+                    value={newEntry.NR_CONT_IBAN}
                     onChange={handleChange}
                     required
                     className={styles.input}
@@ -141,12 +141,12 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="accountNumber">Account Number</label>
+                <label htmlFor="Trezorerie_Furnizor">Account Number</label>
                 <input
                   type="text"
                   id="accountNumber"
-                  name="accountNumber"
-                  value={newEntry.accountNumber}
+                  name="Trezorerie_Furnizor"
+                  value={newEntry.Trezorerie_Furnizor}
                   onChange={handleChange}
                   required
                   className={styles.input}

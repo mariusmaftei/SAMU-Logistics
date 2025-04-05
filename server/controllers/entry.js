@@ -47,11 +47,22 @@ export const getEntry = async (req, res) => {
 export const createEntry = async (req, res) => {
   try {
     // Extract data from request body
-    const { fullName, address, treasuryNumber, accountNumber, roCode } =
-      req.body;
+    const {
+      Nume_Furnizor,
+      Adresa_Furnizor,
+      CUI_CUI_CIF,
+      Trezorerie_Furnizor,
+      NR_CONT_IBAN,
+    } = req.body;
 
     // Validate required fields
-    if (!fullName || !address || !treasuryNumber || !accountNumber || !roCode) {
+    if (
+      !Nume_Furnizor ||
+      !Adresa_Furnizor ||
+      !CUI_CUI_CIF ||
+      !Trezorerie_Furnizor ||
+      !NR_CONT_IBAN
+    ) {
       return res.status(400).json({
         success: false,
         error: "Please provide all required fields",
@@ -60,11 +71,11 @@ export const createEntry = async (req, res) => {
 
     // Create entry in database
     const entry = await Entry.create({
-      fullName,
-      address,
-      treasuryNumber,
-      accountNumber,
-      roCode,
+      Nume_Furnizor,
+      Adresa_Furnizor,
+      CUI_CUI_CIF,
+      Trezorerie_Furnizor,
+      NR_CONT_IBAN,
     });
 
     res.status(201).json({

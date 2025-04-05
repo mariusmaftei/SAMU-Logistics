@@ -170,13 +170,16 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
       // Create an array of field updates with correct mappings
       const fieldUpdates = [
         // Map accountNumber from context to both accountNumber and bankNumber inputs
-        { name: "accountNumber", value: beneficiary.accountNumber || "" },
-        { name: "bankNumber", value: beneficiary.accountNumber || "" },
-        { name: "address", value: beneficiary.address || "" },
+        {
+          name: "Trezorerie_Furnizor",
+          value: beneficiary.Trezorerie_Furnizor || "",
+        },
+        { name: "bankNumber", value: beneficiary.Trezorerie_Furnizor || "" },
+        { name: "Adresa_Furnizor", value: beneficiary.Adresa_Furnizor || "" },
         // Map treasuryNumber from context to both treasury and treasuryNumber inputs
         { name: "treasury", value: beneficiary.treasuryNumber || "" },
-        { name: "treasuryNumber", value: beneficiary.treasuryNumber || "" },
-        { name: "roCode", value: beneficiary.roCode || "" },
+        { name: "CUI_CUI_CIF", value: beneficiary.CUI_CUI_CIF || "" },
+        { name: "NR_CONT_IBAN", value: beneficiary.NR_CONT_IBAN || "" },
       ];
 
       // Apply each field update one by one
@@ -462,7 +465,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
   // Format beneficiaries data for the dropdown
   const beneficiariesForDropdown = formEntries.map((entry) => ({
     id: entry.id || String(Math.random()),
-    fullName: entry.fullName,
+    Nume_Furnizor: entry.Nume_Furnizor,
   }));
 
   return (
@@ -633,8 +636,8 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
 
         <input
           type="text"
-          name="treasuryNumber"
-          value={formData.treasuryNumber || ""}
+          name="CUI_CUI_CIF"
+          value={formData.CUI_CUI_CIF || ""}
           onChange={(e) => {
             handleInputChange(e);
             fillDateFieldsOnInput(
@@ -645,7 +648,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           }}
           className={`${styles.inputField} ${styles.treasuryNumber}`}
           style={{
-            backgroundColor: formData.treasuryNumber
+            backgroundColor: formData.CUI_CUI_CIF
               ? "transparent"
               : `${inputColor}`,
           }}
@@ -654,8 +657,8 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
 
         <input
           type="text"
-          name="roCode"
-          value={formData.roCode || ""}
+          name="NR_CONT_IBAN"
+          value={formData.NR_CONT_IBAN || ""}
           onChange={(e) => {
             handleInputChange(e);
             fillDateFieldsOnInput(
@@ -666,7 +669,9 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           }}
           className={`${styles.inputField} ${styles.bankCodeField}`}
           style={{
-            backgroundColor: formData.roCode ? "transparent" : `${inputColor}`,
+            backgroundColor: formData.NR_CONT_IBAN
+              ? "transparent"
+              : `${inputColor}`,
           }}
           autoComplete="off"
         />
@@ -690,8 +695,8 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
 
         <input
           type="text"
-          name="address"
-          value={formData.address || ""}
+          name="Adresa_Furnizor"
+          value={formData.Adresa_Furnizor || ""}
           onChange={(e) => {
             handleInputChange(e);
             fillDateFieldsOnInput(
@@ -702,7 +707,9 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           }}
           className={`${styles.inputField} ${styles.beneficiaryAddress}`}
           style={{
-            backgroundColor: formData.address ? "transparent" : `${inputColor}`,
+            backgroundColor: formData.Adresa_Furnizor
+              ? "transparent"
+              : `${inputColor}`,
           }}
           autoComplete="off"
         />

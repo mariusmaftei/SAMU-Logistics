@@ -30,7 +30,7 @@ export function FormEntriesProvider({ children }) {
 
   // Function to get beneficiary data by name
   const getBeneficiaryByName = (name) => {
-    return formEntries.find((entry) => entry.fullName === name);
+    return formEntries.find((entry) => entry.Nume_Furnizor === name);
   };
 
   // Function to add a new entry
