@@ -1,14 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  Menu,
-  X,
-  FileText,
-  Package,
-  LogOut,
-  User,
-  Database,
-} from "lucide-react";
+import { Menu, X, FileText, Database } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import SamuLogo from "../../../assets/images/SAMU Logistics logo transparent.png";
 import styles from "./Header.module.css";
 
 export default function Header() {
@@ -42,11 +35,6 @@ export default function Header() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleSignOut = () => {
-    console.log("Signing out...");
-    // Add your sign out logic here
-  };
-
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
@@ -66,12 +54,14 @@ export default function Header() {
         ref={menuRef}
         className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}
       >
-        <div className={styles.userSection}>
-          <div className={styles.userIcon}>
-            <User className={styles.navIcon} />
+        <Link to={"/"}>
+          <div className={styles.userSection}>
+            <div className={styles.userIcon}>
+              <img src={SamuLogo} alt="samu-logo" />
+            </div>
+            <span className={styles.username}>SAMU Logistics</span>
           </div>
-          <span className={styles.username}>Marius Maftei</span>
-        </div>
+        </Link>
 
         <div className={styles.divider} />
 
@@ -101,24 +91,6 @@ export default function Header() {
               <Database className={styles.navIcon} />
               <span>Intrări Formular</span>
             </Link>
-          </li>
-          <li>
-            <Link
-              to="/inventory"
-              className={`${styles.navLink} ${
-                location.pathname === "/inventory" ? styles.active : ""
-              }`}
-              onClick={closeMenu}
-            >
-              <Package className={styles.navIcon} />
-              <span>Deconectare</span>
-            </Link>
-          </li>
-          <li>
-            <button onClick={handleSignOut} className={styles.navLink}>
-              <LogOut className={styles.navIcon} />
-              <span>Sign Out</span>
-            </button>
           </li>
         </ul>
       </nav>

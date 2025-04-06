@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Search, Check, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, Check } from "lucide-react";
 import styles from "../Dropdown/Dropdown.module.css";
 export default function BeneficiaryDropdown({
   value,

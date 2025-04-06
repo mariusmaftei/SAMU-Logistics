@@ -1,19 +1,13 @@
-import { useState, useEffect } from "react";
-import { Save, Pencil, Trash2, Plus } from "lucide-react";
+import { useState } from "react";
+import { Pencil, Trash2, Plus } from "lucide-react";
 import { useFormEntries } from "../../context/FormEntriesContext";
 import AddEntryModal from "../../components/UI/from-entry-modal/FormEntryModal";
-import styles from "../form-data/form-data.module.css";
-import axios from "axios";
+import styles from "../form-entries/form-entries.module.css";
 
-export default function FormData() {
-  const { formEntries, getCurrentDate, loading, error, deleteEntry } =
-    useFormEntries();
+export default function FormEntries() {
+  const { formEntries, loading, error, deleteEntry } = useFormEntries();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-
-  const handleSave = () => {
-    console.log("Saving data...");
-  };
 
   const handleEdit = (id) => {
     console.log("Editing entry:", id);
@@ -27,43 +21,14 @@ export default function FormData() {
     }
   };
 
-  const handleAddEntry = (newEntry) => {
-    // The modal component will handle adding the entry to the context
+  const handleAddEntry = () => {
     setIsAddModalOpen(false);
-  };
-
-  // Format date values consistently
-  const formatDate = (dateString) => {
-    if (!dateString) return getCurrentDate();
-
-    // If the date already has the correct format (DD.MM.YYYY), return it
-    if (/^\d{2}\.\d{2}\.\d{4}$/.test(dateString)) {
-      return dateString;
-    }
-
-    // Otherwise, try to parse and format it
-    try {
-      const parts = dateString.split(/[/.-]/);
-      if (parts.length === 3) {
-        const day = parts[0].padStart(2, "0");
-        const month = parts[1].padStart(2, "0");
-        const year = parts[2].length === 2 ? `20${parts[2]}` : parts[2];
-        return `${day}.${month}.${year}`;
-      }
-    } catch (e) {
-      console.error("Error formatting date:", e);
-    }
-
-    // If all else fails, return the current date
-    return getCurrentDate();
   };
 
   return (
     <div className={styles.container}>
-      {/* Sidebar with buttons */}
       <div className={styles.sidebar}>
         <div className={styles.buttonContainer}>
-          {/* Add Entry Button */}
           <div className={styles.tooltipContainer}>
             <button
               onClick={() => setIsAddModalOpen(true)}
@@ -73,27 +38,12 @@ export default function FormData() {
               <Plus className={styles.icon} />
             </button>
             <div className={styles.tooltip}>
-              <div className={styles.tooltipContent}>Add New Entry</div>
-            </div>
-          </div>
-
-          {/* Save Button */}
-          <div className={styles.tooltipContainer}>
-            <button
-              onClick={handleSave}
-              className={`${styles.button} ${styles.buttonSave}`}
-              aria-label="Save"
-            >
-              <Save className={styles.icon} />
-            </button>
-            <div className={styles.tooltip}>
-              <div className={styles.tooltipContent}>Save Changes</div>
+              <div className={styles.tooltipContent}>Adaugă o nouă intrare</div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main content */}
       <main className={styles.main}>
         <div className={styles.content}>
           <h1 className={styles.title}>Intrări Formular</h1>
@@ -109,9 +59,9 @@ export default function FormData() {
                   <tr>
                     <th>Nume</th>
                     <th>Adresa beneficiarului</th>
-                    <th>Nr. cont</th>
+                    <th>CUI/CIF</th>
                     <th>Trezorerie</th>
-                    <th>Cod</th>
+                    <th>IBAN</th>
                     <th>Editeaza/Sterge</th>
                   </tr>
                 </thead>
@@ -119,7 +69,8 @@ export default function FormData() {
                   {formEntries.length === 0 ? (
                     <tr>
                       <td colSpan="6" className={styles.noEntries}>
-                        No entries found. Add a new entry to get started.
+                        Nicio intrare găsită. Adaugă o nouă intrare pentru a
+                        începe.
                       </td>
                     </tr>
                   ) : (
@@ -166,7 +117,6 @@ export default function FormData() {
         </div>
       </main>
 
-      {/* Add Entry Modal */}
       <AddEntryModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}

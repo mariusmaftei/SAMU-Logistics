@@ -7,12 +7,11 @@ import {
   ClipboardList,
   FileCheck,
   CreditCard,
-  FileText,
 } from "lucide-react";
 import html2pdf from "html2pdf.js";
-import styles from "../action-buttons/ActionButtons.module.css";
+import styles from "../SideBar/SideBar.module.css";
 import ConfirmModal from "../confirm-modal/ConfirmModal";
-export default function ActionButtons({
+export default function SideBar({
   onReset,
   currentFormType,
   onFormTypeChange,
@@ -152,7 +151,7 @@ export default function ActionButtons({
       <div className={styles.sidebar}>
         {/* Form Type Selector Buttons */}
         <div className={styles.formTypeContainer}>
-          <div className={styles.formTypeLabel}>Form Type</div>
+          <div className={styles.formTypeLabel}>Formulare</div>
 
           <div
             className={styles.tooltipContainer}
@@ -225,34 +224,9 @@ export default function ActionButtons({
               Angajament Bugetar
             </div>
           </div>
-
-          {/* New Dummy Form Button */}
-          <div
-            className={styles.tooltipContainer}
-            onMouseEnter={(e) => showTooltip("dummy_form", e)}
-            onMouseLeave={hideTooltip}
-          >
-            <button
-              onClick={() => onFormTypeChange("dummy_form")}
-              className={`${styles.formTypeButton} ${
-                currentFormType === "dummy_form" ? styles.active : ""
-              }`}
-              aria-label="Dummy Form"
-            >
-              <FileText className={styles.icon} />
-              <span className={styles.buttonText}>Dummy Form</span>
-            </button>
-            <div
-              className={styles.tooltip}
-              ref={(el) => (tooltipRefs.current["dummy_form"] = el)}
-              style={{ opacity: activeTooltip === "dummy_form" ? 1 : 0 }}
-            >
-              Blank A4 Form
-            </div>
-          </div>
         </div>
-
         <div className={styles.divider}></div>
+        <div className={styles.formTypeLabel}>Acțiuni</div>
 
         {/* Action Buttons */}
         <div className={styles.buttonContainer}>

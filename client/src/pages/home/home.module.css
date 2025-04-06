@@ -1,51 +1,152 @@
-.container {
-  height: 100vh;
+.homeContainer {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  background-color: rgb(243 244 246);
-  overflow: hidden;
-  position: relative;
-  margin-left: 4rem; /* Add margin for sidebar */
-}
-
-.main {
-  flex: 1;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  color: #003366;
   padding: 2rem;
 }
 
-@media print {
-  .container {
-    margin-left: 0 !important;
-    height: auto !important;
-    background-color: white !important;
-    overflow: visible !important;
-    position: static !important;
+/* Simple linear gradient background */
+.gradientBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffffff, #e6f2ff, #cce6ff);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Simple gradient animation */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Content styling */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  padding: 2rem;
+}
+
+.logoContainer {
+  margin-bottom: 2rem;
+  animation: gentleBounce 6s ease-in-out infinite;
+}
+
+.logo {
+  width: 280px;
+  height: auto;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #003366;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 3rem;
+  color: #0066cc;
+  max-width: 600px;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.button {
+  padding: 0.75rem 2rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button:hover {
+  background-color: #004d99;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes gentleBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
   }
 
-  .main {
-    padding: 0 !important;
-    margin: 0 !important;
-    height: auto !important;
-    overflow: visible !important;
-    position: static !important;
-    display: block !important;
+  .subtitle {
+    font-size: 1.25rem;
   }
 
-  /* Ensure the form is properly positioned */
-  .main > div {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    transform: none !important;
+  .logo {
+    width: 220px;
+  }
+
+  .buttonContainer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .logo {
+    width: 180px;
+  }
+
+  .content {
+    padding: 1rem;
   }
 }

@@ -1,115 +1,61 @@
-import { useState } from "react";
-import ActionButtons from "../../components/UI/action-buttons/ActionButtons";
-import ProposalForm from "../../components/layout/Form/proposal-form";
-import BudgetCommitmentForm from "../../components/layout/Form/budget-commitment-form";
-import PaymentOrderForm from "../../components/layout/Form/payment-order-form";
-import styles from "../home/home.module.css";
-import DummyForm from "../../components/layout/Form/DummyForm";
+"use client";
+
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import styles from "./home.module.css";
 
 export default function Home() {
-  const [currentFormType, setCurrentFormType] = useState("payment_order");
-  const [formData, setFormData] = useState({
-    expenseNature: "",
-    billDate: "",
-    amountDue: "",
-    beneficiaryName: "",
-    accountNumber: "",
-    bankNumber: "",
-    address: "",
-    treasury: "",
-    treasuryNumber: "",
-    roCode: "",
-    amount: "",
-  });
+  const [scrollY, setScrollY] = useState(0);
+  const navigate = useNavigate();
 
-  const handleFormDataChange = (newFormData) => {
-    setFormData({
-      ...formData,
-      ...newFormData,
-    });
+  // Subtle parallax effect on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Navigation handlers
+  const navigateToForm = () => {
+    navigate("/form");
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-  const handleReset = () => {
-    setFormData({
-      dateIssued: "",
-    });
-  };
-
-  const handleFormTypeChange = (formType) => {
-    setCurrentFormType(formType);
-  };
-
-  const handleDateKeyDown = (e) => {
-    // Allow: backspace, delete, tab, escape, enter, numbers
-    if (
-      [46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
-      // Allow: Ctrl+A, Ctrl+C, Ctrl+V
-      (e.keyCode === 65 && e.ctrlKey === true) ||
-      (e.keyCode === 67 && e.ctrlKey === true) ||
-      (e.keyCode === 86 && e.ctrlKey === true) ||
-      // Allow: home, end, left, right
-      (e.keyCode >= 35 && e.keyCode <= 39) ||
-      // Allow numbers
-      (e.keyCode >= 48 && e.keyCode <= 57) ||
-      (e.keyCode >= 96 && e.keyCode <= 105)
-    ) {
-      return;
-    }
-    e.preventDefault();
-  };
-
-  const renderForm = () => {
-    switch (currentFormType) {
-      case "proposal":
-        return (
-          <ProposalForm
-            formData={formData}
-            handleInputChange={handleInputChange}
-            handleDateKeyDown={handleDateKeyDown}
-          />
-        );
-      case "budget_commitment":
-        return (
-          <BudgetCommitmentForm
-            formData={formData}
-            handleInputChange={handleInputChange}
-            handleDateKeyDown={handleDateKeyDown}
-          />
-        );
-      case "dummy_form":
-        return (
-          <DummyForm
-            formData={formData}
-            handleInputChange={handleFormDataChange}
-            handleDateKeyDown={handleDateKeyDown}
-          />
-        );
-      default:
-        return (
-          <PaymentOrderForm
-            formData={formData}
-            handleInputChange={handleInputChange}
-            handleDateKeyDown={handleDateKeyDown}
-          />
-        );
-    }
+  const navigateToEntries = () => {
+    navigate("/entries");
   };
 
   return (
-    <div className={styles.container}>
-      <ActionButtons
-        onReset={handleReset}
-        currentFormType={currentFormType}
-        onFormTypeChange={handleFormTypeChange}
-      />
-      <main className={styles.main}>{renderForm()}</main>
+    <div className={styles.homeContainer}>
+      {/* Simple linear gradient background */}
+      <div className={styles.gradientBackground}></div>
+
+      {/* Content */}
+      <div className={styles.content}>
+        <div className={styles.logoContainer}>
+          <img
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/SAMU%20Logistics%20logo%20transparent-v5BVPHaCcfUGWVDnjCUmmT1MTkhfKS.png"
+            alt="SAMU Logistics Logo"
+            className={styles.logo}
+          />
+        </div>
+        <h1 className={styles.title}>SAMU Logistics</h1>
+        <p className={styles.subtitle}>
+          Sistem de Management pentru Logistică Medicală
+        </p>
+        <div className={styles.buttonContainer}>
+          <button className={styles.button} onClick={navigateToForm}>
+            Formular
+          </button>
+          <button className={styles.button} onClick={navigateToEntries}>
+            Intrări Formular
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import { useRef, useEffect, useState } from "react";
 import styles from "../Form/payment-order-form.module.css";
-import { useFormEntries } from "../../../context/FormEntriesContext";
-import OPimage from "../../../assets/images/ordonantare-de-plata.png";
-import BeneficiaryDropdown from "../../UI/Dropdown/Dropdown";
+import { useFormEntries } from "../../context/FormEntriesContext";
+import OPimage from "../../assets/images/ordonantare-de-plata.png";
+import BeneficiaryDropdown from "../UI/Dropdown/Dropdown";
 
 export default function PaymentOrderForm({ formData, handleInputChange }) {
   const containerRef = useRef(null);

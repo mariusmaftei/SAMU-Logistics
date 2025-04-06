@@ -1,6 +1,5 @@
 import { useRef } from "react";
-import styles from "../Form/proposal-form.module.css";
-import PAimage from "../../../assets/images/propunere-de-angajare.jpg";
+import styles from "./proposal-form.module.css";
 
 export default function ProposalForm({
   formData,

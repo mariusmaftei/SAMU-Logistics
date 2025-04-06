@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import styles from "../Form/budget-commitment-form.module.css";
-import ABIimage from "../../../assets/images/angajament-bugetar-individual.jpg";
+import ABIimage from "../../assets/images/angajament-bugetar-individual.jpg";
 
 export default function BudgetCommitmentForm({
   formData,

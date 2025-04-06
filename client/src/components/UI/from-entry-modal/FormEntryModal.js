@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X } from "lucide-react";
 import styles from "../from-entry-modal/FormEntryModal.module.css";
 import axios from "axios";
@@ -58,7 +58,7 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
     <div className={styles.overlay}>
       <div className={`${styles.modal}`}>
         <div className={styles.modalHeader}>
-          <h2 className={styles.title}>Add New Entry</h2>
+          <h2 className={styles.title}>Adaugă o nouă intrare</h2>
           <button
             onClick={onClose}
             className={styles.closeButton}
@@ -74,10 +74,10 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
           <div className={styles.compactFormLayout}>
             {/* Personal Information */}
             <div className={styles.formSection}>
-              <h3 className={styles.sectionTitle}>Personal Information</h3>
+              <h3 className={styles.sectionTitle}>Informații personale</h3>
 
               <div className={styles.formGroup}>
-                <label htmlFor="Nume_Furnizor">Full Name</label>
+                <label htmlFor="Nume_Furnizor">Nume</label>
                 <input
                   type="text"
                   id="Nume_Furnizor"
@@ -91,7 +91,7 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="Adresa_Furnizor">Address</label>
+                <label htmlFor="Adresa_Furnizor">Adresa beneficiarului</label>
                 <input
                   type="text"
                   id="address"
@@ -107,11 +107,11 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
 
             {/* Banking Information */}
             <div className={styles.formSection}>
-              <h3 className={styles.sectionTitle}>Banking Information</h3>
+              <h3 className={styles.sectionTitle}>Informații bancare</h3>
 
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
-                  <label htmlFor="CUI_CUI_CIF">Treasury Number</label>
+                  <label htmlFor="CUI_CUI_CIF"> Trezorerie</label>
                   <input
                     type="text"
                     id="treasuryNumber"
@@ -125,7 +125,7 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label htmlFor="NR_CONT_IBAN">RO Code</label>
+                  <label htmlFor="NR_CONT_IBAN">CUI/CIF</label>
                   <input
                     type="text"
                     id="roCode"
@@ -141,7 +141,7 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="Trezorerie_Furnizor">Account Number</label>
+                <label htmlFor="Trezorerie_Furnizor">IBAN</label>
                 <input
                   type="text"
                   id="accountNumber"
@@ -163,7 +163,7 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
               className={styles.saveButton}
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Saving..." : "Save Entry"}
+              {isSubmitting ? "Se salvează..." : "Salvează intrarea"}
             </button>
             <button
               type="button"
@@ -171,7 +171,7 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
               className={styles.cancelButton}
               disabled={isSubmitting}
             >
-              Cancel
+              Anulează
             </button>
           </div>
         </form>
