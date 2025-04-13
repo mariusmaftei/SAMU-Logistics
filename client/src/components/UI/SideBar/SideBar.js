@@ -1,6 +1,5 @@
 import { useEffect, useCallback, useState, useRef } from "react";
 import {
-  Save,
   Printer,
   RotateCcw,
   FileDown,
@@ -31,18 +30,6 @@ export default function SideBar({
   const closeModal = useCallback(() => {
     setModalConfig((prev) => ({ ...prev, isOpen: false }));
   }, []);
-
-  const handleSave = () => {
-    setModalConfig({
-      isOpen: true,
-      title: "Save Document",
-      message: "Are you sure you want to save this document?",
-      onConfirm: () => {
-        console.log("Saving...");
-        closeModal();
-      },
-    });
-  };
 
   // SIMPLIFIED PRINT FUNCTION - Direct equivalent to CTRL+P
   const handlePrint = () => {
@@ -230,28 +217,6 @@ export default function SideBar({
 
         {/* Action Buttons */}
         <div className={styles.buttonContainer}>
-          {/* Save Button */}
-          <div
-            className={styles.tooltipContainer}
-            onMouseEnter={(e) => showTooltip("save", e)}
-            onMouseLeave={hideTooltip}
-          >
-            <button
-              onClick={handleSave}
-              className={`${styles.button} ${styles.buttonSave}`}
-              aria-label="Save"
-            >
-              <Save className={styles.icon} />
-            </button>
-            <div
-              className={styles.tooltip}
-              ref={(el) => (tooltipRefs.current["save"] = el)}
-              style={{ opacity: activeTooltip === "save" ? 1 : 0 }}
-            >
-              Save the document
-            </div>
-          </div>
-
           {/* Print Button */}
           <div
             className={styles.tooltipContainer}
@@ -270,7 +235,7 @@ export default function SideBar({
               ref={(el) => (tooltipRefs.current["print"] = el)}
               style={{ opacity: activeTooltip === "print" ? 1 : 0 }}
             >
-              Print document
+              Printeaza
             </div>
           </div>
 

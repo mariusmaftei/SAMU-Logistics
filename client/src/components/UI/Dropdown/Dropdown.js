@@ -91,6 +91,7 @@ export default function BeneficiaryDropdown({
           onClick={() => setIsOpen(true)}
           autoComplete="off"
           placeholder="Selectati optiunea"
+          data-print-value={value} // Add this attribute
         />
         <button
           type="button"

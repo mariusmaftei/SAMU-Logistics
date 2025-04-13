@@ -150,6 +150,7 @@
   top: 116px;
   right: 155px;
   width: 150px;
+  font-weight: 500;
 }
 
 /* Main content fields - KEEPING USER'S POSITIONS */
@@ -158,6 +159,7 @@
   left: 365px;
   width: calc(100% - 700px);
   text-align: center;
+  font-weight: 500;
 }
 
 .billDateField {
@@ -165,6 +167,7 @@
   right: 190px;
   width: 140px;
   text-align: center;
+  font-weight: 500;
 }
 
 .leiPayment {
@@ -179,6 +182,7 @@
   top: 410px;
   right: 210px;
   width: 122px;
+  font-weight: 500;
 }
 
 .amountToPlay {
@@ -186,6 +190,7 @@
   top: 578px;
   right: 267px;
   width: 122px;
+  font-weight: 500;
 }
 
 /* Beneficiary section fields - KEEPING USER'S POSITIONS */
@@ -194,6 +199,7 @@
   right: 0;
   width: 226px;
   cursor: pointer;
+  font-weight: 500;
 }
 
 .beneficiaryAddress {
@@ -201,6 +207,7 @@
   top: 746px;
   left: 160px;
   width: 226px;
+  font-weight: 500;
 }
 
 /* Bank and treasury information - KEEPING USER'S POSITIONS */
@@ -210,6 +217,7 @@
   right: 90px;
   width: 184px;
   padding-left: 10px;
+  font-weight: 500;
 }
 
 .treasuryNumber {
@@ -218,6 +226,7 @@
   right: 90px;
   width: 170px;
   padding-left: 10px;
+  font-weight: 500;
 }
 
 .bankCodeField {
@@ -226,6 +235,7 @@
   right: 90px;
   width: 207px;
   padding-left: 10px;
+  font-weight: 500;
 }
 
 /* Signature fields - KEEPING USER'S POSITIONS */

@@ -3,6 +3,8 @@ import styles from "../Form/payment-order-form.module.css";
 import { useFormEntries } from "../../context/FormEntriesContext";
 import OPimage from "../../assets/images/ordonantare-de-plata.png";
 import BeneficiaryDropdown from "../UI/Dropdown/Dropdown";
+import SimpleDropdown from "../UI//SimpleDropdown/SimpleDropdown";
+import DateInput from "../UI/DateInput/DateInput";
 
 export default function PaymentOrderForm({ formData, handleInputChange }) {
   const containerRef = useRef(null);
@@ -12,6 +14,12 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
   const { getBeneficiaryByName, formEntries } = useFormEntries();
 
   const inputColor = "rgba(31, 129, 248, 0.52)";
+
+  // Expense nature options for the dropdown
+  const expenseOptions = [
+    { value: "MEDICAMENTATIE", label: "MEDICAMENTE" },
+    { value: "MATERIALE SANITARE", label: "MATERIALE SANITARE" },
+  ];
 
   // Handle numeric input for expense nature, legal commitment, and amount due
   const handleNumericInput = (e) => {
@@ -44,14 +52,11 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
   useEffect(() => {
     if (formData.number) {
       // Find the option text that corresponds to the current value
-      const select = document.querySelector(`.${styles.expensesNature}`);
-      if (select) {
-        for (let i = 0; i < select.options.length; i++) {
-          if (select.options[i].value === formData.number) {
-            setSelectedOptionText(select.options[i].text);
-            break;
-          }
-        }
+      const option = expenseOptions.find(
+        (opt) => opt.value === formData.number
+      );
+      if (option) {
+        setSelectedOptionText(option.label);
       }
     } else {
       setSelectedOptionText("");
@@ -480,20 +485,12 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
       </div>
 
       <div className={styles.formOverlay}>
-        <input
-          type="text"
+        <DateInput
           name="dateIssued"
           value={formData.dateIssued || ""}
           onChange={handleDateInput}
           className={`${styles.inputField} ${styles.fromEmittingDate}`}
-          style={{
-            backgroundColor: formData.dateIssued
-              ? "transparent"
-              : `${inputColor}`,
-          }}
-          maxLength={10}
-          inputMode="numeric"
-          autoComplete="off"
+          inputColor={inputColor}
         />
 
         {/* Number field as dropdown with visible text for printing */}
@@ -502,7 +499,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
             !formData.number ? styles.empty : ""
           }`}
         >
-          <select
+          <SimpleDropdown
             name="number"
             value={formData.number || ""}
             onChange={(e) => {
@@ -513,6 +510,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
                 formData[e.target.name]
               );
             }}
+            options={expenseOptions}
             className={`${styles.expensesNature}`}
             style={{
               backgroundColor: formData.number
@@ -520,10 +518,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
                 : `${inputColor}`,
             }}
             autoComplete="off"
-          >
-            <option value="MEDICAMENTATIE">MEDICAMENTE</option>
-            <option value="MATERIALE SANITARE">MATERIALE SANITARE</option>
-          </select>
+          />
 
           {/* This span will be visible all the time */}
           <span className={styles.printSelectText}>
@@ -553,20 +548,12 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           autoComplete="off"
         />
 
-        <input
-          type="text"
+        <DateInput
           name="billDate"
           value={formData.billDate || ""}
           onChange={handleDateInput}
           className={`${styles.inputField} ${styles.billDateField}`}
-          style={{
-            backgroundColor: formData.billDate
-              ? "transparent"
-              : `${inputColor}`,
-          }}
-          maxLength={10}
-          inputMode="numeric"
-          autoComplete="off"
+          inputColor={inputColor}
         />
 
         <input

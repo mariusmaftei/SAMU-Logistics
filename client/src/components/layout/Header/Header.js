@@ -55,7 +55,7 @@ export default function Header() {
         className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}
       >
         <Link to={"/"}>
-          <div className={styles.userSection}>
+          <div className={styles.userSection} onClick={closeMenu}>
             <div className={styles.userIcon}>
               <img src={SamuLogo} alt="samu-logo" />
             </div>

@@ -111,5 +111,15 @@
     color: transparent !important;
     -webkit-text-fill-color: transparent !important;
     background-color: transparent !important;
+    font-weight: 500 !important;
+    opacity: 0 !important;
+    text-shadow: none !important;
+    display: none !important;
+  }
+
+  .print-hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
   }
 }

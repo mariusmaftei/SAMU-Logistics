@@ -2,7 +2,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: rgb(243 244 246);
+  background-color: #e6f2ff;
   overflow: hidden;
   position: relative;
   margin-left: 4rem; /* Add margin for sidebar */
