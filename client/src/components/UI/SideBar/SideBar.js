@@ -10,32 +10,56 @@ import {
 import html2pdf from "html2pdf.js";
 import styles from "../SideBar/SideBar.module.css";
 import ConfirmModal from "../confirm-modal/ConfirmModal";
-export default function SideBar({
-  onReset,
-  currentFormType,
-  onFormTypeChange,
-}) {
+export default function SideBar({ onReset, currentFormType, onFormTypeChange }) {
+  const sidebarRef = useRef(null)
   const [modalConfig, setModalConfig] = useState({
     isOpen: false,
     title: "",
     message: "",
     onConfirm: () => {},
-  });
+  })
 
   // State to track which tooltip is visible
-  const [activeTooltip, setActiveTooltip] = useState(null);
+  const [activeTooltip, setActiveTooltip] = useState(null)
   // Refs to track tooltip positions
-  const tooltipRefs = useRef({});
+  const tooltipRefs = useRef({})
+
+  // Add this useEffect to enforce sidebar width
+  useEffect(() => {
+    // Function to enforce sidebar width
+    const enforceSidebarWidth = () => {
+      if (sidebarRef.current) {
+        sidebarRef.current.style.width = "64px"
+        sidebarRef.current.style.minWidth = "64px"
+        sidebarRef.current.style.maxWidth = "64px"
+        sidebarRef.current.style.position = "fixed"
+        sidebarRef.current.style.top = "0"
+        sidebarRef.current.style.left = "0"
+        sidebarRef.current.style.height = "100vh"
+        sidebarRef.current.style.overflowY = "auto" // Allow scrolling within sidebar if needed
+      }
+    }
+
+    // Run immediately
+    enforceSidebarWidth()
+
+    // Set up event listeners for zoom
+    window.addEventListener("resize", enforceSidebarWidth)
+
+    return () => {
+      window.removeEventListener("resize", enforceSidebarWidth)
+    }
+  }, [])
 
   const closeModal = useCallback(() => {
-    setModalConfig((prev) => ({ ...prev, isOpen: false }));
-  }, []);
+    setModalConfig((prev) => ({ ...prev, isOpen: false }))
+  }, [])
 
   // SIMPLIFIED PRINT FUNCTION - Direct equivalent to CTRL+P
   const handlePrint = () => {
     // Directly trigger print without any confirmation or preparation
-    window.print();
-  };
+    window.print()
+  }
 
   // PDF DOWNLOAD FUNCTION - With confirmation modal
   const handleDownloadPDF = () => {
@@ -46,16 +70,16 @@ export default function SideBar({
       message: "Doriți să descărcați acest document ca PDF?",
       onConfirm: () => {
         // Close the modal
-        closeModal();
+        closeModal()
 
         // Most direct implementation possible
         try {
           // Get the form container - try with a more general selector
-          const element = document.querySelector("main").firstElementChild;
+          const element = document.querySelector("main").firstElementChild
 
           if (!element) {
-            alert("Could not find the form to convert to PDF");
-            return;
+            alert("Could not find the form to convert to PDF")
+            return
           }
 
           // Generate PDF with improved options to prevent blank pages
@@ -82,60 +106,59 @@ export default function SideBar({
             },
             // Prevent automatic page breaks
             pagebreak: { mode: ["avoid-all", "css", "legacy"] },
-          });
+          })
         } catch (error) {
-          console.error("PDF generation error:", error);
-          alert("Error generating PDF: " + error.message);
+          console.error("PDF generation error:", error)
+          alert("Error generating PDF: " + error.message)
         }
       },
-    });
-  };
+    })
+  }
 
   const handleReset = () => {
     setModalConfig({
       isOpen: true,
       title: "Resetează formularul",
-      message:
-        "Sigur doriți să ștergeți toate câmpurile formularului? Această acțiune nu poate fi anulată.",
+      message: "Sigur doriți să ștergeți toate câmpurile formularului? Această acțiune nu poate fi anulată.",
       onConfirm: () => {
-        onReset?.();
-        closeModal();
+        onReset?.()
+        closeModal()
       },
-    });
-  };
+    })
+  }
 
   useEffect(() => {
     const handleKeyPress = (event) => {
       if (event.key === "F10") {
-        event.preventDefault();
-        handlePrint();
+        event.preventDefault()
+        handlePrint()
       }
-    };
+    }
 
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, []);
+    window.addEventListener("keydown", handleKeyPress)
+    return () => window.removeEventListener("keydown", handleKeyPress)
+  }, [])
 
   // Function to show tooltip
   const showTooltip = (id, e) => {
-    setActiveTooltip(id);
+    setActiveTooltip(id)
     if (tooltipRefs.current[id] && e.currentTarget) {
-      const tooltip = tooltipRefs.current[id];
-      const buttonRect = e.currentTarget.getBoundingClientRect();
+      const tooltip = tooltipRefs.current[id]
+      const buttonRect = e.currentTarget.getBoundingClientRect()
       // Position tooltip centered with the button
-      tooltip.style.top = `${buttonRect.top + buttonRect.height / 2}px`;
-      tooltip.style.opacity = "1";
+      tooltip.style.top = `${buttonRect.top + buttonRect.height / 2}px`
+      tooltip.style.opacity = "1"
     }
-  };
+  }
 
   // Function to hide tooltip
   const hideTooltip = () => {
-    setActiveTooltip(null);
-  };
+    setActiveTooltip(null)
+  }
 
   return (
     <>
-      <div className={styles.sidebar}>
+      <div className={styles.sidebar} ref={sidebarRef}>
         {/* Form Type Selector Buttons */}
         <div className={styles.formTypeContainer}>
           <div className={styles.formTypeLabel}>Formulare</div>
@@ -147,9 +170,7 @@ export default function SideBar({
           >
             <button
               onClick={() => onFormTypeChange("payment_order")}
-              className={`${styles.formTypeButton} ${
-                currentFormType === "payment_order" ? styles.active : ""
-              }`}
+              className={`${styles.formTypeButton} ${currentFormType === "payment_order" ? styles.active : ""}`}
               aria-label="Ordonanțare de Plată"
             >
               <CreditCard className={styles.icon} />
@@ -171,9 +192,7 @@ export default function SideBar({
           >
             <button
               onClick={() => onFormTypeChange("proposal")}
-              className={`${styles.formTypeButton} ${
-                currentFormType === "proposal" ? styles.active : ""
-              }`}
+              className={`${styles.formTypeButton} ${currentFormType === "proposal" ? styles.active : ""}`}
               aria-label="Propunere de Angajare"
             >
               <ClipboardList className={styles.icon} />
@@ -195,9 +214,7 @@ export default function SideBar({
           >
             <button
               onClick={() => onFormTypeChange("budget_commitment")}
-              className={`${styles.formTypeButton} ${
-                currentFormType === "budget_commitment" ? styles.active : ""
-              }`}
+              className={`${styles.formTypeButton} ${currentFormType === "budget_commitment" ? styles.active : ""}`}
               aria-label="Angajament Bugetar"
             >
               <FileCheck className={styles.icon} />
@@ -223,11 +240,7 @@ export default function SideBar({
             onMouseEnter={(e) => showTooltip("print", e)}
             onMouseLeave={hideTooltip}
           >
-            <button
-              onClick={handlePrint}
-              className={`${styles.button} ${styles.buttonPrint}`}
-              aria-label="Print"
-            >
+            <button onClick={handlePrint} className={`${styles.button} ${styles.buttonPrint}`} aria-label="Print">
               <Printer className={styles.icon} />
             </button>
             <div
@@ -267,11 +280,7 @@ export default function SideBar({
             onMouseEnter={(e) => showTooltip("reset", e)}
             onMouseLeave={hideTooltip}
           >
-            <button
-              onClick={handleReset}
-              className={`${styles.button} ${styles.buttonReset}`}
-              aria-label="Reset"
-            >
+            <button onClick={handleReset} className={`${styles.button} ${styles.buttonReset}`} aria-label="Reset">
               <RotateCcw className={styles.icon} />
             </button>
             <div
@@ -293,5 +302,5 @@ export default function SideBar({
         onClose={closeModal}
       />
     </>
-  );
+  )
 }

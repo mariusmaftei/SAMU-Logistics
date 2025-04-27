@@ -16,7 +16,8 @@
   align-items: center;
   overflow: hidden;
   max-width: 100%; /* Ensure it doesn't overflow the viewport */
-  transform-origin: top center; /* Scale from the top center */
+  transform-origin: top center !important; /* Ensure this is respected */
+  will-change: transform !important; /* Optimize for animations */
 }
 
 /* Image and overlay positioning */
@@ -203,12 +204,13 @@
 }
 
 .beneficiaryAddress {
+  height: auto;
   text-align: center;
   top: 746px;
   left: 160px;
   width: 226px;
   font-weight: 500;
-}
+  }
 
 /* Bank and treasury information - KEEPING USER'S POSITIONS */
 .bankNumber {

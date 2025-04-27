@@ -5,20 +5,16 @@ import ABIimage from "../../assets/images/angajament-bugetar-individual.jpg";
 import DateInput from "../UI/DateInput/DateInput";
 import { useFormEntries } from "../../context/FormEntriesContext";
 
-export default function BudgetCommitmentForm({
-  formData,
-  handleInputChange,
-  handleDateKeyDown,
-}) {
-  const containerRef = useRef(null);
-  const imageRef = useRef(null);
-  const inputColor = "rgba(31, 129, 248, 0.52)";
-  const { formEntries, getBeneficiaryByName } = useFormEntries();
+export default function BudgetCommitmentForm({ formData, handleInputChange, handleDateKeyDown }) {
+  const containerRef = useRef(null)
+  const imageRef = useRef(null)
+  const inputColor = "rgba(31, 129, 248, 0.52)"
+  const { formEntries, getBeneficiaryByName } = useFormEntries()
 
   const fillFormFields = (beneficiaryName) => {
-    if (!beneficiaryName) return;
+    if (!beneficiaryName) return
 
-    const beneficiary = getBeneficiaryByName(beneficiaryName);
+    const beneficiary = getBeneficiaryByName(beneficiaryName)
 
     if (beneficiary) {
       const fieldUpdates = [
@@ -28,7 +24,7 @@ export default function BudgetCommitmentForm({
         },
         { name: "treasuryNumber", value: beneficiary.CUI_CUI_CIF || "" },
         { name: "accountNumber", value: beneficiary.NR_CONT_IBAN || "" },
-      ];
+      ]
 
       fieldUpdates.forEach((field) => {
         handleInputChange({
@@ -36,38 +32,38 @@ export default function BudgetCommitmentForm({
             name: field.name,
             value: field.value,
           },
-        });
-      });
+        })
+      })
     }
-  };
+  }
 
   const handleBeneficiaryNameChange = (e) => {
-    handleInputChange(e);
+    handleInputChange(e)
 
-    const beneficiaryName = e.target.value;
+    const beneficiaryName = e.target.value
 
     if (beneficiaryName && beneficiaryName.includes(" ")) {
-      fillFormFields(beneficiaryName);
+      fillFormFields(beneficiaryName)
     }
-  };
+  }
 
   const handlePaste = (e) => {
     setTimeout(() => {
-      const pastedName = e.target.value;
+      const pastedName = e.target.value
 
       if (pastedName && pastedName.trim() !== "") {
-        fillFormFields(pastedName);
+        fillFormFields(pastedName)
       }
-    }, 10);
-  };
+    }, 10)
+  }
 
   const fillAutoFields = (name, value, prevValue) => {
     if (!prevValue && value) {
-      const now = new Date();
-      const day = String(now.getDate()).padStart(2, "0");
-      const month = String(now.getMonth() + 1).padStart(2, "0");
-      const year = now.getFullYear();
-      const currentDate = `${day}.${month}.${year}`;
+      const now = new Date()
+      const day = String(now.getDate()).padStart(2, "0")
+      const month = String(now.getMonth() + 1).padStart(2, "0")
+      const year = now.getFullYear()
+      const currentDate = `${day}.${month}.${year}`
 
       if (!formData.dateIssued) {
         handleInputChange({
@@ -75,7 +71,7 @@ export default function BudgetCommitmentForm({
             name: "dateIssued",
             value: currentDate,
           },
-        });
+        })
       }
 
       // Auto-fill shortText with "SAMU" if it's empty
@@ -85,7 +81,7 @@ export default function BudgetCommitmentForm({
             name: "shortText",
             value: "SAMU",
           },
-        });
+        })
       }
 
       // Auto-fill additionalDate with current date if it's empty
@@ -95,186 +91,203 @@ export default function BudgetCommitmentForm({
             name: "additionalDate",
             value: currentDate,
           },
-        });
+        })
       }
     }
-  };
+  }
 
   const handleFormInputChange = (e) => {
-    const { name, value } = e.target;
-    const prevValue = formData[name];
+    const { name, value } = e.target
+    const prevValue = formData[name]
 
-    handleInputChange(e);
+    handleInputChange(e)
 
-    fillAutoFields(name, value, prevValue);
-  };
+    fillAutoFields(name, value, prevValue)
+  }
 
   const beneficiariesForDropdown = formEntries.map((entry) => ({
     id: entry.id || String(Math.random()),
     Nume_Furnizor: entry.Nume_Furnizor,
-  }));
+  }))
 
   useEffect(() => {
     const handleBeforePrint = () => {
       if (containerRef.current) {
-        const existingOverlays = document.querySelectorAll(
-          ".print-text-overlay"
-        );
-        existingOverlays.forEach((overlay) => overlay.remove());
+        // Store original styles to restore later
+        const originalTransform = containerRef.current.style.transform
+        const originalMarginTop = containerRef.current.style.marginTop
+        const originalMarginBottom = containerRef.current.style.marginBottom
 
-        const inputs = containerRef.current.querySelectorAll("input");
+        // Force the form to be at 100% zoom for printing
+        containerRef.current.style.transform = "none"
+        containerRef.current.style.margin = "0"
 
-        inputs.forEach((input) => {
-          if (input.value) {
-            const rect = input.getBoundingClientRect();
-            const containerRect = containerRef.current.getBoundingClientRect();
+        // Remove any existing overlays
+        const existingOverlays = document.querySelectorAll(".print-text-overlay")
+        existingOverlays.forEach((overlay) => overlay.remove())
 
-            const top = rect.top - containerRect.top;
-            const left = rect.left - containerRect.left;
+        // Create a print overlay container
+        const overlayContainer = document.createElement("div")
+        overlayContainer.className = "print-overlay-container"
+        containerRef.current.appendChild(overlayContainer)
 
-            const overlay = document.createElement("div");
-            overlay.className = "print-text-overlay";
-            overlay.textContent = input.value;
-            overlay.style.position = "absolute";
-            overlay.style.left = `${left}px`;
-            overlay.style.top = `${top}px`;
-            overlay.style.width = `${rect.width}px`;
-            overlay.style.height = `${rect.height}px`;
-            overlay.style.textAlign = window.getComputedStyle(input).textAlign;
-            overlay.style.fontSize = window.getComputedStyle(input).fontSize;
-            overlay.style.fontFamily =
-              window.getComputedStyle(input).fontFamily;
-            overlay.style.color = "rgb(31 41 55)";
-            overlay.style.zIndex = "1000";
-            overlay.style.pointerEvents = "none";
-            overlay.style.display = "none";
-            overlay.style.lineHeight = "1";
-            overlay.style.padding = "0";
-            overlay.style.margin = "0";
-            overlay.style.fontWeight = "500";
+        // Create fixed-position overlays for each input field
+        // These positions are based on the original form layout, not the current DOM
+        const createFixedOverlay = (name, value, top, left, width, textAlign = "center") => {
+          if (!value) return
 
-            if (input.name === "shortText") {
-              overlay.style.paddingTop = "3px";
-            } else if (input.name === "numericValue1") {
-              overlay.style.paddingTop = "6px";
-            } else if (input.name === "numericValue2") {
-              overlay.style.paddingTop = "3px";
-            } else if (input.name === "additionalDate") {
-              overlay.style.paddingTop = "3px";
-            } else {
-              overlay.style.paddingTop = "3px";
-            }
+          const overlay = document.createElement("div")
+          overlay.className = "print-text-overlay"
+          overlay.textContent = value
+          overlay.dataset.for = name
 
-            overlay.dataset.for = input.name;
+          // Use fixed positioning based on the form design
+          overlay.style.position = "absolute"
+          overlay.style.top = `${top}px`
+          overlay.style.left = `${left}px`
+          overlay.style.width = `${width}px`
+          overlay.style.textAlign = textAlign
+          overlay.style.fontSize = "11pt"
+          overlay.style.fontFamily = "inherit"
+          overlay.style.color = "rgb(31 41 55)"
+          overlay.style.fontWeight = "500"
+          overlay.style.zIndex = "1000"
+          overlay.style.display = "none" // Will be shown in print
 
-            containerRef.current.appendChild(overlay);
-          }
-        });
-
-        if (formData.beneficiaryName) {
-          const beneficiaryInput = containerRef.current.querySelector(
-            `[name="beneficiaryName"]`
-          );
-          if (beneficiaryInput) {
-            const rect = beneficiaryInput.getBoundingClientRect();
-            const containerRect = containerRef.current.getBoundingClientRect();
-
-            const top = rect.top - containerRect.top;
-            const left = rect.left - containerRect.left;
-
-            const overlay = document.createElement("div");
-            overlay.className = "print-text-overlay";
-            overlay.textContent = formData.beneficiaryName;
-            overlay.style.position = "absolute";
-            overlay.style.left = `${left}px`;
-            overlay.style.top = `${top}px`;
-            overlay.style.width = `${rect.width}px`;
-            overlay.style.height = `${rect.height}px`;
-            overlay.style.textAlign = "center";
-            overlay.style.fontSize = "11pt";
-            overlay.style.fontFamily = "inherit";
-            overlay.style.color = "rgb(31 41 55)";
-            overlay.style.zIndex = "1000";
-            overlay.style.pointerEvents = "none";
-            overlay.style.display = "none";
-            overlay.style.lineHeight = "1";
-            overlay.style.padding = "0";
-            overlay.style.margin = "0";
-            overlay.style.paddingTop = "3px";
-            overlay.style.fontWeight = "500";
-
-            overlay.dataset.for = "beneficiaryName";
-            containerRef.current.appendChild(overlay);
-          }
+          overlayContainer.appendChild(overlay)
         }
 
-        let styleTag = document.getElementById("print-overlay-styles-budget");
+        // Alternative function to position from the right side
+        const createFixedOverlayFromRight = (name, value, top, right, width, textAlign = "center") => {
+          if (!value) return
+
+          const overlay = document.createElement("div")
+          overlay.className = "print-text-overlay"
+          overlay.textContent = value
+          overlay.dataset.for = name
+
+          // Use fixed positioning based on the form design
+          overlay.style.position = "absolute"
+          overlay.style.top = `${top}px`
+
+          // Calculate position from the left to ensure it's all the way to the right
+          // A4 width is 210mm ≈ 794px, subtract width and right margin
+          const leftPosition = 794 - width - right
+          overlay.style.left = `${leftPosition}px`
+
+          // Also set right property as a fallback
+          overlay.style.right = `${right}px`
+
+          overlay.style.width = `${width}px`
+          overlay.style.textAlign = textAlign
+          overlay.style.fontSize = "11pt"
+          overlay.style.fontFamily = "inherit"
+          overlay.style.color = "rgb(31 41 55)"
+          overlay.style.fontWeight = "500"
+          overlay.style.zIndex = "1000"
+          overlay.style.display = "none" // Will be shown in print
+
+          overlayContainer.appendChild(overlay)
+        }
+
+        // Create overlays for each field with fixed positions
+        // Date issued - moved left from 550px to 480px
+        createFixedOverlay("dateIssued", formData.dateIssued, 108, 520, 160)
+
+        // Short text - moved left from 550px to 480px
+        createFixedOverlay("shortText", formData.shortText, 146, 430, 240)
+
+        // Beneficiary name - position is good, minor adjustment
+        createFixedOverlay("beneficiaryName", formData.beneficiaryName, 280, 224, 390)
+
+        // Numeric value 1 - moved left from 550px to 480px
+        createFixedOverlay("numericValue1", formData.numericValue1, 392, 428, 195)
+
+        // Numeric value 2 - moved left from 550px to 480px
+        createFixedOverlay("numericValue2", formData.numericValue2, 565, 428, 195)
+
+        // Additional date - extreme right positioning
+        createFixedOverlayFromRight("additionalDate", formData.additionalDate, 635, 200, 100)
+
+        // Add a style tag for print media
+        let styleTag = document.getElementById("print-overlay-styles-budget")
         if (!styleTag) {
-          styleTag = document.createElement("style");
-          styleTag.id = "print-overlay-styles-budget";
-          document.head.appendChild(styleTag);
+          styleTag = document.createElement("style")
+          styleTag.id = "print-overlay-styles-budget"
+          document.head.appendChild(styleTag)
         }
 
         styleTag.textContent = `
-      @media print {
-        .print-text-overlay {
-          display: block !important;
-          position: absolute !important;
-          background: transparent !important;
-          line-height: 1 !important;
-          padding: 0 !important;
-          margin: 0 !important;
-          padding-top: 3px !important;
-          font-weight: 500 !important;
-        }
-        input {
-          color: transparent !important;
-          -webkit-text-fill-color: transparent !important;
-          background-color: transparent !important;
-        }
-        .formContainer {
-          position: fixed !important;
-          top: 0 !important;
-          left: 0 !important;
-          width: 100% !important;
-          height: 100% !important;
-          transform: none !important;
-          margin: 0 !important;
-          padding: 0 !important;
-        }
-        .beneficiary-dropdown-container {
-          background-color: transparent !important;
-        }
-        .beneficiary-dropdown-container button,
-        .beneficiary-dropdown-container .dropdown-menu {
-          display: none !important;
-        }
-        .print-text-overlay[data-for="numericValue1"] {
-          padding-top: 6px !important;
-        }
-        .print-text-overlay[data-for="numericValue2"] {
-          padding-top: 3px !important;
-        }
-        .print-text-overlay[data-for="additionalDate"] {
-          padding-top: 3px !important;
-        }
-      }
-    `;
-      }
-    };
+          @media print {
+            .print-text-overlay {
+              display: block !important;
+              position: absolute !important;
+              background: transparent !important;
+              line-height: 1 !important;
+              padding: 0 !important;
+              margin: 0 !important;
+              font-weight: 500 !important;
+            }
+            
+            input, select {
+              color: transparent !important;
+              -webkit-text-fill-color: transparent !important;
+              background-color: transparent !important;
+              opacity: 0 !important;
+            }
+            
+            .formContainer {
+              position: fixed !important;
+              top: 0 !important;
+              left: 0 !important;
+              width: 210mm !important;
+              height: 297mm !important;
+              transform: none !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+            
+            .print-overlay-container {
+              position: absolute !important;
+              top: 0 !important;
+              left: 0 !important;
+              width: 100% !important;
+              height: 100% !important;
+              z-index: 1000 !important;
+            }
+          }
+        `
 
-    window.addEventListener("beforeprint", handleBeforePrint);
-    return () => {
-      window.removeEventListener("beforeprint", handleBeforePrint);
-      const styleTag = document.getElementById("print-overlay-styles-budget");
-      if (styleTag) {
-        styleTag.remove();
+        // After printing, restore the original styles
+        window.addEventListener("afterprint", function restoreStyles() {
+          // Restore original styles
+          containerRef.current.style.transform = originalTransform
+          containerRef.current.style.marginTop = originalMarginTop
+          containerRef.current.style.marginBottom = originalMarginBottom
+
+          // Remove the print overlay container
+          const overlayContainer = containerRef.current.querySelector(".print-overlay-container")
+          if (overlayContainer) {
+            containerRef.current.removeChild(overlayContainer)
+          }
+
+          window.removeEventListener("afterprint", restoreStyles)
+        })
       }
-    };
-  }, [formData]);
+    }
+
+    window.addEventListener("beforeprint", handleBeforePrint)
+    return () => {
+      window.removeEventListener("beforeprint", handleBeforePrint)
+      const styleTag = document.getElementById("print-overlay-styles-budget")
+      if (styleTag) {
+        styleTag.remove()
+      }
+    }
+  }, [formData])
 
   useEffect(() => {
-    const styleElement = document.createElement("style");
+    const styleElement = document.createElement("style")
     styleElement.innerHTML = `
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
@@ -299,45 +312,45 @@ export default function BudgetCommitmentForm({
     transition: background-color 5000s ease-in-out 0s;
     background-color: transparent !important;
   }
-`;
-    document.head.appendChild(styleElement);
+`
+    document.head.appendChild(styleElement)
 
     return () => {
-      document.head.removeChild(styleElement);
-    };
-  }, []);
+      document.head.removeChild(styleElement)
+    }
+  }, [])
 
   useEffect(() => {
     const handleResize = () => {
       if (containerRef.current) {
-        const isMobile = window.innerWidth <= 768;
+        const isMobile = window.innerWidth <= 768
 
         if (isMobile) {
-          containerRef.current.classList.add(styles.mobileView);
+          containerRef.current.classList.add(styles.mobileView)
 
-          const scale = Math.max(0.25, Math.min(0.6, window.innerWidth / 800));
+          const scale = Math.max(0.25, Math.min(0.6, window.innerWidth / 800))
 
-          containerRef.current.style.transform = `scale(${scale})`;
+          containerRef.current.style.transform = `scale(${scale})`
 
-          const marginAdjustment = ((1 - scale) * 297) / 2;
-          containerRef.current.style.marginTop = `-${marginAdjustment}mm`;
-          containerRef.current.style.marginBottom = `-${marginAdjustment}mm`;
+          const marginAdjustment = ((1 - scale) * 297) / 2
+          containerRef.current.style.marginTop = `-${marginAdjustment}mm`
+          containerRef.current.style.marginBottom = `-${marginAdjustment}mm`
         } else {
-          containerRef.current.classList.remove(styles.mobileView);
-          containerRef.current.style.transform = "";
-          containerRef.current.style.marginTop = "";
-          containerRef.current.style.marginBottom = "";
+          containerRef.current.classList.remove(styles.mobileView)
+          containerRef.current.style.transform = ""
+          containerRef.current.style.marginTop = ""
+          containerRef.current.style.marginBottom = ""
         }
       }
-    };
+    }
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
+    handleResize()
+    window.addEventListener("resize", handleResize)
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
 
   return (
     <div className={styles.formContainer} ref={containerRef}>
@@ -379,12 +392,8 @@ export default function BudgetCommitmentForm({
           name="beneficiaryName"
           value={formData.beneficiaryName || ""}
           onChange={(e) => {
-            handleBeneficiaryNameChange(e);
-            fillAutoFields(
-              e.target.name,
-              e.target.value,
-              formData[e.target.name]
-            );
+            handleBeneficiaryNameChange(e)
+            fillAutoFields(e.target.name, e.target.value, formData[e.target.name])
           }}
           onPaste={handlePaste}
           className={`${styles.inputField} ${styles.beneficiaryNameField}`}
@@ -403,29 +412,27 @@ export default function BudgetCommitmentForm({
           name="numericValue1"
           value={formData.numericValue1 || ""}
           onChange={(e) => {
-            const value = e.target.value;
+            const value = e.target.value
             if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
-              return;
+              return
             }
 
             // Update both numeric fields with the same value
             handleInputChange({
               target: { name: "numericValue1", value },
-            });
+            })
             handleInputChange({
               target: { name: "numericValue2", value },
-            });
+            })
 
-            fillAutoFields("numericValue1", value, formData.numericValue1);
+            fillAutoFields("numericValue1", value, formData.numericValue1)
           }}
           className={`${styles.inputField} ${styles.numericField1}`}
           placeholder="0.00"
           inputMode="decimal"
           maxLength={12}
           style={{
-            backgroundColor: formData.numericValue1
-              ? "transparent"
-              : inputColor,
+            backgroundColor: formData.numericValue1 ? "transparent" : inputColor,
           }}
           autocomplete="off"
         />
@@ -435,29 +442,27 @@ export default function BudgetCommitmentForm({
           name="numericValue2"
           value={formData.numericValue2 || ""}
           onChange={(e) => {
-            const value = e.target.value;
+            const value = e.target.value
             if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
-              return;
+              return
             }
 
             // Update both numeric fields with the same value
             handleInputChange({
               target: { name: "numericValue1", value },
-            });
+            })
             handleInputChange({
               target: { name: "numericValue2", value },
-            });
+            })
 
-            fillAutoFields("numericValue2", value, formData.numericValue2);
+            fillAutoFields("numericValue2", value, formData.numericValue2)
           }}
           className={`${styles.inputField} ${styles.numericField2}`}
           placeholder="0.00"
           inputMode="decimal"
           maxLength={12}
           style={{
-            backgroundColor: formData.numericValue2
-              ? "transparent"
-              : inputColor,
+            backgroundColor: formData.numericValue2 ? "transparent" : inputColor,
           }}
           autocomplete="off"
         />
@@ -467,19 +472,11 @@ export default function BudgetCommitmentForm({
           value={formData.additionalDate || ""}
           onChange={handleFormInputChange}
           onKeyDown={handleDateKeyDown}
-          className={`${styles.inputField}`}
+          className={`${styles.inputField} ${styles.additionalDateField}`}
           placeholder="DD/MM/YYYY"
           inputColor={inputColor}
-          style={{
-            position: "absolute",
-            top: "635px",
-            right: "150px",
-            transform: "translateX(-50%)",
-            width: "100px",
-            textAlign: "center",
-          }}
         />
       </div>
     </div>
-  );
+  )
 }

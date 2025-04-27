@@ -5,10 +5,10 @@ import SamuLogo from "../../../assets/images/SAMU Logistics logo transparent.png
 import styles from "./Header.module.css";
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef(null);
-  const buttonRef = useRef(null);
-  const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuRef = useRef(null)
+  const buttonRef = useRef(null)
+  const location = useLocation()
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -18,50 +18,40 @@ export default function Header() {
         !menuRef.current.contains(event.target) &&
         !buttonRef.current.contains(event.target)
       ) {
-        setIsMenuOpen(false);
+        setIsMenuOpen(false)
       }
-    };
+    }
 
     if (isMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside)
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isMenuOpen]);
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [isMenuOpen])
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+    setIsMenuOpen(!isMenuOpen)
+  }
 
   const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
+    setIsMenuOpen(false)
+  }
 
   return (
     <>
-      <button
-        ref={buttonRef}
-        onClick={toggleMenu}
-        className={styles.burgerButton}
-        aria-label="Toggle menu"
-      >
+      <button ref={buttonRef} onClick={toggleMenu} className={styles.burgerButton} aria-label="Toggle menu">
         {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </button>
 
-      <nav
-        ref={menuRef}
-        className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}
-      >
-        <Link to={"/"}>
-          <div className={styles.userSection} onClick={closeMenu}>
-            <div className={styles.userIcon}>
-              <img src={SamuLogo} alt="samu-logo" />
-            </div>
-            <span className={styles.username}>SAMU Logistics</span>
+      <nav ref={menuRef} className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}>
+        <div className={styles.userSection}>
+          <div className={styles.userIcon}>
+            <img src={SamuLogo || "/placeholder.svg"} alt="samu-logo" />
           </div>
-        </Link>
+          <span className={styles.username}>SAMU Logistics</span>
+        </div>
 
         <div className={styles.divider} />
 
@@ -70,9 +60,7 @@ export default function Header() {
             <Link
               to="/form"
               className={`${styles.navLink} ${
-                location.pathname === "/form" || location.pathname === "/"
-                  ? styles.active
-                  : ""
+                location.pathname === "/form" || location.pathname === "/" ? styles.active : ""
               }`}
               onClick={closeMenu}
             >
@@ -83,9 +71,7 @@ export default function Header() {
           <li>
             <Link
               to="/entries"
-              className={`${styles.navLink} ${
-                location.pathname === "/entries" ? styles.active : ""
-              }`}
+              className={`${styles.navLink} ${location.pathname === "/entries" ? styles.active : ""}`}
               onClick={closeMenu}
             >
               <Database className={styles.navIcon} />
@@ -97,5 +83,5 @@ export default function Header() {
 
       {isMenuOpen && <div className={styles.overlay} onClick={closeMenu} />}
     </>
-  );
+  )
 }

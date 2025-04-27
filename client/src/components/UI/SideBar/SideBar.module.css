@@ -1,15 +1,34 @@
+/* Add this new class for the sidebar container */
+.sidebarContainer {
+  position: fixed;
+  width: 20vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  transform-origin: top left;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
   width: 4rem;
+  min-width: 4rem;
+  max-width: 4rem;
   background-color: rgb(30 41 59); /* Matches header color */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1rem 0;
   z-index: 30;
+  transform: none !important;
+  -webkit-transform: none !important;
+  -ms-transform: none !important;
+  -moz-transform: none !important;
+  -o-transform: none !important;
 }
 
 .buttonContainer {
@@ -174,6 +193,8 @@
 @media (max-width: 768px) {
   .sidebar {
     width: 3.5rem; /* Slightly narrower on mobile */
+    min-width: 3.5rem;
+    max-width: 3.5rem;
   }
 
   .button {
@@ -201,6 +222,8 @@
 @media (max-width: 375px) {
   .sidebar {
     width: 3rem;
+    min-width: 3rem;
+    max-width: 3rem;
   }
 
   .button {
@@ -244,4 +267,23 @@ body.generating-pdf input,
 body.generating-pdf select {
   color: transparent !important;
   -webkit-text-fill-color: transparent !important;
+}
+
+/* Add this at the end of your CSS file */
+@media screen {
+  .sidebar {
+    position: fixed !important;
+    width: 64px !important;
+    min-width: 64px !important;
+    max-width: 64px !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+    transform: none !important;
+    zoom: 1 !important;
+    -webkit-transform: none !important;
+    -ms-transform: none !important;
+    -moz-transform: none !important;
+    -o-transform: none !important;
+  }
 }

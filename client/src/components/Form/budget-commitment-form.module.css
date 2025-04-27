@@ -9,6 +9,8 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  transform-origin: top center !important; /* Ensure this is respected */
+  will-change: transform !important; /* Optimize for animations */
 }
 
 .imageWrapper {
@@ -100,6 +102,14 @@
   z-index: 3;
   font-weight: 500;
   text-align: center;
+}
+
+.additionalDateField {
+  bottom: 470px;
+  right: 200px;
+  width: 100px;
+  text-align: center;
+  font-weight: 500;
 }
 
 .mobileView {

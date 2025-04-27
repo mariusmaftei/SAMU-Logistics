@@ -9,6 +9,8 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  transform-origin: top center !important; /* Ensure this is respected */
+  will-change: transform !important; /* Optimize for animations */
 }
 
 .imageWrapper {

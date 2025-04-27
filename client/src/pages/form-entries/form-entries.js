@@ -59,9 +59,9 @@ export default function FormEntries() {
                   <tr>
                     <th>Nume</th>
                     <th>Adresa beneficiarului</th>
-                    <th>CUI/CIF</th>
                     <th>Trezorerie</th>
                     <th>IBAN</th>
+                    <th>CUI/CIF</th>
                     <th>Editeaza/Sterge</th>
                   </tr>
                 </thead>
