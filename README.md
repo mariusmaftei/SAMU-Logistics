@@ -1,4 +1,4 @@
-# 📝 SAMU-Logistics
+# 💻📝 SAMU-Logistics
 
 **SAMU-Logistics** is a desktop application designed to streamline the paperwork process. It allows users to input customer data such as name, address, and bank details, and auto-fills the rest of the form fields based on the stored information. The app also enables printing the completed form on A4 paper for official documentation.
 
