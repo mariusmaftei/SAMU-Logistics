@@ -163,10 +163,43 @@
   font-weight: 500;
 }
 
+.additionalInput1 {
+  top: 321px; /* 25px down from the original */
+  left: 325px;
+  width: calc(100% - 700px);
+  text-align: center;
+  font-weight: 500;
+}
+
+.additionalInput2 {
+  top: 346px; /* 25px down from the first additional input */
+  left: 345px;
+  width: calc(100% - 700px);
+  text-align: center;
+  font-weight: 500;
+}
+
+.additionalInput3 {
+  top: 371px; /* 25px down from the second additional input */
+  left: 365px;
+  width: calc(100% - 700px);
+  text-align: center;
+  font-weight: 500;
+}
+
+.additionalInput4 {
+  top: 396px; /* 25px down from the third additional input */
+  left: 385px;
+  width: calc(100% - 700px);
+  text-align: center;
+  font-weight: 500;
+}
+
 .billDateField {
-  top: 296px;
-  right: 190px;
-  width: 140px;
+  top: 314px;
+  right: 165px;
+  width: 80px;
+  height: 18px;
   text-align: center;
   font-weight: 500;
 }
@@ -204,13 +237,12 @@
 }
 
 .beneficiaryAddress {
-  height: auto;
   text-align: center;
   top: 746px;
   left: 160px;
   width: 226px;
   font-weight: 500;
-  }
+}
 
 /* Bank and treasury information - KEEPING USER'S POSITIONS */
 .bankNumber {
@@ -244,6 +276,8 @@
 .dateSignatureField {
   width: 100px;
   text-align: center;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .compartmentDateField {

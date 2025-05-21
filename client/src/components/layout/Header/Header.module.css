@@ -1,7 +1,7 @@
 .burgerButton {
   position: fixed;
-  top: 1vh;
-  right: 1vh;
+  top: 2vh;
+  right: 3vh;
   z-index: 50;
   padding: 0.5vh;
   border-radius: 50%;
@@ -43,11 +43,13 @@
 
 /* User section styles */
 .userSection {
+  width: 200px;
   display: flex;
   align-items: center;
   gap: 0.75vh;
   padding: 1.5vh;
-  padding-top: 3vh;
+  margin: 1rem;
+  user-select: none;
 }
 
 .userIcon {
@@ -67,6 +69,7 @@
   color: white;
   font-size: 1.5vh;
   font-weight: 500;
+  margin-left: 1rem;
 }
 
 .divider {
@@ -80,6 +83,7 @@
   flex-direction: column;
   gap: 0.5vh;
   padding: 0 1.5vh;
+  user-select: none;
 }
 
 .navLink {

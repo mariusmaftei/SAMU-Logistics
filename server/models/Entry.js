@@ -1,39 +1,40 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../config/database.js";
+import mongoose from "mongoose";
 
-const Entry = sequelize.define(
-  "Furnizor",
+// Create Mongoose schema (equivalent to Sequelize model)
+const EntrySchema = new mongoose.Schema(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
     Nume_Furnizor: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
+      type: String,
+      required: [true, "Please add a name"],
+      trim: true,
     },
     Adresa_Furnizor: {
-      type: DataTypes.STRING(100),
-      allowNull: true, // In your SQL, this field is nullable.
+      type: String,
+      required: [true, "Please add an address"],
+      trim: true,
     },
     CUI_CUI_CIF: {
-      type: DataTypes.STRING(20),
-      allowNull: true, // SQL field is nullable.
+      type: String,
+      required: [true, "Please add a CUI/CIF"],
+      trim: true,
     },
     Trezorerie_Furnizor: {
-      type: DataTypes.STRING(30),
-      allowNull: true, // SQL field is nullable.
+      type: String,
+      required: [true, "Please add a treasury"],
+      trim: true,
     },
     NR_CONT_IBAN: {
-      type: DataTypes.STRING(100),
-      allowNull: true, // SQL field is nullable.
+      type: String,
+      required: [true, "Please add an IBAN"],
+      trim: true,
     },
   },
   {
-    tableName: "Furnizor", // Matches your SQL table name.
-    timestamps: true, // Sequelize will manage createdAt and updatedAt fields.
+    timestamps: true, // Equivalent to Sequelize's timestamps: true
   }
 );
+
+// Create and export the model
+const Entry = mongoose.model("Furnizor", EntrySchema);
 
 export default Entry;

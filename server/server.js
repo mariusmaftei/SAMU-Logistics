@@ -1,24 +1,22 @@
 import express from "express";
 import cors from "cors";
-import sequelize from "./config/database.js";
-import setupAssociations from "./models/setupAssociations.js";
 import entryRoute from "./routes/entry.js";
+import connectDB from "./config/database.js";
 
 const app = express();
 const port = process.env.PORT || 8080;
 
+// Middleware
 app.use(express.json());
 app.use(cors());
 
-setupAssociations();
-
+// Routes
 app.get("/", (req, res) => {
-  res.send(`<h1>Internal Server Error</h1> 
- 
-    <p>The server encountered an internal error or misconfiguration and was unable to complete your request.<p>
-    <p>Please contact the server administrator at root@localhost to inform them of the time this error occurred, and the actions you performed just before this error.<p>
-    <p>More information about this error may be available in the server error log.</p>`);
+  res.send(`<h1>SAMU Logistics API</h1> 
+    <p>Welcome to the SAMU Logistics API</p>
+    <p>Use /entry endpoint to access the furnizor data</p>`);
 });
+
 app.use("/entry", entryRoute);
 
 // Error handling middleware
@@ -27,14 +25,19 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-sequelize
-  .sync()
-  .then(() => {
+// Connect to MongoDB and start server
+const startServer = async () => {
+  try {
+    await connectDB();
+
     app.listen(port, () => {
       console.log(`Server has started on port ${port}`);
-      console.log("Connected to MYSQL");
+      console.log("Connected to MongoDB");
     });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  } catch (error) {
+    console.error(`Error starting server: ${error.message}`);
+    process.exit(1);
+  }
+};
+
+startServer();

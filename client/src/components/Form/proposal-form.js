@@ -6,47 +6,53 @@ import SimpleDropdown from "../UI/SimpleDropdown/SimpleDropdown";
 import BeneficiaryDropdown from "../UI/Dropdown/Dropdown";
 import { useFormEntries } from "../../context/FormEntriesContext";
 
-export default function ProposalForm({ formData, handleInputChange, handleDateKeyDown }) {
-  const containerRef = useRef(null)
-  const imageRef = useRef(null)
-  const inputColor = "rgba(31, 129, 248, 0.52)"
-  const [selectedOptionText, setSelectedOptionText] = useState("")
-  const { formEntries, getBeneficiaryByName } = useFormEntries()
+export default function ProposalForm({
+  formData,
+  handleInputChange,
+  handleDateKeyDown,
+}) {
+  const containerRef = useRef(null);
+  const imageRef = useRef(null);
+  const inputColor = "rgba(31, 129, 248, 0.52)";
+  const [selectedOptionText, setSelectedOptionText] = useState("");
+  const { formEntries, getBeneficiaryByName } = useFormEntries();
 
   const categoryOptions = [
     { value: "MEDICAMENTATIE", label: "MEDICAMENTE" },
     { value: "MATERIALE SANITARE", label: "MATERIALE SANITARE" },
-  ]
+  ];
 
   const handleSelectChange = (e) => {
-    const select = e.target
-    const selectedOption = select.options[select.selectedIndex]
-    setSelectedOptionText(selectedOption ? selectedOption.text : "")
+    const select = e.target;
+    const selectedOption = select.options[select.selectedIndex];
+    setSelectedOptionText(selectedOption ? selectedOption.text : "");
 
     if (selectedOption && selectedOption.value) {
-      select.style.backgroundColor = "transparent"
+      select.style.backgroundColor = "transparent";
     } else {
-      select.style.backgroundColor = "rgba(191, 219, 254, 0.3)"
+      select.style.backgroundColor = "rgba(191, 219, 254, 0.3)";
     }
 
-    handleInputChange(e)
-  }
+    handleInputChange(e);
+  };
 
   useEffect(() => {
     if (formData.category) {
-      const option = categoryOptions.find((opt) => opt.value === formData.category)
+      const option = categoryOptions.find(
+        (opt) => opt.value === formData.category
+      );
       if (option) {
-        setSelectedOptionText(option.label)
+        setSelectedOptionText(option.label);
       }
     } else {
-      setSelectedOptionText("")
+      setSelectedOptionText("");
     }
-  }, [formData.category, categoryOptions])
+  }, [formData.category, categoryOptions]);
 
   const fillFormFields = (beneficiaryName) => {
-    if (!beneficiaryName) return
+    if (!beneficiaryName) return;
 
-    const beneficiary = getBeneficiaryByName(beneficiaryName)
+    const beneficiary = getBeneficiaryByName(beneficiaryName);
 
     if (beneficiary) {
       const fieldUpdates = [
@@ -56,7 +62,7 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
         },
         { name: "treasuryNumber", value: beneficiary.CUI_CUI_CIF || "" },
         { name: "accountNumber", value: beneficiary.NR_CONT_IBAN || "" },
-      ]
+      ];
 
       fieldUpdates.forEach((field) => {
         handleInputChange({
@@ -64,38 +70,38 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
             name: field.name,
             value: field.value,
           },
-        })
-      })
+        });
+      });
     }
-  }
+  };
 
   const handleBeneficiaryNameChange = (e) => {
-    handleInputChange(e)
+    handleInputChange(e);
 
-    const beneficiaryName = e.target.value
+    const beneficiaryName = e.target.value;
 
     if (beneficiaryName && beneficiaryName.includes(" ")) {
-      fillFormFields(beneficiaryName)
+      fillFormFields(beneficiaryName);
     }
-  }
+  };
 
   const handlePaste = (e) => {
     setTimeout(() => {
-      const pastedName = e.target.value
+      const pastedName = e.target.value;
 
       if (pastedName && pastedName.trim() !== "") {
-        fillFormFields(pastedName)
+        fillFormFields(pastedName);
       }
-    }, 10)
-  }
+    }, 10);
+  };
 
   const fillAutoFields = (name, value, prevValue) => {
     if (!prevValue && value) {
-      const now = new Date()
-      const day = String(now.getDate()).padStart(2, "0")
-      const month = String(now.getMonth() + 1).padStart(2, "0")
-      const year = now.getFullYear()
-      const currentDate = `${day}.${month}.${year}`
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, "0");
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const year = now.getFullYear();
+      const currentDate = `${day}.${month}.${year}`;
 
       // Auto-fill date if it's empty
       if (!formData.dateIssued) {
@@ -104,7 +110,7 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
             name: "dateIssued",
             value: currentDate,
           },
-        })
+        });
       }
 
       // Auto-fill shortText with "SAMU" if it's empty
@@ -114,7 +120,7 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
             name: "shortText",
             value: "SAMU",
           },
-        })
+        });
       }
 
       // Auto-fill additionalDate with current date if it's empty
@@ -124,123 +130,192 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
             name: "additionalDate",
             value: currentDate,
           },
-        })
+        });
       }
     }
-  }
+  };
+
+  const handleDateInput = (e) => {
+    const { name, value } = e.target;
+    let formattedValue = value.replace(/\./g, ""); // Remove any existing dots
+
+    // Only allow numbers
+    if (!/^\d*$/.test(formattedValue)) {
+      return;
+    }
+
+    // Format with dots
+    if (formattedValue.length > 0) {
+      // Add first dot after day (DD)
+      if (formattedValue.length > 2) {
+        formattedValue =
+          formattedValue.slice(0, 2) + "." + formattedValue.slice(2);
+      }
+
+      // Add second dot after month (MM)
+      if (formattedValue.length > 5) {
+        formattedValue =
+          formattedValue.slice(0, 5) + "." + formattedValue.slice(5);
+      }
+
+      // Limit to 10 characters (DD.MM.YYYY)
+      if (formattedValue.length > 10) {
+        formattedValue = formattedValue.slice(0, 10);
+      }
+    }
+
+    // Create a synthetic event to pass to the original handler
+    const syntheticEvent = {
+      target: {
+        name,
+        value: formattedValue,
+      },
+    };
+
+    handleFormInputChange(syntheticEvent);
+  };
 
   const handleFormInputChange = (e) => {
-    const { name, value } = e.target
-    const prevValue = formData[name]
+    const { name, value } = e.target;
+    const prevValue = formData[name];
 
-    handleInputChange(e)
+    handleInputChange(e);
 
-    fillAutoFields(name, value, prevValue)
-  }
+    fillAutoFields(name, value, prevValue);
+  };
 
   const beneficiariesForDropdown = formEntries.map((entry) => ({
     id: entry.id || String(Math.random()),
     Nume_Furnizor: entry.Nume_Furnizor,
-  }))
+  }));
 
   useEffect(() => {
     const handleBeforePrint = () => {
       if (containerRef.current) {
         // Store original styles to restore later
-        const originalTransform = containerRef.current.style.transform
-        const originalMarginTop = containerRef.current.style.marginTop
-        const originalMarginBottom = containerRef.current.style.marginBottom
+        const originalTransform = containerRef.current.style.transform;
+        const originalMarginTop = containerRef.current.style.marginTop;
+        const originalMarginBottom = containerRef.current.style.marginBottom;
 
         // Force the form to be at 100% zoom for printing
-        containerRef.current.style.transform = "none"
-        containerRef.current.style.margin = "0"
+        containerRef.current.style.transform = "none";
+        containerRef.current.style.margin = "0";
 
         // Remove any existing overlays
-        const existingOverlays = document.querySelectorAll(".print-text-overlay")
-        existingOverlays.forEach((overlay) => overlay.remove())
+        const existingOverlays = document.querySelectorAll(
+          ".print-text-overlay"
+        );
+        existingOverlays.forEach((overlay) => overlay.remove());
 
         // Create a print overlay container
-        const overlayContainer = document.createElement("div")
-        overlayContainer.className = "print-overlay-container"
-        containerRef.current.appendChild(overlayContainer)
+        const overlayContainer = document.createElement("div");
+        overlayContainer.className = "print-overlay-container";
+        containerRef.current.appendChild(overlayContainer);
 
         // Create fixed-position overlays for each input field
         // These positions are based on the original form layout, not the current DOM
-        const createFixedOverlay = (name, value, top, left, width, textAlign = "center") => {
-          if (!value) return
+        const createFixedOverlay = (
+          name,
+          value,
+          top,
+          left,
+          width,
+          textAlign = "center"
+        ) => {
+          if (!value) return;
 
-          const overlay = document.createElement("div")
-          overlay.className = "print-text-overlay"
-          overlay.textContent = value
-          overlay.dataset.for = name
+          const overlay = document.createElement("div");
+          overlay.className = "print-text-overlay";
+          overlay.textContent = value;
+          overlay.dataset.for = name;
 
           // Use fixed positioning based on the form design
-          overlay.style.position = "absolute"
-          overlay.style.top = `${top}px`
-          overlay.style.left = `${left}px`
-          overlay.style.width = `${width}px`
-          overlay.style.textAlign = textAlign
-          overlay.style.fontSize = "11pt"
-          overlay.style.fontFamily = "inherit"
-          overlay.style.color = "rgb(31 41 55)"
-          overlay.style.fontWeight = "500"
-          overlay.style.zIndex = "1000"
-          overlay.style.display = "none" // Will be shown in print
+          overlay.style.position = "absolute";
+          overlay.style.top = `${top}px`;
+          overlay.style.left = `${left}px`;
+          overlay.style.width = `${width}px`;
+          overlay.style.textAlign = textAlign;
+          overlay.style.fontSize = "11pt";
+          overlay.style.fontFamily = "inherit";
+          overlay.style.color = "rgb(31 41 55)";
+          overlay.style.fontWeight = "500";
+          overlay.style.zIndex = "1000";
+          overlay.style.display = "none"; // Will be shown in print
 
-          overlayContainer.appendChild(overlay)
-        }
+          overlayContainer.appendChild(overlay);
+        };
 
         // Alternative function to position from the right side
-        const createFixedOverlayFromRight = (name, value, top, right, width, textAlign = "center") => {
-          if (!value) return
+        const createFixedOverlayFromRight = (
+          name,
+          value,
+          top,
+          right,
+          width,
+          textAlign = "center"
+        ) => {
+          if (!value) return;
 
-          const overlay = document.createElement("div")
-          overlay.className = "print-text-overlay"
-          overlay.textContent = value
-          overlay.dataset.for = name
+          const overlay = document.createElement("div");
+          overlay.className = "print-text-overlay";
+          overlay.textContent = value;
+          overlay.dataset.for = name;
 
           // Use fixed positioning based on the form design
-          overlay.style.position = "absolute"
-          overlay.style.top = `${top}px`
+          overlay.style.position = "absolute";
+          overlay.style.top = `${top}px`;
 
           // Calculate position from the left to ensure it's all the way to the right
           // A4 width is 210mm ≈ 794px, subtract width and right margin
-          const leftPosition = 794 - width - right
-          overlay.style.left = `${leftPosition}px`
+          const leftPosition = 794 - width - right;
+          overlay.style.left = `${leftPosition}px`;
 
           // Also set right property as a fallback
-          overlay.style.right = `${right}px`
+          overlay.style.right = `${right}px`;
 
-          overlay.style.width = `${width}px`
-          overlay.style.textAlign = textAlign
-          overlay.style.fontSize = "11pt"
-          overlay.style.fontFamily = "inherit"
-          overlay.style.color = "rgb(31 41 55)"
-          overlay.style.fontWeight = "500"
-          overlay.style.zIndex = "1000"
-          overlay.style.display = "none" // Will be shown in print
+          overlay.style.width = `${width}px`;
+          overlay.style.textAlign = textAlign;
+          overlay.style.fontSize = "11pt";
+          overlay.style.fontFamily = "inherit";
+          overlay.style.color = "rgb(31 41 55)";
+          overlay.style.fontWeight = "500";
+          overlay.style.zIndex = "1000";
+          overlay.style.display = "none"; // Will be shown in print
 
-          overlayContainer.appendChild(overlay)
-        }
+          overlayContainer.appendChild(overlay);
+        };
 
         // Create overlays for each field with fixed positions
         // Date issued
-        createFixedOverlayFromRight("dateIssued", formData.dateIssued, 98, 85, 160)
+        createFixedOverlayFromRight(
+          "dateIssued",
+          formData.dateIssued,
+          101,
+          85,
+          160
+        );
 
         // Short text
-        createFixedOverlayFromRight("shortText", formData.shortText, 136, 80, 250)
+        createFixedOverlayFromRight(
+          "shortText",
+          formData.shortText,
+          139,
+          80,
+          250
+        );
 
         // Category - Use the existing printSelectText element instead of creating a new overlay
         if (formData.category) {
           // Find the existing printSelectText element
-          const printSelectText = containerRef.current.querySelector(".printSelectText")
+          const printSelectText =
+            containerRef.current.querySelector(".printSelectText");
           if (printSelectText) {
             // Make sure it has the correct text
-            printSelectText.textContent = selectedOptionText || ""
+            printSelectText.textContent = selectedOptionText || "";
 
             // Create a style to ensure it's visible during print
-            const printSelectStyle = document.createElement("style")
-            printSelectStyle.id = "print-select-style-proposal"
+            const printSelectStyle = document.createElement("style");
+            printSelectStyle.id = "print-select-style-proposal";
             printSelectStyle.textContent = `
               @media print {
                 .printSelectText {
@@ -260,38 +335,75 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
                   z-index: 1001 !important;
                 }
               }
-            `
-            document.head.appendChild(printSelectStyle)
+            `;
+            document.head.appendChild(printSelectStyle);
 
             // Clean up the style after printing
             window.addEventListener("afterprint", function removeStyle() {
-              const styleToRemove = document.getElementById("print-select-style-proposal")
+              const styleToRemove = document.getElementById(
+                "print-select-style-proposal"
+              );
               if (styleToRemove) {
-                document.head.removeChild(styleToRemove)
+                document.head.removeChild(styleToRemove);
               }
-              window.removeEventListener("afterprint", removeStyle)
-            })
+              window.removeEventListener("afterprint", removeStyle);
+            });
           }
         }
 
         // Beneficiary name
-        createFixedOverlay("beneficiaryName", formData.beneficiaryName, 300, 200, 392)
+        createFixedOverlay(
+          "beneficiaryName",
+          formData.beneficiaryName,
+          300,
+          224,
+          392
+        );
 
         // Numeric value 1
-        createFixedOverlay("numericValue1", formData.numericValue1, 527, 580, 98)
+        createFixedOverlay(
+          "numericValue1",
+          formData.numericValue1,
+          526,
+          577,
+          98
+        );
 
         // Numeric value 2
-        createFixedOverlay("numericValue2", formData.numericValue2, 641, 525, 154)
+        createFixedOverlay(
+          "numericValue2",
+          formData.numericValue2,
+          642,
+          523,
+          154
+        );
 
         // Additional date
-        createFixedOverlayFromRight("additionalDate", formData.additionalDate, 750, 588, 120)
+        createFixedOverlayFromRight(
+          "additionalDate",
+          formData.additionalDate,
+          752,
+          590,
+          120
+        );
+
+        // Optional date
+        if (formData.optionalDate) {
+          createFixedOverlayFromRight(
+            "optionalDate",
+            formData.optionalDate,
+            753,
+            296,
+            120
+          );
+        }
 
         // Add a style tag for print media
-        let styleTag = document.getElementById("print-overlay-styles-proposal")
+        let styleTag = document.getElementById("print-overlay-styles-proposal");
         if (!styleTag) {
-          styleTag = document.createElement("style")
-          styleTag.id = "print-overlay-styles-proposal"
-          document.head.appendChild(styleTag)
+          styleTag = document.createElement("style");
+          styleTag.id = "print-overlay-styles-proposal";
+          document.head.appendChild(styleTag);
         }
 
         styleTag.textContent = `
@@ -340,38 +452,40 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
               opacity: 0 !important;
             }
           }
-        `
+        `;
 
         // After printing, restore the original styles
         window.addEventListener("afterprint", function restoreStyles() {
           // Restore original styles
-          containerRef.current.style.transform = originalTransform
-          containerRef.current.style.marginTop = originalMarginTop
-          containerRef.current.style.marginBottom = originalMarginBottom
+          containerRef.current.style.transform = originalTransform;
+          containerRef.current.style.marginTop = originalMarginTop;
+          containerRef.current.style.marginBottom = originalMarginBottom;
 
           // Remove the print overlay container
-          const overlayContainer = containerRef.current.querySelector(".print-overlay-container")
+          const overlayContainer = containerRef.current.querySelector(
+            ".print-overlay-container"
+          );
           if (overlayContainer) {
-            containerRef.current.removeChild(overlayContainer)
+            containerRef.current.removeChild(overlayContainer);
           }
 
-          window.removeEventListener("afterprint", restoreStyles)
-        })
+          window.removeEventListener("afterprint", restoreStyles);
+        });
       }
-    }
+    };
 
-    window.addEventListener("beforeprint", handleBeforePrint)
+    window.addEventListener("beforeprint", handleBeforePrint);
     return () => {
-      window.removeEventListener("beforeprint", handleBeforePrint)
-      const styleTag = document.getElementById("print-overlay-styles-proposal")
+      window.removeEventListener("beforeprint", handleBeforePrint);
+      const styleTag = document.getElementById("print-overlay-styles-proposal");
       if (styleTag) {
-        styleTag.remove()
+        styleTag.remove();
       }
-    }
-  }, [formData, selectedOptionText])
+    };
+  }, [formData, selectedOptionText]);
 
   useEffect(() => {
-    const styleElement = document.createElement("style")
+    const styleElement = document.createElement("style");
     styleElement.innerHTML = `
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
@@ -396,45 +510,45 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
     transition: background-color 5000s ease-in-out 0s;
     background-color: transparent !important;
   }
-`
-    document.head.appendChild(styleElement)
+`;
+    document.head.appendChild(styleElement);
 
     return () => {
-      document.head.removeChild(styleElement)
-    }
-  }, [])
+      document.head.removeChild(styleElement);
+    };
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
       if (containerRef.current) {
-        const isMobile = window.innerWidth <= 768
+        const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-          containerRef.current.classList.add(styles.mobileView)
+          containerRef.current.classList.add(styles.mobileView);
 
-          const scale = Math.max(0.25, Math.min(0.6, window.innerWidth / 800))
+          const scale = Math.max(0.25, Math.min(0.6, window.innerWidth / 800));
 
-          containerRef.current.style.transform = `scale(${scale})`
+          containerRef.current.style.transform = `scale(${scale})`;
 
-          const marginAdjustment = ((1 - scale) * 297) / 2
-          containerRef.current.style.marginTop = `-${marginAdjustment}mm`
-          containerRef.current.style.marginBottom = `-${marginAdjustment}mm`
+          const marginAdjustment = ((1 - scale) * 297) / 2;
+          containerRef.current.style.marginTop = `-${marginAdjustment}mm`;
+          containerRef.current.style.marginBottom = `-${marginAdjustment}mm`;
         } else {
-          containerRef.current.classList.remove(styles.mobileView)
-          containerRef.current.style.transform = ""
-          containerRef.current.style.marginTop = ""
-          containerRef.current.style.marginBottom = ""
+          containerRef.current.classList.remove(styles.mobileView);
+          containerRef.current.style.transform = "";
+          containerRef.current.style.marginTop = "";
+          containerRef.current.style.marginBottom = "";
         }
       }
-    }
+    };
 
-    handleResize()
-    window.addEventListener("resize", handleResize)
+    handleResize();
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  }, [])
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className={styles.formContainer} ref={containerRef}>
@@ -451,7 +565,7 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
         <DateInput
           name="dateIssued"
           value={formData.dateIssued || ""}
-          onChange={handleFormInputChange}
+          onChange={handleDateInput}
           onKeyDown={handleDateKeyDown}
           className={`${styles.inputField} ${styles.dateField}`}
           placeholder="DD/MM/YYYY"
@@ -472,13 +586,21 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
           autocomplete="off"
         />
 
-        <div className={`${styles.categoryContainer} ${!formData.category ? styles.empty : ""}`}>
+        <div
+          className={`${styles.categoryContainer} ${
+            !formData.category ? styles.empty : ""
+          }`}
+        >
           <SimpleDropdown
             name="category"
             value={formData.category || ""}
             onChange={(e) => {
-              handleSelectChange(e)
-              fillAutoFields(e.target.name, e.target.value, formData[e.target.name])
+              handleSelectChange(e);
+              fillAutoFields(
+                e.target.name,
+                e.target.value,
+                formData[e.target.name]
+              );
             }}
             options={categoryOptions}
             className={`${styles.inputField} ${styles.categoryDropdown}`}
@@ -489,15 +611,21 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
             placeholder="Select category"
           />
 
-          <span className={styles.printSelectText}>{selectedOptionText || "Selectați categoria"}</span>
+          <span className={styles.printSelectText}>
+            {selectedOptionText || "Selectați categoria"}
+          </span>
         </div>
 
         <BeneficiaryDropdown
           name="beneficiaryName"
           value={formData.beneficiaryName || ""}
           onChange={(e) => {
-            handleBeneficiaryNameChange(e)
-            fillAutoFields(e.target.name, e.target.value, formData[e.target.name])
+            handleBeneficiaryNameChange(e);
+            fillAutoFields(
+              e.target.name,
+              e.target.value,
+              formData[e.target.name]
+            );
           }}
           onPaste={handlePaste}
           className={`${styles.inputField} ${styles.beneficiaryNameField}`}
@@ -516,29 +644,31 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
           name="numericValue1"
           value={formData.numericValue1 || ""}
           onChange={(e) => {
-            const value = e.target.value
+            const value = e.target.value;
             if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
-              return
+              return;
             }
 
             // Update both numeric fields with the same value
             handleInputChange({
               target: { name: "numericValue1", value },
-            })
+            });
             handleInputChange({
               target: { name: "numericValue2", value },
-            })
+            });
 
-            fillAutoFields("numericValue1", value, formData.numericValue1)
+            fillAutoFields("numericValue1", value, formData.numericValue1);
           }}
           className={`${styles.inputField} ${styles.numericField1}`}
           placeholder="0.00"
           inputMode="decimal"
           maxLength={12}
           style={{
-            backgroundColor: formData.numericValue1 ? "transparent" : inputColor,
+            backgroundColor: formData.numericValue1
+              ? "transparent"
+              : inputColor,
           }}
-          autocomplete="off"
+          autoComplete="off"
         />
 
         <input
@@ -546,35 +676,37 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
           name="numericValue2"
           value={formData.numericValue2 || ""}
           onChange={(e) => {
-            const value = e.target.value
+            const value = e.target.value;
             if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
-              return
+              return;
             }
 
             // Update both numeric fields with the same value
             handleInputChange({
               target: { name: "numericValue1", value },
-            })
+            });
             handleInputChange({
               target: { name: "numericValue2", value },
-            })
+            });
 
-            fillAutoFields("numericValue2", value, formData.numericValue2)
+            fillAutoFields("numericValue2", value, formData.numericValue2);
           }}
           className={`${styles.inputField} ${styles.numericField2}`}
           placeholder="0.00"
           inputMode="decimal"
           maxLength={12}
           style={{
-            backgroundColor: formData.numericValue2 ? "transparent" : inputColor,
+            backgroundColor: formData.numericValue2
+              ? "transparent"
+              : inputColor,
           }}
-          autocomplete="off"
+          autoComplete="off"
         />
 
         <DateInput
           name="additionalDate"
           value={formData.additionalDate || ""}
-          onChange={handleFormInputChange}
+          onChange={handleDateInput}
           onKeyDown={handleDateKeyDown}
           className={`${styles.inputField} ${styles.additionalDateField}`}
           placeholder="DD/MM/YYYY"
@@ -588,7 +720,23 @@ export default function ProposalForm({ formData, handleInputChange, handleDateKe
             textAlign: "center",
           }}
         />
+        <DateInput
+          name="optionalDate"
+          value={formData.optionalDate || ""}
+          onChange={handleDateInput}
+          onKeyDown={handleDateKeyDown}
+          className={`${styles.inputField}`}
+          placeholder="DD/MM/YYYY"
+          inputColor="rgba(189, 200, 204, 0.5)" // Light grey color for optional field
+          style={{
+            position: "absolute",
+            bottom: "353px",
+            right: "296px",
+            width: "120px",
+            textAlign: "center",
+          }}
+        />
       </div>
     </div>
-  )
+  );
 }

@@ -138,8 +138,12 @@
   transition: background-color 0.2s;
 }
 
+.saveButton:hover {
+  background-color: rgb(51 65 85);
+}
+
 .saveButton:disabled {
-  background-color: #93c5fd;
+  background-color: rgb(100 116 139);
   cursor: not-allowed;
 }
 

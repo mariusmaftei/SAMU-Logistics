@@ -1,12 +1,20 @@
-import { useState } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import styles from "./EntryModal.module.css";
 import { useFormEntries } from "../../../context/FormEntriesContext";
-import styles from "../from-entry-modal/FormEntryModal.module.css";
 
-export default function AddEntryModal({ isOpen, onClose, onSave }) {
-  const { createEntry } = useFormEntries();
+export default function EntryModal({
+  isOpen,
+  onClose,
+  onSave,
+  editEntry = null,
+}) {
+  const { createEntry, updateEntry } = useFormEntries();
+  const isEditMode = !!editEntry;
 
-  const [newEntry, setNewEntry] = useState({
+  const [entry, setEntry] = useState({
     Nume_Furnizor: "",
     Adresa_Furnizor: "",
     CUI_CUI_CIF: "",
@@ -16,19 +24,47 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
+  // When editEntry changes or modal opens in edit mode, populate the form
+  useEffect(() => {
+    if (editEntry && isOpen) {
+      setEntry({
+        Nume_Furnizor: editEntry.Nume_Furnizor || "",
+        Adresa_Furnizor: editEntry.Adresa_Furnizor || "",
+        CUI_CUI_CIF: editEntry.CUI_CUI_CIF || "",
+        Trezorerie_Furnizor: editEntry.Trezorerie_Furnizor || "",
+        NR_CONT_IBAN: editEntry.NR_CONT_IBAN || "",
+      });
+    } else if (!editEntry && isOpen) {
+      // Reset form when opening in add mode
+      setEntry({
+        Nume_Furnizor: "",
+        Adresa_Furnizor: "",
+        CUI_CUI_CIF: "",
+        Trezorerie_Furnizor: "",
+        NR_CONT_IBAN: "",
+      });
+    }
+  }, [editEntry, isOpen]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
 
-    console.log("Submitting entry:", newEntry);
-
     try {
-      const createdEntry = await createEntry(newEntry);
-      console.log("Entry created successfully:", createdEntry);
+      let result;
+      if (isEditMode) {
+        // Update existing entry
+        result = await updateEntry(editEntry._id || editEntry.id, entry);
+        console.log("Entry updated successfully:", result);
+      } else {
+        // Create new entry
+        result = await createEntry(entry);
+        console.log("Entry created successfully:", result);
+      }
 
       // Reset form
-      setNewEntry({
+      setEntry({
         Nume_Furnizor: "",
         Adresa_Furnizor: "",
         CUI_CUI_CIF: "",
@@ -36,14 +72,20 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
         NR_CONT_IBAN: "",
       });
 
-      // Call onSave callback with the created entry
-      onSave(createdEntry);
+      // Call onSave callback with the created/updated entry
+      onSave(result);
 
       // Close the modal
       onClose();
     } catch (err) {
-      console.error("Error submitting entry:", err);
-      setError(err.message || "Failed to save entry. Please try again.");
+      console.error(
+        `Error ${isEditMode ? "updating" : "creating"} entry:`,
+        err
+      );
+      setError(
+        err.message ||
+          `Failed to ${isEditMode ? "update" : "save"} entry. Please try again.`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -51,7 +93,7 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewEntry((prev) => ({
+    setEntry((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -63,7 +105,9 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
     <div className={styles.overlay}>
       <div className={`${styles.modal}`}>
         <div className={styles.modalHeader}>
-          <h2 className={styles.title}>Adaugă o nouă intrare</h2>
+          <h2 className={styles.title}>
+            {isEditMode ? "Editează intrarea" : "Adaugă o nouă intrare"}
+          </h2>
           <button
             onClick={onClose}
             className={styles.closeButton}
@@ -87,7 +131,7 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
                   type="text"
                   id="Nume_Furnizor"
                   name="Nume_Furnizor"
-                  value={newEntry.Nume_Furnizor}
+                  value={entry.Nume_Furnizor}
                   onChange={handleChange}
                   required
                   className={styles.input}
@@ -101,7 +145,7 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
                   type="text"
                   id="address"
                   name="Adresa_Furnizor"
-                  value={newEntry.Adresa_Furnizor}
+                  value={entry.Adresa_Furnizor}
                   onChange={handleChange}
                   required
                   className={styles.input}
@@ -121,7 +165,7 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
                     type="text"
                     id="treasuryNumber"
                     name="CUI_CUI_CIF"
-                    value={newEntry.CUI_CUI_CIF}
+                    value={entry.CUI_CUI_CIF}
                     onChange={handleChange}
                     required
                     className={styles.input}
@@ -135,7 +179,7 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
                     type="text"
                     id="roCode"
                     name="NR_CONT_IBAN"
-                    value={newEntry.NR_CONT_IBAN}
+                    value={entry.NR_CONT_IBAN}
                     onChange={handleChange}
                     required
                     className={styles.input}
@@ -151,7 +195,7 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
                   type="text"
                   id="accountNumber"
                   name="Trezorerie_Furnizor"
-                  value={newEntry.Trezorerie_Furnizor}
+                  value={entry.Trezorerie_Furnizor}
                   onChange={handleChange}
                   required
                   className={styles.input}
@@ -168,7 +212,13 @@ export default function AddEntryModal({ isOpen, onClose, onSave }) {
               className={styles.saveButton}
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Se salvează..." : "Salvează intrarea"}
+              {isSubmitting
+                ? isEditMode
+                  ? "Se actualizează..."
+                  : "Se salvează..."
+                : isEditMode
+                ? "Actualizează intrarea"
+                : "Salvează intrarea"}
             </button>
             <button
               type="button"

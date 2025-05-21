@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./home.module.css";
+import SAMULogo from "../../assets/images/samu-logo.png";
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
@@ -38,7 +39,7 @@ export default function Home() {
       <div className={styles.content}>
         <div className={styles.logoContainer}>
           <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/SAMU%20Logistics%20logo%20transparent-v5BVPHaCcfUGWVDnjCUmmT1MTkhfKS.png"
+            src={SAMULogo}
             alt="SAMU Logistics Logo"
             className={styles.logo}
           />

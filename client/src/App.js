@@ -3,7 +3,8 @@ import RootLayout from "./components/layout/root-layout/RootLayout";
 import Form from "./pages/form/form";
 import FormEntries from "./pages/form-entries/form-entries";
 import Home from "./pages/home/home";
-import {ZoomProvider} from "./context/ZoomContext"
+import { ZoomProvider } from "./context/ZoomContext";
+import { FormEntriesProvider } from "./context/FormEntriesContext";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -28,8 +29,10 @@ export default function App() {
   ]);
 
   return (
-    <ZoomProvider>
-      <RouterProvider router={router} />
-    </ZoomProvider>
-  )
+    <FormEntriesProvider>
+      <ZoomProvider>
+        <RouterProvider router={router} />
+      </ZoomProvider>
+    </FormEntriesProvider>
+  );
 }

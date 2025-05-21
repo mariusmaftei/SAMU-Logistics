@@ -1,16 +1,15 @@
-import { useState,useRef,useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import SideBar from "../../components/UI/SideBar/SideBar";
 import ProposalForm from "../../components/Form/proposal-form";
 import BudgetCommitmentForm from "../../components/Form/budget-commitment-form";
 import PaymentOrderForm from "../../components/Form/payment-order-form";
 import styles from "../form/form.module.css";
-import ZoomControls from "../../components/zoomControls/ZoomControls";
-import { useZoom } from "../../context/ZoomContext"
+import { useZoom } from "../../context/ZoomContext";
 
 export default function Form() {
-  const [currentFormType, setCurrentFormType] = useState("payment_order")
-  const formContainerRef = useRef(null)
-  const { zoomLevel } = useZoom()
+  const [currentFormType, setCurrentFormType] = useState("payment_order");
+  const formContainerRef = useRef(null);
+  const { zoomLevel } = useZoom();
 
   const [formData, setFormData] = useState({
     expenseNature: "",
@@ -24,43 +23,55 @@ export default function Form() {
     treasuryNumber: "",
     roCode: "",
     amount: "",
-  })
+    additionalInput1: "",
+    additionalInput2: "",
+    additionalInput3: "",
+    additionalInput4: "",
+    bottomDate1: "", // Add this new field
+    bottomDate2: "", // Add this new field
+  });
 
   // Apply zoom effect whenever zoomLevel changes
   useEffect(() => {
     if (formContainerRef.current) {
-      console.log(`Applying zoom: ${zoomLevel * 100}%`)
+      console.log(`Applying zoom: ${zoomLevel * 100}%`);
 
       // Apply transform with !important to override any conflicting styles
-      formContainerRef.current.style.setProperty("transform", `scale(${zoomLevel})`, "important")
+      formContainerRef.current.style.setProperty(
+        "transform",
+        `scale(${zoomLevel})`,
+        "important"
+      );
 
       // Adjust margins to compensate for scaling
-      const marginAdjustment = ((zoomLevel - 1) * 297) / 2
-      formContainerRef.current.style.marginTop = zoomLevel > 1 ? `${marginAdjustment}mm` : "0"
-      formContainerRef.current.style.marginBottom = zoomLevel > 1 ? `${marginAdjustment}mm` : "0"
+      const marginAdjustment = ((zoomLevel - 1) * 297) / 2;
+      formContainerRef.current.style.marginTop =
+        zoomLevel > 1 ? `${marginAdjustment}mm` : "0";
+      formContainerRef.current.style.marginBottom =
+        zoomLevel > 1 ? `${marginAdjustment}mm` : "0";
 
       // Add transition for smooth zooming
-      formContainerRef.current.style.transition = "transform 0.2s ease"
+      formContainerRef.current.style.transition = "transform 0.2s ease";
     }
-  }, [zoomLevel])
+  }, [zoomLevel]);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleReset = () => {
     setFormData({
       dateIssued: "",
-    })
-  }
+    });
+  };
 
   const handleFormTypeChange = (formType) => {
-    setCurrentFormType(formType)
-  }
+    setCurrentFormType(formType);
+  };
 
   const handleDateKeyDown = (e) => {
     // Allow: backspace, delete, tab, escape, enter, numbers
@@ -76,46 +87,54 @@ export default function Form() {
       (e.keyCode >= 48 && e.keyCode <= 57) ||
       (e.keyCode >= 96 && e.keyCode <= 105)
     ) {
-      return
+      return;
     }
-    e.preventDefault()
-  }
+    e.preventDefault();
+  };
 
   // Add a useEffect to handle print preparation
   useEffect(() => {
     const handleBeforePrint = () => {
       // Store the current zoom level
-      const currentZoom = formContainerRef.current.style.transform
+      const currentZoom = formContainerRef.current.style.transform;
 
       // Reset to 100% zoom for printing
-      formContainerRef.current.style.setProperty("transform", "scale(1)", "important")
-      formContainerRef.current.style.marginTop = "0"
-      formContainerRef.current.style.marginBottom = "0"
+      formContainerRef.current.style.setProperty(
+        "transform",
+        "scale(1)",
+        "important"
+      );
+      formContainerRef.current.style.marginTop = "0";
+      formContainerRef.current.style.marginBottom = "0";
 
       // Add a class to help with print-specific styling
-      document.body.classList.add("printing")
+      document.body.classList.add("printing");
 
       // After printing, restore the previous zoom level
       window.addEventListener("afterprint", function restoreZoom() {
-        formContainerRef.current.style.setProperty("transform", currentZoom, "important")
+        formContainerRef.current.style.setProperty(
+          "transform",
+          currentZoom,
+          "important"
+        );
 
         // Restore margins if needed
         if (zoomLevel > 1) {
-          const marginAdjustment = ((zoomLevel - 1) * 297) / 2
-          formContainerRef.current.style.marginTop = `${marginAdjustment}mm`
-          formContainerRef.current.style.marginBottom = `${marginAdjustment}mm`
+          const marginAdjustment = ((zoomLevel - 1) * 297) / 2;
+          formContainerRef.current.style.marginTop = `${marginAdjustment}mm`;
+          formContainerRef.current.style.marginBottom = `${marginAdjustment}mm`;
         }
 
-        document.body.classList.remove("printing")
-        window.removeEventListener("afterprint", restoreZoom)
-      })
-    }
+        document.body.classList.remove("printing");
+        window.removeEventListener("afterprint", restoreZoom);
+      });
+    };
 
-    window.addEventListener("beforeprint", handleBeforePrint)
+    window.addEventListener("beforeprint", handleBeforePrint);
     return () => {
-      window.removeEventListener("beforeprint", handleBeforePrint)
-    }
-  }, [zoomLevel])
+      window.removeEventListener("beforeprint", handleBeforePrint);
+    };
+  }, [zoomLevel]);
 
   const renderForm = () => {
     switch (currentFormType) {
@@ -126,7 +145,7 @@ export default function Form() {
             handleInputChange={handleInputChange}
             handleDateKeyDown={handleDateKeyDown}
           />
-        )
+        );
       case "budget_commitment":
         return (
           <BudgetCommitmentForm
@@ -134,7 +153,7 @@ export default function Form() {
             handleInputChange={handleInputChange}
             handleDateKeyDown={handleDateKeyDown}
           />
-        )
+        );
       default:
         return (
           <PaymentOrderForm
@@ -142,13 +161,17 @@ export default function Form() {
             handleInputChange={handleInputChange}
             handleDateKeyDown={handleDateKeyDown}
           />
-        )
+        );
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
-      <SideBar onReset={handleReset} currentFormType={currentFormType} onFormTypeChange={handleFormTypeChange} />
+      <SideBar
+        onReset={handleReset}
+        currentFormType={currentFormType}
+        onFormTypeChange={handleFormTypeChange}
+      />
       <main className={styles.main}>
         <div
           ref={formContainerRef}
@@ -161,8 +184,7 @@ export default function Form() {
         >
           {renderForm()}
         </div>
-        <ZoomControls />
       </main>
     </div>
-  )
+  );
 }

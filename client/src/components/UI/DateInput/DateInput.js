@@ -25,6 +25,7 @@ export default function DateInput({
       maxLength={maxLength}
       inputMode="numeric"
       autoComplete="off"
+      // Remove the data-print-value attribute to prevent duplication
       {...props}
     />
   );

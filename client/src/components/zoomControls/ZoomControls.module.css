@@ -1,0 +1,75 @@
+.zoomControls {
+  position: fixed;
+  bottom: 20px;
+  left: 20px; /* Changed from right: 20px to left: 20px */
+  display: flex;
+  align-items: center;
+  background-color: rgb(30 41 59);
+  border-radius: 12px; /* Increased from 8px for a more modern look */
+  padding: 8px 12px; /* Slightly increased padding */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+  z-index: 40;
+  transition: all 0.2s ease; /* Added transition for hover effects */
+}
+
+.zoomControls:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); /* Enhanced shadow on hover */
+}
+
+.zoomButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; /* Increased from 32px */
+  height: 36px; /* Increased from 32px */
+  border-radius: 8px; /* Increased from 6px */
+  background-color: rgba(255, 255, 255, 0.12); /* Slightly increased opacity */
+  color: white;
+  transition: all 200ms;
+  margin: 0 5px; /* Increased from 4px for more spacing */
+}
+
+.zoomButton:hover {
+  background-color: rgba(255, 255, 255, 0.25); /* Increased hover brightness */
+  transform: scale(1.05);
+}
+
+.zoomLevel {
+  color: white;
+  font-size: 15px; /* Increased from 14px */
+  font-weight: 600; /* Increased from 500 for better visibility */
+  margin: 0 10px; /* Increased from 8px */
+  min-width: 52px; /* Increased from 48px */
+  text-align: center;
+}
+
+.icon {
+  width: 20px; /* Increased from 18px */
+  height: 20px; /* Increased from 18px */
+}
+
+.zoomLimitIndicator {
+  font-size: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 1px 4px;
+  border-radius: 4px;
+  margin-left: 4px;
+  vertical-align: super;
+}
+
+.zoomButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.zoomButton:disabled:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  transform: none;
+}
+
+@media print {
+  .zoomControls {
+    display: none !important;
+  }
+}
