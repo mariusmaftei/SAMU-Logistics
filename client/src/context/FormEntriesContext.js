@@ -41,11 +41,14 @@ export const FormEntriesProvider = ({ children }) => {
       try {
         const result = await entryService.getAllEntries();
         setFormEntries(result.data || []);
+        setLoading(false); // Only set loading to false after successful data fetch
       } catch (err) {
-        setError(err.response?.data?.error || "Failed to fetch entries");
         console.error("Error fetching entries:", err);
-      } finally {
-        setLoading(false);
+        setError(err.response?.data?.error || "Failed to fetch entries");
+        // Keep loading true if there's an error during initial load (empty entries)
+        if (formEntries.length > 0) {
+          setLoading(false);
+        }
       }
     };
 

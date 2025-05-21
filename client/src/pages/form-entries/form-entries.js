@@ -6,6 +6,9 @@ import { useFormEntries } from "../../context/FormEntriesContext";
 import styles from "../form-entries/form-entries.module.css";
 import SAMULogo from "../../assets/images/samu-logo.png";
 import EntryModal from "../../components/UI/entry-modal/EntryModal";
+import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
+import ConfirmModal from "../../components/UI/confirm-modal/ConfirmModal";
+import { Link } from "react-router-dom";
 
 export default function FormEntries() {
   const { formEntries, loading, error, deleteEntry, refreshEntries } =
@@ -27,6 +30,12 @@ export default function FormEntries() {
   const [startWidth, setStartWidth] = useState(0);
   const tableRef = useRef(null);
   const resizeLineRef = useRef(null);
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    onConfirm: () => {},
+  });
 
   const handleAddNew = () => {
     setCurrentEntry(null); // Reset current entry to ensure we're in "add" mode
@@ -38,20 +47,33 @@ export default function FormEntries() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Sigur doriți să ștergeți această intrare?")) {
-      try {
-        await deleteEntry(id);
-      } catch (err) {
-        console.error("Error deleting entry:", err);
-        // You could show an error notification here
-      }
-    }
+  const handleDelete = (id) => {
+    setModalConfig({
+      isOpen: true,
+      title: "Confirmare ștergere",
+      message:
+        "Sigur doriți să ștergeți această intrare? Această acțiune nu poate fi anulată.",
+      onConfirm: async () => {
+        try {
+          await deleteEntry(id);
+          // Close the modal after successful deletion
+          setModalConfig((prev) => ({ ...prev, isOpen: false }));
+        } catch (err) {
+          console.error("Error deleting entry:", err);
+          // You could show an error notification here
+          setModalConfig((prev) => ({ ...prev, isOpen: false }));
+        }
+      },
+    });
   };
 
   const handleSaveEntry = () => {
     setIsModalOpen(false);
     // The context will automatically refresh the entries
+  };
+
+  const closeConfirmModal = () => {
+    setModalConfig((prev) => ({ ...prev, isOpen: false }));
   };
 
   // Check if table has horizontal scroll
@@ -213,13 +235,13 @@ export default function FormEntries() {
     <div className={styles.container}>
       <div className={styles.sidebar}>
         {/* Logo at the top of sidebar */}
-        <div className={styles.logoContainer}>
+        <Link to="/" className={styles.logoContainer}>
           <img
             src={SAMULogo || "/placeholder.svg"}
             alt="SAMU Logistics Logo"
             className={styles.logo}
           />
-        </div>
+        </Link>
 
         <div className={styles.buttonContainer}>
           <div className={styles.buttonLabel}>Adaugă</div>
@@ -239,24 +261,23 @@ export default function FormEntries() {
       </div>
 
       <main className={styles.main}>
-        <div className={styles.content}>
-          <h1 className={styles.title}>Intrări Formular</h1>
+        {loading || (!formEntries.length && error) ? (
+          <div className={styles.centeredSpinner}>
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <div className={styles.content}>
+            <h1 className={styles.title}>Intrări Formular</h1>
 
-          {error && (
-            <div className={styles.errorMessage}>
-              {error}
-              <button onClick={refreshEntries} className={styles.retryButton}>
-                Încearcă din nou
-              </button>
-            </div>
-          )}
+            {error && (
+              <div className={styles.errorMessage}>
+                {error}
+                <button onClick={refreshEntries} className={styles.retryButton}>
+                  Încearcă din nou
+                </button>
+              </div>
+            )}
 
-          {loading ? (
-            <div className={styles.loadingMessage}>
-              <div className={styles.spinner}></div>
-              Se încarcă datele...
-            </div>
-          ) : (
             <div className={styles.tableContainer} ref={tableContainerRef}>
               {hasHorizontalScroll && (
                 <div className={styles.scrollIndicator}>
@@ -366,8 +387,8 @@ export default function FormEntries() {
                 </tbody>
               </table>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </main>
 
       <EntryModal
@@ -375,6 +396,13 @@ export default function FormEntries() {
         onClose={() => setIsModalOpen(false)}
         onSave={handleSaveEntry}
         editEntry={currentEntry}
+      />
+      <ConfirmModal
+        isOpen={modalConfig.isOpen}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        onConfirm={modalConfig.onConfirm}
+        onClose={closeConfirmModal}
       />
     </div>
   );

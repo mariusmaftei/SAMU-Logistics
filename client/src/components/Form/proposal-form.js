@@ -583,7 +583,7 @@ export default function ProposalForm({
           style={{
             backgroundColor: formData.shortText ? "transparent" : inputColor,
           }}
-          autocomplete="off"
+          autoComplete="off"
         />
 
         <div

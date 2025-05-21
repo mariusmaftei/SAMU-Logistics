@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import {
   Printer,
   RotateCcw,
@@ -174,13 +175,13 @@ export default function SideBar({
     <>
       <div className={styles.sidebar} ref={sidebarRef}>
         {/* Add logo container at the top */}
-        <div className={styles.logoContainer}>
+        <Link to="/" className={styles.logoContainer}>
           <img
             src={SamuLogo}
             alt="SAMU Logistics Logo"
             className={styles.logo}
           />
-        </div>
+        </Link>
 
         {/* Form Type Selector Buttons */}
         <div className={styles.formTypeContainer}>

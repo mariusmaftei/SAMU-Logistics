@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create a base axios instance with common configuration
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "https://samu-logistic-server-nosql.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },
