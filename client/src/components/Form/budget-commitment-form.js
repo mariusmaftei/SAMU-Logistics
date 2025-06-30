@@ -1,9 +1,10 @@
-import { useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import styles from "../Form/budget-commitment-form.module.css";
-import BeneficiaryDropdown from "../UI/Dropdown/Dropdown";
 import ABIimage from "../../assets/images/angajament-bugetar-individual.jpg";
 import DateInput from "../UI/DateInput/DateInput";
 import { useFormEntries } from "../../context/FormEntriesContext";
+import SimpleDropdown from "../UI/SimpleDropdown/SimpleDropdown";
+import BeneficiaryDropdown from "../UI/Dropdown/Dropdown";
 
 export default function BudgetCommitmentForm({
   formData,
@@ -14,6 +15,15 @@ export default function BudgetCommitmentForm({
   const imageRef = useRef(null);
   const inputColor = "rgba(31, 129, 248, 0.52)";
   const { formEntries, getBeneficiaryByName } = useFormEntries();
+  const [selectedCategoryText, setSelectedCategoryText] = useState("");
+
+  const categoryOptions = useMemo(
+    () => [
+      { value: "MEDICAMENTATIE", label: "MEDICAMENTE" },
+      { value: "MATERIALE SANITARE", label: "MATERIALE SANITARE" },
+    ],
+    []
+  );
 
   const fillFormFields = (beneficiaryName) => {
     if (!beneficiaryName) return;
@@ -78,7 +88,6 @@ export default function BudgetCommitmentForm({
         });
       }
 
-      // Auto-fill shortText with "SAMU" if it's empty
       if (!formData.shortText) {
         handleInputChange({
           target: {
@@ -88,7 +97,6 @@ export default function BudgetCommitmentForm({
         });
       }
 
-      // Auto-fill additionalDate with current date if it's empty
       if (!formData.additionalDate) {
         handleInputChange({
           target: {
@@ -109,36 +117,69 @@ export default function BudgetCommitmentForm({
     fillAutoFields(name, value, prevValue);
   };
 
+  const handleCategoryChange = (e) => {
+    const { name, value } = e.target;
+    handleFormInputChange(e); // Update the form data state
+
+    // Update selected text for print overlay
+    const selectedOption = categoryOptions.find((opt) => opt.value === value);
+    setSelectedCategoryText(selectedOption ? selectedOption.label : "");
+
+    // Autofill logic for the three new inputs
+    if (value === "MEDICAMENTATIE") {
+      handleInputChange({ target: { name: "autofillInput1", value: "20." } });
+      handleInputChange({ target: { name: "autofillInput2", value: "04." } });
+      handleInputChange({ target: { name: "autofillInput3", value: "01" } });
+    } else if (value === "MATERIALE SANITARE") {
+      handleInputChange({ target: { name: "autofillInput1", value: "20." } });
+      handleInputChange({ target: { name: "autofillInput2", value: "04." } });
+      handleInputChange({ target: { name: "autofillInput3", value: "02" } });
+    } else {
+      // Clear if no specific option selected
+      handleInputChange({ target: { name: "autofillInput1", value: "" } });
+      handleInputChange({ target: { name: "autofillInput2", value: "" } });
+      handleInputChange({ target: { name: "autofillInput3", value: "" } });
+    }
+  };
+
   const beneficiariesForDropdown = formEntries.map((entry) => ({
     id: entry.id || String(Math.random()),
     Nume_Furnizor: entry.Nume_Furnizor,
   }));
 
   useEffect(() => {
+    // Update selected category text on initial load or form data change
+    if (formData.category) {
+      const option = categoryOptions.find(
+        (opt) => opt.value === formData.category
+      );
+      if (option) {
+        setSelectedCategoryText(option.label);
+      }
+    } else {
+      setSelectedCategoryText("");
+    }
+  }, [formData.category, categoryOptions]);
+
+  useEffect(() => {
     const handleBeforePrint = () => {
       if (containerRef.current) {
-        // Store original styles to restore later
         const originalTransform = containerRef.current.style.transform;
         const originalMarginTop = containerRef.current.style.marginTop;
         const originalMarginBottom = containerRef.current.style.marginBottom;
 
-        // Force the form to be at 100% zoom for printing
         containerRef.current.style.transform = "none";
         containerRef.current.style.margin = "0";
 
-        // Remove any existing overlays
         const existingOverlays = document.querySelectorAll(
           ".print-text-overlay"
         );
         existingOverlays.forEach((overlay) => overlay.remove());
 
-        // Create a print overlay container
         const overlayContainer = document.createElement("div");
         overlayContainer.className = "print-overlay-container";
         containerRef.current.appendChild(overlayContainer);
 
-        // Create fixed-position overlays for each input field
-        // These positions are based on the original form layout, not the current DOM
         const createFixedOverlay = (
           name,
           value,
@@ -154,7 +195,6 @@ export default function BudgetCommitmentForm({
           overlay.textContent = value;
           overlay.dataset.for = name;
 
-          // Use fixed positioning based on the form design
           overlay.style.position = "absolute";
           overlay.style.top = `${top}px`;
           overlay.style.left = `${left}px`;
@@ -165,12 +205,11 @@ export default function BudgetCommitmentForm({
           overlay.style.color = "rgb(31 41 55)";
           overlay.style.fontWeight = "500";
           overlay.style.zIndex = "1000";
-          overlay.style.display = "none"; // Will be shown in print
+          overlay.style.display = "none"; // Initially hidden, made visible by CSS
 
           overlayContainer.appendChild(overlay);
         };
 
-        // Alternative function to position from the right side
         const createFixedOverlayFromRight = (
           name,
           value,
@@ -186,16 +225,12 @@ export default function BudgetCommitmentForm({
           overlay.textContent = value;
           overlay.dataset.for = name;
 
-          // Use fixed positioning based on the form design
           overlay.style.position = "absolute";
           overlay.style.top = `${top}px`;
 
-          // Calculate position from the left to ensure it's all the way to the right
-          // A4 width is 210mm ≈ 794px, subtract width and right margin
           const leftPosition = 794 - width - right;
           overlay.style.left = `${leftPosition}px`;
 
-          // Also set right property as a fallback
           overlay.style.right = `${right}px`;
 
           overlay.style.width = `${width}px`;
@@ -205,19 +240,49 @@ export default function BudgetCommitmentForm({
           overlay.style.color = "rgb(31 41 55)";
           overlay.style.fontWeight = "500";
           overlay.style.zIndex = "1000";
-          overlay.style.display = "none"; // Will be shown in print
+          overlay.style.display = "none"; // Initially hidden, made visible by CSS
 
           overlayContainer.appendChild(overlay);
         };
 
-        // Create overlays for each field with fixed positions
-        // Date issued - moved left from 550px to 480px
         createFixedOverlay("dateIssued", formData.dateIssued, 108, 520, 160);
 
-        // Short text - moved left from 550px to 480px
         createFixedOverlay("shortText", formData.shortText, 146, 430, 240);
 
-        // Beneficiary name - position is good, minor adjustment
+        // Category dropdown print overlay - using its actual position
+        if (selectedCategoryText) {
+          createFixedOverlay(
+            "category",
+            selectedCategoryText,
+            200, // top from CSS
+            247, // left from CSS
+            300 // width from CSS
+          );
+        }
+
+        // Autofill inputs print overlays - using their actual positions from CSS
+        createFixedOverlay(
+          "autofillInput1",
+          formData.autofillInput1,
+          385, // top from CSS
+          248, // left from CSS (248 - 10)
+          20 // width from CSS
+        );
+        createFixedOverlay(
+          "autofillInput2",
+          formData.autofillInput2,
+          385, // top from CSS
+          293, // left from CSS (295 - 10)
+          20 // width from CSS
+        );
+        createFixedOverlay(
+          "autofillInput3",
+          formData.autofillInput3,
+          385, // top from CSS
+          340, // left from CSS (345 - 10)
+          20 // width from CSS
+        );
+
         createFixedOverlay(
           "beneficiaryName",
           formData.beneficiaryName,
@@ -226,7 +291,6 @@ export default function BudgetCommitmentForm({
           390
         );
 
-        // Numeric value 1 - moved left from 550px to 480px
         createFixedOverlay(
           "numericValue1",
           formData.numericValue1,
@@ -235,7 +299,6 @@ export default function BudgetCommitmentForm({
           195
         );
 
-        // Numeric value 2 - moved left from 550px to 480px
         createFixedOverlay(
           "numericValue2",
           formData.numericValue2,
@@ -244,7 +307,6 @@ export default function BudgetCommitmentForm({
           195
         );
 
-        // Additional date - extreme right positioning
         createFixedOverlayFromRight(
           "additionalDate",
           formData.additionalDate,
@@ -253,7 +315,6 @@ export default function BudgetCommitmentForm({
           100
         );
 
-        // Add a style tag for print media
         let styleTag = document.getElementById("print-overlay-styles-budget");
         if (!styleTag) {
           styleTag = document.createElement("style");
@@ -271,6 +332,9 @@ export default function BudgetCommitmentForm({
               padding: 0 !important;
               margin: 0 !important;
               font-weight: 500 !important;
+              color: rgb(31 41 55) !important; /* Ensure text color is visible */
+              -webkit-text-fill-color: rgb(31 41 55) !important;
+              opacity: 1 !important; /* Ensure visibility */
             }
             
             input, select {
@@ -299,17 +363,21 @@ export default function BudgetCommitmentForm({
               height: 100% !important;
               z-index: 1000 !important;
             }
+
+            /* Hide the original printSelectText span, as the overlay div replaces it */
+            .printSelectText {
+              display: none !important;
+              visibility: hidden !important;
+              opacity: 0 !important;
+            }
           }
         `;
 
-        // After printing, restore the original styles
         window.addEventListener("afterprint", function restoreStyles() {
-          // Restore original styles
           containerRef.current.style.transform = originalTransform;
           containerRef.current.style.marginTop = originalMarginTop;
           containerRef.current.style.marginBottom = originalMarginBottom;
 
-          // Remove the print overlay container
           const overlayContainer = containerRef.current.querySelector(
             ".print-overlay-container"
           );
@@ -330,7 +398,7 @@ export default function BudgetCommitmentForm({
         styleTag.remove();
       }
     };
-  }, [formData]);
+  }, [formData, selectedCategoryText]); // Add selectedCategoryText to dependencies
 
   useEffect(() => {
     const styleElement = document.createElement("style");
@@ -434,6 +502,83 @@ export default function BudgetCommitmentForm({
           autoComplete="off"
         />
 
+        {/* New Category Dropdown */}
+        <div
+          className={`${styles.categoryContainer} ${
+            !formData.category ? styles.empty : ""
+          }`}
+        >
+          <SimpleDropdown
+            name="category"
+            value={formData.category || ""}
+            onChange={handleCategoryChange} // Use the new handler
+            options={categoryOptions}
+            className={`${styles.inputField} ${styles.categoryDropdown}`}
+            style={{
+              backgroundColor: formData.category ? "transparent" : inputColor,
+              color: "transparent", // Hide actual select text
+            }}
+            placeholder="Selectați categoria"
+          />
+          {/* Overlay for print and display of selected text */}
+          <span className={styles.printSelectText}>
+            {selectedCategoryText || "Selectați categoria"}
+          </span>
+        </div>
+
+        {/* New Autofill Inputs */}
+        <input
+          type="text"
+          name="autofillInput1"
+          value={formData.autofillInput1 || ""}
+          onChange={handleInputChange}
+          className={`${styles.inputField} ${styles.autofillInput1}`}
+          readOnly // Make it read-only as it's autofilled
+          style={{
+            top: "385px",
+            left: "248px", // Moved 10px left
+            width: "20px",
+            textAlign: "center",
+            backgroundColor: formData.autofillInput1
+              ? "transparent"
+              : inputColor,
+          }}
+        />
+        <input
+          type="text"
+          name="autofillInput2"
+          value={formData.autofillInput2 || ""}
+          onChange={handleInputChange}
+          className={`${styles.inputField} ${styles.autofillInput2}`}
+          readOnly // Make it read-only
+          style={{
+            top: "385px",
+            left: "293px", // Moved 10px left
+            width: "20px",
+            textAlign: "center",
+            backgroundColor: formData.autofillInput2
+              ? "transparent"
+              : inputColor,
+          }}
+        />
+        <input
+          type="text"
+          name="autofillInput3"
+          value={formData.autofillInput3 || ""}
+          onChange={handleInputChange}
+          className={`${styles.inputField} ${styles.autofillInput3}`}
+          readOnly // Make it read-only
+          style={{
+            top: "385px",
+            left: "340px", // Moved 10px left
+            width: "20px",
+            textAlign: "center",
+            backgroundColor: formData.autofillInput3
+              ? "transparent"
+              : inputColor,
+          }}
+        />
+
         <BeneficiaryDropdown
           name="beneficiaryName"
           value={formData.beneficiaryName || ""}
@@ -467,7 +612,6 @@ export default function BudgetCommitmentForm({
               return;
             }
 
-            // Update both numeric fields with the same value
             handleInputChange({
               target: { name: "numericValue1", value },
             });
@@ -499,7 +643,6 @@ export default function BudgetCommitmentForm({
               return;
             }
 
-            // Update both numeric fields with the same value
             handleInputChange({
               target: { name: "numericValue1", value },
             });

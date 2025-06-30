@@ -9,8 +9,8 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  transform-origin: top center !important; /* Ensure this is respected */
-  will-change: transform !important; /* Optimize for animations */
+  transform-origin: top center !important;
+  will-change: transform !important;
 }
 
 .imageWrapper {
@@ -173,6 +173,22 @@
   font-size: 11pt;
   z-index: 3;
   font-weight: 500;
+}
+
+/* New autofill inputs styles - matching PaymentOrderForm positions */
+.autofillInput {
+  top: 578px; /* Matching PaymentOrderForm */
+  left: 157px; /* Matching PaymentOrderForm */
+  width: 30px; /* Matching PaymentOrderForm */
+  text-align: center;
+}
+
+.autofillInput + .autofillInput {
+  left: 192px; /* For autofillInput5 */
+}
+
+.autofillInput + .autofillInput + .autofillInput {
+  left: 227px; /* For autofillInput6 */
 }
 
 .proposalTableContainer {
@@ -421,6 +437,26 @@
   .print-text-overlay[data-for="numericValue1"],
   .print-text-overlay[data-for="numericValue2"] {
     padding-top: 3px !important;
+  }
+
+  /* Print overlays for autofill inputs - matching PaymentOrderForm positions */
+  .print-text-overlay[data-for="autofillInput4"] {
+    top: 578px !important;
+    left: 157px !important;
+    width: 30px !important;
+    text-align: center !important;
+  }
+  .print-text-overlay[data-for="autofillInput5"] {
+    top: 578px !important;
+    left: 192px !important;
+    width: 30px !important;
+    text-align: center !important;
+  }
+  .print-text-overlay[data-for="autofillInput6"] {
+    top: 578px !important;
+    left: 227px !important;
+    width: 30px !important;
+    text-align: center !important;
   }
 
   @page {

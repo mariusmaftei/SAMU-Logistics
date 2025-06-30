@@ -17,7 +17,6 @@ export default function BeneficiaryDropdown({
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Filter beneficiaries based on search term
   useEffect(() => {
     if (!searchTerm) {
       setFilteredBeneficiaries(beneficiaries);
@@ -31,7 +30,6 @@ export default function BeneficiaryDropdown({
     }
   }, [searchTerm, beneficiaries]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -45,28 +43,23 @@ export default function BeneficiaryDropdown({
     };
   }, []);
 
-  // Handle selection of a beneficiary
   const handleSelect = (beneficiaryName) => {
     onChange({ target: { name, value: beneficiaryName } });
     setSearchTerm("");
     setIsOpen(false);
   };
 
-  // Handle input change for search
   const handleInputChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
 
-    // If user is typing, also update the form value
     onChange({ target: { name, value } });
 
-    // Open dropdown when typing
     if (!isOpen && value) {
       setIsOpen(true);
     }
   };
 
-  // Toggle dropdown
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
     if (!isOpen && inputRef.current) {
@@ -91,7 +84,7 @@ export default function BeneficiaryDropdown({
           onClick={() => setIsOpen(true)}
           autoComplete="off"
           placeholder="Selectati optiunea"
-          data-print-value={value} // Add this attribute
+          data-print-value={value}
         />
         <button
           type="button"

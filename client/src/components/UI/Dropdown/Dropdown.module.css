@@ -1,17 +1,14 @@
-/* Dropdown wrapper */
 .dropdownWrapper {
   position: absolute;
   width: 100%;
   z-index: 10;
 }
 
-/* Input container */
 .inputContainer {
   position: relative;
   width: 100%;
 }
 
-/* Input field */
 .dropdownInput {
   width: 100%;
   background: transparent;
@@ -26,7 +23,6 @@
   padding-right: 20px;
 }
 
-/* Dropdown menu */
 .dropdownMenu {
   position: absolute;
   top: 100%;
@@ -43,7 +39,6 @@
   margin-top: 4px;
 }
 
-/* Search container */
 .searchContainer {
   position: sticky;
   top: 0;
@@ -80,7 +75,6 @@
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }
 
-/* Dropdown items */
 .dropdownItem {
   padding: 0.5rem 0.75rem;
   cursor: pointer;
@@ -105,7 +99,6 @@
   text-align: center;
 }
 
-/* Print styles */
 @media print {
   .dropdownInput {
     color: transparent !important;

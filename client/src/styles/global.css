@@ -1,11 +1,9 @@
-/* Reset CSS */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* HTML and Body base styles */
 html,
 body {
   height: 100vh;
@@ -16,10 +14,9 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden; /* Changed from overflow-x: hidden */
+  overflow: hidden;
 }
 
-/* Custom print variables */
 :root {
   --print-width: 210mm;
   --print-height: 297mm;
@@ -30,14 +27,12 @@ body {
   --header-button-size: 40px;
 }
 
-/* Ensure proper height handling */
 #root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* Typography */
 h1,
 h2,
 h3,
@@ -48,19 +43,16 @@ h6 {
   font-weight: 600;
 }
 
-/* Links */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* Remove list styles */
 ul,
 ol {
   list-style: none;
 }
 
-/* Button reset */
 button {
   background: none;
   border: none;
@@ -68,7 +60,6 @@ button {
   cursor: pointer;
 }
 
-/* Utility classes */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -76,12 +67,6 @@ button {
   padding: 0 1rem;
 }
 
-/* Remove Tailwind imports */
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-
-/* Theme variables */
 :root {
   --background: 0 0% 100%;
   --foreground: 0 0% 3.9%;
@@ -105,7 +90,6 @@ button {
   --radius: 0.5rem;
 }
 
-/* Dark mode */
 .dark {
   --background: 0 0% 3.9%;
   --foreground: 0 0% 98%;
@@ -128,7 +112,6 @@ button {
   --ring: 0 0% 83.1%;
 }
 
-/* Add this new section for zoom-resistant elements */
 .zoom-resistant {
   transform: none !important;
   -webkit-transform: none !important;
@@ -136,27 +119,22 @@ button {
   -moz-transform: none !important;
   -o-transform: none !important;
 
-  /* Prevent font size adjustments */
   -webkit-text-size-adjust: none;
   -ms-text-size-adjust: none;
   text-size-adjust: none;
 
-  /* Prevent touch interactions from affecting size */
   touch-action: none;
   -ms-touch-action: none;
 
-  /* Disable text selection */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 
-  /* Force hardware acceleration */
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
-/* Add this to ensure the sidebar and header are zoom-resistant */
 .sidebar,
 .burgerButton,
 .nav {
@@ -166,7 +144,6 @@ button {
   letter-spacing: normal !important;
   word-spacing: normal !important;
 
-  /* Prevent any scaling */
   zoom: 1 !important;
   -moz-transform: scale(1) !important;
   -moz-transform-origin: 0 0 !important;
@@ -178,11 +155,9 @@ button {
   transform-origin: 0 0 !important;
 }
 
-/* Disable browser zoom on specific elements */
 .sidebar,
 .burgerButton,
 .nav {
-  /* Disable zoom in all browsers */
   touch-action: none;
   -ms-touch-action: none;
   -webkit-touch-callout: none;
@@ -191,13 +166,11 @@ button {
   -ms-user-select: none;
   user-select: none;
 
-  /* Force fixed size */
   max-width: var(--sidebar-width);
   min-width: var(--sidebar-width);
   max-height: 100%;
   min-height: 100%;
 
-  /* Prevent any transforms */
   transform: none !important;
   -webkit-transform: none !important;
   -ms-transform: none !important;
@@ -205,34 +178,27 @@ button {
   -o-transform: none !important;
 }
 
-/* Disable text size adjustment */
 html {
   -webkit-text-size-adjust: none;
   -ms-text-size-adjust: none;
   text-size-adjust: none;
 }
 
-/* DISABLE BROWSER ZOOM */
-/* This prevents the browser's default zoom behavior */
 html {
   touch-action: manipulation;
 }
 
-/* Prevent browser zoom on the form container */
 .formContainer {
   touch-action: pan-x pan-y;
   -ms-touch-action: pan-x pan-y;
 }
 
-/* Update print styles to ensure proper positioning */
 @media print {
-  /* Reset any transforms that might affect positioning */
   .formContainer,
   .formContainer * {
     transform: none !important;
   }
 
-  /* Ensure the form container is properly positioned */
   .formContainer {
     position: fixed !important;
     top: 0 !important;
@@ -245,7 +211,6 @@ html {
     transform-origin: top left !important;
   }
 
-  /* Add a class for when we're printing */
   body.printing * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -268,14 +233,12 @@ html {
     position: relative !important;
   }
 
-  /* Hide navigation and UI elements */
   .header,
   .sidebar,
   .action-buttons {
     display: none !important;
   }
 
-  /* Reset container styles */
   .container {
     margin: 0 !important;
     padding: 0 !important;
@@ -285,7 +248,6 @@ html {
     position: relative !important;
   }
 
-  /* Make sure main content is visible */
   .main {
     display: block !important;
     width: 100% !important;
@@ -296,7 +258,6 @@ html {
     position: relative !important;
   }
 
-  /* Ensure form inputs maintain their position */
   input,
   select {
     position: absolute !important;
@@ -305,7 +266,6 @@ html {
     print-color-adjust: exact !important;
   }
 
-  /* Form container specific print styles */
   .formContainer {
     width: 100% !important;
     height: 100% !important;
@@ -343,19 +303,16 @@ html {
     height: 100% !important;
   }
 
-  /* Set page size */
   @page {
     size: auto;
     margin: 0;
   }
 
-  /* Add a class for when we're printing */
   body.printing * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* Additional print styles for form inputs */
   input,
   select,
   textarea {
@@ -367,7 +324,6 @@ html {
     -webkit-text-fill-color: transparent !important;
   }
 
-  /* Print text overlay styles */
   .print-text-overlay {
     position: absolute !important;
     background: transparent !important;
@@ -382,7 +338,6 @@ html {
     overflow-wrap: normal !important;
   }
 
-  /* Special styles for dropdown overlays */
   .dropdown-overlay {
     position: fixed !important;
     display: block !important;
@@ -391,7 +346,6 @@ html {
     color: rgb(31 41 55) !important;
   }
 
-  /* Hide any UI elements that might interfere */
   button,
   nav,
   .sidebar,
@@ -399,7 +353,6 @@ html {
     display: none !important;
   }
 
-  /* Specific style for beneficiaryAddress to ensure it doesn't wrap */
   input[name="Adresa_Furnizor"],
   .beneficiaryAddress,
   .print-text-overlay[data-for="Adresa_Furnizor"] {
@@ -412,7 +365,6 @@ html {
     letter-spacing: normal !important;
   }
 
-  /* Specific style for beneficiaryName to ensure consistent font weight */
   input[name="beneficiaryName"],
   .print-text-overlay[data-for="beneficiaryName"],
   .beneficiary-name-overlay,
@@ -423,7 +375,6 @@ html {
     -moz-osx-font-smoothing: grayscale !important;
   }
 
-  /* Force normal font weight for specific elements */
   .print-text-overlay,
   .print-text-overlay *,
   input[name="beneficiaryName"],
@@ -433,8 +384,6 @@ html {
     font-weight: 500 !important;
   }
 
-  /* Add more aggressive print styles to ensure inputs are completely transparent */
-  /* Make all inputs completely transparent */
   input,
   select,
   textarea,
@@ -449,13 +398,11 @@ html {
     text-shadow: none !important;
   }
 
-  /* Ensure print overlays have the correct font weight */
   .print-text-overlay {
     font-weight: 500 !important;
     text-shadow: none !important;
   }
 
-  /* Add this to the print media query section */
   .print-text-overlay.beneficiary-name-overlay {
     display: block !important;
     font-weight: 500 !important;
@@ -463,7 +410,6 @@ html {
     opacity: 1 !important;
   }
 
-  /* Make dropdown inputs completely hidden in print */
   .dropdownInput,
   input.dropdownInput,
   .dropdownWrapper input {
@@ -474,13 +420,11 @@ html {
     -webkit-text-fill-color: transparent !important;
   }
 
-  /* Ensure the print overlay is the only thing visible */
   body.printing .print-text-overlay {
     display: block !important;
     opacity: 1 !important;
   }
 
-  /* Ensure print overlays maintain their positions */
   .print-overlay-container {
     position: absolute !important;
     top: 0 !important;
@@ -503,12 +447,10 @@ html {
     font-weight: 500 !important;
   }
 
-  /* Reset any transforms that might affect positioning */
   .formContainer * {
     transform: none !important;
   }
 
-  /* Ensure the form container is properly positioned */
   .formContainer {
     position: fixed !important;
     top: 0 !important;
@@ -521,7 +463,6 @@ html {
     transform-origin: top left !important;
   }
 
-  /* Hide all select elements during print */
   select {
     opacity: 0 !important;
     color: transparent !important;
@@ -529,7 +470,6 @@ html {
     display: none !important;
   }
 
-  /* Ensure only the print overlay is visible */
   .print-text-overlay {
     display: block !important;
     position: absolute !important;
@@ -541,70 +481,58 @@ html {
     z-index: 1001 !important;
   }
 
-  /* Hide all elements with data-print-hidden attribute */
   [data-print-hidden="true"] {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
   }
 
-  /* PROPOSAL FORM SPECIFIC STYLES - Only apply to proposal form */
-  /* These styles won't affect the payment order form */
-  /* Update the category-value positioning in the print styles */
   .print-text-overlay.category-value {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
     position: absolute !important;
-    left: 224px !important; /* Updated: moved 30px to the left from 254px */
+    left: 224px !important;
     top: 264px !important;
     width: 392px !important;
     text-align: center !important;
     z-index: 1001 !important;
   }
 
-  /* Hide duplicate dropdown values only in proposal form */
   .print-text-overlay[data-for="category"]:not([data-unique="true"]) {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
   }
 
-  /* Ensure the specific category dropdown overlay is visible */
-  /* Ensure the dropdown value is properly positioned */
   #category-dropdown-overlay {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
     z-index: 9999 !important;
-    left: 224px !important; /* Updated: moved 30px to the left from 254px */
+    left: 224px !important;
     text-align: center !important;
     width: 392px !important;
   }
 
-  /* PAYMENT ORDER FORM SPECIFIC STYLES */
-  /* Make sure the payment order form dropdown is visible */
   .print-text-overlay[data-for="number"] {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
   }
 
-  /* Make printSelectText hidden in both forms */
   .printSelectText {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
   }
 
-  /* Proposal form specific fixes for dropdown duplication */
   .print-text-overlay[data-for="category"]:not(#category-dropdown-overlay) {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
   }
 
-  /* Ensure only the specific overlay with ID is visible */
   #category-dropdown-overlay {
     display: block !important;
     visibility: visible !important;
@@ -612,7 +540,6 @@ html {
     z-index: 9999 !important;
   }
 
-  /* Hide all other potential sources of dropdown text */
   select[data-print-hidden="true"],
   [data-print-value],
   .printSelectText,
@@ -624,7 +551,6 @@ html {
     -webkit-text-fill-color: transparent !important;
   }
 
-  /* Hide the SimpleDropdown component completely */
   select[name="category"] {
     display: none !important;
     visibility: hidden !important;
@@ -634,7 +560,6 @@ html {
   }
 }
 
-/* Fix for sidebar zoom issues */
 @media screen {
   .sidebar {
     width: 64px !important;
@@ -643,7 +568,6 @@ html {
   }
 }
 
-/* Add this to ensure the form container handles overflow properly */
 @media screen {
   .sidebar {
     width: 64px !important;
@@ -656,48 +580,37 @@ html {
     z-index: 30 !important;
   }
 
-  /* Ensure the main content area can scroll */
   .main {
     overflow-y: auto !important;
     overflow-x: hidden !important;
     height: calc(100vh - var(--header-height)) !important;
   }
 
-  /* Ensure the form container can grow with zoom */
   .formContainer {
     margin: 2rem auto !important;
   }
 }
 
-/* Add this to prevent browser's native zoom from affecting the form beyond our limits */
-
-/* Add these styles at the end of the file */
-
-/* Prevent default browser zoom behavior on the form */
 .formContainer {
   touch-action: pan-x pan-y !important;
   -ms-touch-action: pan-x pan-y !important;
 }
 
-/* Improve zoom controls visibility */
 .zoomControls {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
   z-index: 1000 !important;
 }
 
-/* Ensure the zoom warning is always visible */
 #zoom-limit-warning {
   z-index: 1001 !important;
   pointer-events: none !important;
 }
 
-/* Improve form container scaling behavior */
 .main > div.formContainer {
   transform-origin: top center !important;
   will-change: transform !important;
 }
 
-/* Zoom limit warning styles */
 #zoom-limit-warning {
   position: fixed;
   bottom: 80px;
@@ -713,7 +626,6 @@ html {
   pointer-events: none;
 }
 
-/* Prevent text selection on UI controls */
 .zoomControls,
 .sidebar,
 .burgerButton,
@@ -724,13 +636,11 @@ html {
   -ms-user-select: none;
 }
 
-/* Ensure form container maintains aspect ratio at higher zoom levels */
 .formContainer {
   transform-origin: top center !important;
   margin: 0 auto !important;
 }
 
-/* Prevent browser's pinch zoom on mobile */
 @media (max-width: 768px) {
   html,
   body {

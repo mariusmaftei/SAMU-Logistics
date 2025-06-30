@@ -1,27 +1,10 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./home.module.css";
 import SAMULogo from "../../assets/images/samu-logo.png";
 
 export default function Home() {
-  const [scrollY, setScrollY] = useState(0);
   const navigate = useNavigate();
 
-  // Subtle parallax effect on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  // Navigation handlers
   const navigateToForm = () => {
     navigate("/form");
   };

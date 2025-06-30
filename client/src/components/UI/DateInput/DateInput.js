@@ -8,7 +8,6 @@ export default function DateInput({
   maxLength = 10,
   ...props
 }) {
-  // Apply conditional background color
   const computedStyle = {
     ...style,
     backgroundColor: value ? "transparent" : inputColor,
@@ -25,7 +24,6 @@ export default function DateInput({
       maxLength={maxLength}
       inputMode="numeric"
       autoComplete="off"
-      // Remove the data-print-value attribute to prevent duplication
       {...props}
     />
   );

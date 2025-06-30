@@ -1,10 +1,13 @@
-import { useRef, useState, useEffect } from "react";
+"use client";
+
+import { useRef, useState, useEffect, useMemo } from "react";
 import styles from "./proposal-form.module.css";
 import ProposalFormImage from "../../assets/images/propunere-de-angajare.jpg";
 import DateInput from "../UI/DateInput/DateInput";
 import SimpleDropdown from "../UI/SimpleDropdown/SimpleDropdown";
 import BeneficiaryDropdown from "../UI/Dropdown/Dropdown";
 import { useFormEntries } from "../../context/FormEntriesContext";
+import InputNumber from "../UI/InputNumber/InputNumber"; // Import InputNumber
 
 export default function ProposalForm({
   formData,
@@ -17,10 +20,13 @@ export default function ProposalForm({
   const [selectedOptionText, setSelectedOptionText] = useState("");
   const { formEntries, getBeneficiaryByName } = useFormEntries();
 
-  const categoryOptions = [
-    { value: "MEDICAMENTATIE", label: "MEDICAMENTE" },
-    { value: "MATERIALE SANITARE", label: "MATERIALE SANITARE" },
-  ];
+  const categoryOptions = useMemo(
+    () => [
+      { value: "MEDICAMENTATIE", label: "MEDICAMENTE" },
+      { value: "MATERIALE SANITARE", label: "MATERIALE SANITARE" },
+    ],
+    []
+  );
 
   const handleSelectChange = (e) => {
     const select = e.target;
@@ -34,6 +40,22 @@ export default function ProposalForm({
     }
 
     handleInputChange(e);
+
+    // Autofill logic for the three new inputs (autofillInput4, 5, 6)
+    if (e.target.value === "MEDICAMENTATIE") {
+      handleInputChange({ target: { name: "autofillInput4", value: "20." } });
+      handleInputChange({ target: { name: "autofillInput5", value: "04." } });
+      handleInputChange({ target: { name: "autofillInput6", value: "01" } });
+    } else if (e.target.value === "MATERIALE SANITARE") {
+      handleInputChange({ target: { name: "autofillInput4", value: "20." } });
+      handleInputChange({ target: { name: "autofillInput5", value: "04." } });
+      handleInputChange({ target: { name: "autofillInput6", value: "02" } });
+    } else {
+      // Clear if no specific option selected
+      handleInputChange({ target: { name: "autofillInput4", value: "" } });
+      handleInputChange({ target: { name: "autofillInput5", value: "" } });
+      handleInputChange({ target: { name: "autofillInput6", value: "" } });
+    }
   };
 
   useEffect(() => {
@@ -80,7 +102,7 @@ export default function ProposalForm({
 
     const beneficiaryName = e.target.value;
 
-    if (beneficiaryName && beneficiaryName.includes(" ")) {
+    if (beneficiaryName && beneficiaryName.trim() !== "") {
       fillFormFields(beneficiaryName);
     }
   };
@@ -103,7 +125,6 @@ export default function ProposalForm({
       const year = now.getFullYear();
       const currentDate = `${day}.${month}.${year}`;
 
-      // Auto-fill date if it's empty
       if (!formData.dateIssued) {
         handleInputChange({
           target: {
@@ -113,7 +134,6 @@ export default function ProposalForm({
         });
       }
 
-      // Auto-fill shortText with "SAMU" if it's empty
       if (!formData.shortText) {
         handleInputChange({
           target: {
@@ -123,7 +143,6 @@ export default function ProposalForm({
         });
       }
 
-      // Auto-fill additionalDate with current date if it's empty
       if (!formData.additionalDate) {
         handleInputChange({
           target: {
@@ -137,34 +156,28 @@ export default function ProposalForm({
 
   const handleDateInput = (e) => {
     const { name, value } = e.target;
-    let formattedValue = value.replace(/\./g, ""); // Remove any existing dots
+    let formattedValue = value.replace(/\./g, "");
 
-    // Only allow numbers
     if (!/^\d*$/.test(formattedValue)) {
       return;
     }
 
-    // Format with dots
     if (formattedValue.length > 0) {
-      // Add first dot after day (DD)
       if (formattedValue.length > 2) {
         formattedValue =
           formattedValue.slice(0, 2) + "." + formattedValue.slice(2);
       }
 
-      // Add second dot after month (MM)
       if (formattedValue.length > 5) {
         formattedValue =
           formattedValue.slice(0, 5) + "." + formattedValue.slice(5);
       }
 
-      // Limit to 10 characters (DD.MM.YYYY)
       if (formattedValue.length > 10) {
         formattedValue = formattedValue.slice(0, 10);
       }
     }
 
-    // Create a synthetic event to pass to the original handler
     const syntheticEvent = {
       target: {
         name,
@@ -192,28 +205,22 @@ export default function ProposalForm({
   useEffect(() => {
     const handleBeforePrint = () => {
       if (containerRef.current) {
-        // Store original styles to restore later
         const originalTransform = containerRef.current.style.transform;
         const originalMarginTop = containerRef.current.style.marginTop;
         const originalMarginBottom = containerRef.current.style.marginBottom;
 
-        // Force the form to be at 100% zoom for printing
         containerRef.current.style.transform = "none";
         containerRef.current.style.margin = "0";
 
-        // Remove any existing overlays
         const existingOverlays = document.querySelectorAll(
           ".print-text-overlay"
         );
         existingOverlays.forEach((overlay) => overlay.remove());
 
-        // Create a print overlay container
         const overlayContainer = document.createElement("div");
         overlayContainer.className = "print-overlay-container";
         containerRef.current.appendChild(overlayContainer);
 
-        // Create fixed-position overlays for each input field
-        // These positions are based on the original form layout, not the current DOM
         const createFixedOverlay = (
           name,
           value,
@@ -229,7 +236,6 @@ export default function ProposalForm({
           overlay.textContent = value;
           overlay.dataset.for = name;
 
-          // Use fixed positioning based on the form design
           overlay.style.position = "absolute";
           overlay.style.top = `${top}px`;
           overlay.style.left = `${left}px`;
@@ -240,12 +246,11 @@ export default function ProposalForm({
           overlay.style.color = "rgb(31 41 55)";
           overlay.style.fontWeight = "500";
           overlay.style.zIndex = "1000";
-          overlay.style.display = "none"; // Will be shown in print
+          overlay.style.display = "none";
 
           overlayContainer.appendChild(overlay);
         };
 
-        // Alternative function to position from the right side
         const createFixedOverlayFromRight = (
           name,
           value,
@@ -261,16 +266,12 @@ export default function ProposalForm({
           overlay.textContent = value;
           overlay.dataset.for = name;
 
-          // Use fixed positioning based on the form design
           overlay.style.position = "absolute";
           overlay.style.top = `${top}px`;
 
-          // Calculate position from the left to ensure it's all the way to the right
-          // A4 width is 210mm ≈ 794px, subtract width and right margin
           const leftPosition = 794 - width - right;
           overlay.style.left = `${leftPosition}px`;
 
-          // Also set right property as a fallback
           overlay.style.right = `${right}px`;
 
           overlay.style.width = `${width}px`;
@@ -280,13 +281,11 @@ export default function ProposalForm({
           overlay.style.color = "rgb(31 41 55)";
           overlay.style.fontWeight = "500";
           overlay.style.zIndex = "1000";
-          overlay.style.display = "none"; // Will be shown in print
+          overlay.style.display = "none";
 
           overlayContainer.appendChild(overlay);
         };
 
-        // Create overlays for each field with fixed positions
-        // Date issued
         createFixedOverlayFromRight(
           "dateIssued",
           formData.dateIssued,
@@ -295,7 +294,6 @@ export default function ProposalForm({
           160
         );
 
-        // Short text
         createFixedOverlayFromRight(
           "shortText",
           formData.shortText,
@@ -304,16 +302,12 @@ export default function ProposalForm({
           250
         );
 
-        // Category - Use the existing printSelectText element instead of creating a new overlay
         if (formData.category) {
-          // Find the existing printSelectText element
           const printSelectText =
             containerRef.current.querySelector(".printSelectText");
           if (printSelectText) {
-            // Make sure it has the correct text
             printSelectText.textContent = selectedOptionText || "";
 
-            // Create a style to ensure it's visible during print
             const printSelectStyle = document.createElement("style");
             printSelectStyle.id = "print-select-style-proposal";
             printSelectStyle.textContent = `
@@ -338,7 +332,6 @@ export default function ProposalForm({
             `;
             document.head.appendChild(printSelectStyle);
 
-            // Clean up the style after printing
             window.addEventListener("afterprint", function removeStyle() {
               const styleToRemove = document.getElementById(
                 "print-select-style-proposal"
@@ -351,7 +344,6 @@ export default function ProposalForm({
           }
         }
 
-        // Beneficiary name
         createFixedOverlay(
           "beneficiaryName",
           formData.beneficiaryName,
@@ -360,7 +352,6 @@ export default function ProposalForm({
           392
         );
 
-        // Numeric value 1
         createFixedOverlay(
           "numericValue1",
           formData.numericValue1,
@@ -369,7 +360,6 @@ export default function ProposalForm({
           98
         );
 
-        // Numeric value 2
         createFixedOverlay(
           "numericValue2",
           formData.numericValue2,
@@ -378,7 +368,6 @@ export default function ProposalForm({
           154
         );
 
-        // Additional date
         createFixedOverlayFromRight(
           "additionalDate",
           formData.additionalDate,
@@ -387,18 +376,29 @@ export default function ProposalForm({
           120
         );
 
-        // Optional date
-        if (formData.optionalDate) {
-          createFixedOverlayFromRight(
-            "optionalDate",
-            formData.optionalDate,
-            753,
-            296,
-            120
-          );
-        }
+        // New autofill inputs print overlays - matching PaymentOrderForm positions
+        createFixedOverlay(
+          "autofillInput4",
+          formData.autofillInput4,
+          520,
+          50,
+          30
+        );
+        createFixedOverlay(
+          "autofillInput5",
+          formData.autofillInput5,
+          520,
+          70,
+          30
+        );
+        createFixedOverlay(
+          "autofillInput6",
+          formData.autofillInput6,
+          520,
+          90,
+          30
+        );
 
-        // Add a style tag for print media
         let styleTag = document.getElementById("print-overlay-styles-proposal");
         if (!styleTag) {
           styleTag = document.createElement("style");
@@ -454,14 +454,11 @@ export default function ProposalForm({
           }
         `;
 
-        // After printing, restore the original styles
         window.addEventListener("afterprint", function restoreStyles() {
-          // Restore original styles
           containerRef.current.style.transform = originalTransform;
           containerRef.current.style.marginTop = originalMarginTop;
           containerRef.current.style.marginBottom = originalMarginBottom;
 
-          // Remove the print overlay container
           const overlayContainer = containerRef.current.querySelector(
             ".print-overlay-container"
           );
@@ -649,7 +646,6 @@ export default function ProposalForm({
               return;
             }
 
-            // Update both numeric fields with the same value
             handleInputChange({
               target: { name: "numericValue1", value },
             });
@@ -681,7 +677,6 @@ export default function ProposalForm({
               return;
             }
 
-            // Update both numeric fields with the same value
             handleInputChange({
               target: { name: "numericValue1", value },
             });
@@ -720,20 +715,53 @@ export default function ProposalForm({
             textAlign: "center",
           }}
         />
-        <DateInput
-          name="optionalDate"
-          value={formData.optionalDate || ""}
-          onChange={handleDateInput}
-          onKeyDown={handleDateKeyDown}
-          className={`${styles.inputField}`}
-          placeholder="DD/MM/YYYY"
-          inputColor="rgba(189, 200, 204, 0.5)" // Light grey color for optional field
+        {/* New Autofill Inputs - Matching PaymentOrderForm positions */}
+        <InputNumber
+          name="autofillInput4"
+          value={formData.autofillInput4 || ""}
+          onChange={handleInputChange}
+          className={`${styles.inputField} ${styles.autofillInput}`}
+          readOnly // Make it read-only as it's autofilled
           style={{
-            position: "absolute",
-            bottom: "353px",
-            right: "296px",
-            width: "120px",
+            top: "519px", // Matching PaymentOrderForm
+            left: "50px", // Matching PaymentOrderForm
+            width: "20px",
             textAlign: "center",
+            backgroundColor: formData.autofillInput4
+              ? "transparent"
+              : inputColor,
+          }}
+        />
+        <InputNumber
+          name="autofillInput5"
+          value={formData.autofillInput5 || ""}
+          onChange={handleInputChange}
+          className={`${styles.inputField} ${styles.autofillInput}`}
+          readOnly // Make it read-only
+          style={{
+            top: "519px", // Matching PaymentOrderForm
+            left: "70px", // Matching PaymentOrderForm
+            width: "20px",
+            textAlign: "center",
+            backgroundColor: formData.autofillInput5
+              ? "transparent"
+              : inputColor,
+          }}
+        />
+        <InputNumber
+          name="autofillInput6"
+          value={formData.autofillInput6 || ""}
+          onChange={handleInputChange}
+          className={`${styles.inputField} ${styles.autofillInput}`}
+          readOnly // Make it read-only
+          style={{
+            top: "519px", // Matching PaymentOrderForm
+            left: "90px", // Matching PaymentOrderForm
+            width: "20px",
+            textAlign: "center",
+            backgroundColor: formData.autofillInput6
+              ? "transparent"
+              : inputColor,
           }}
         />
       </div>

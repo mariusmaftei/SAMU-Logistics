@@ -2,9 +2,7 @@ import api from "./api";
 
 const ENDPOINT = "/entry";
 
-// Service object for entry-related API calls
 const entryService = {
-  // Get all entries
   getAllEntries: async () => {
     try {
       const response = await api.get(ENDPOINT);
@@ -15,7 +13,6 @@ const entryService = {
     }
   },
 
-  // Get a single entry by ID
   getEntryById: async (id) => {
     try {
       const response = await api.get(`${ENDPOINT}/${id}`);
@@ -26,7 +23,6 @@ const entryService = {
     }
   },
 
-  // Create a new entry
   createEntry: async (entryData) => {
     try {
       const response = await api.post(ENDPOINT, entryData);
@@ -37,7 +33,6 @@ const entryService = {
     }
   },
 
-  // Update an existing entry
   updateEntry: async (id, entryData) => {
     try {
       const response = await api.put(`${ENDPOINT}/${id}`, entryData);
@@ -48,7 +43,6 @@ const entryService = {
     }
   },
 
-  // Delete an entry
   deleteEntry: async (id) => {
     try {
       const response = await api.delete(`${ENDPOINT}/${id}`);

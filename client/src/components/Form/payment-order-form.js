@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import styles from "../Form/payment-order-form.module.css";
 import { useFormEntries } from "../../context/FormEntriesContext";
 import OPimage from "../../assets/images/ordonantare-de-plata.png";
@@ -18,19 +18,19 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
 
   const inputColor = "rgba(31, 129, 248, 0.52)";
 
-  // Expense nature options for the dropdown
-  const expenseOptions = [
-    { value: "MEDICAMENTATIE", label: "MEDICAMENTE" },
-    { value: "MATERIALE SANITARE", label: "MATERIALE SANITARE" },
-  ];
+  const expenseOptions = useMemo(
+    () => [
+      { value: "MEDICAMENTATIE", label: "MEDICAMENTE" },
+      { value: "MATERIALE SANITARE", label: "MATERIALE SANITARE" },
+    ],
+    []
+  );
 
-  // Custom handler for select to capture the displayed text
   const handleSelectChange = (e) => {
     const select = e.target;
     const selectedOption = select.options[select.selectedIndex];
     setSelectedOptionText(selectedOption ? selectedOption.text : "");
 
-    // Update the background color immediately
     if (selectedOption && selectedOption.value) {
       select.style.backgroundColor = "transparent";
     } else {
@@ -38,12 +38,26 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     }
 
     handleFormInputChange(e);
+
+    // Autofill logic for the three new inputs
+    if (e.target.value === "MEDICAMENTATIE") {
+      handleInputChange({ target: { name: "autofillInput4", value: "20." } });
+      handleInputChange({ target: { name: "autofillInput5", value: "04." } });
+      handleInputChange({ target: { name: "autofillInput6", value: "01" } });
+    } else if (e.target.value === "MATERIALE SANITARE") {
+      handleInputChange({ target: { name: "autofillInput4", value: "20." } });
+      handleInputChange({ target: { name: "autofillInput5", value: "04." } });
+      handleInputChange({ target: { name: "autofillInput6", value: "02" } });
+    } else {
+      // Clear if no specific option selected
+      handleInputChange({ target: { name: "autofillInput4", value: "" } });
+      handleInputChange({ target: { name: "autofillInput5", value: "" } });
+      handleInputChange({ target: { name: "autofillInput6", value: "" } });
+    }
   };
 
-  // Update selected option text when formData.number changes
   useEffect(() => {
     if (formData.number) {
-      // Find the option text that corresponds to the current value
       const option = expenseOptions.find(
         (opt) => opt.value === formData.number
       );
@@ -53,39 +67,32 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     } else {
       setSelectedOptionText("");
     }
-  }, [formData.number]);
+  }, [formData.number, expenseOptions]);
 
-  // Custom handler for date inputs to format as DD.MM.YYYY
   const handleDateInput = (e) => {
     const { name, value } = e.target;
-    let formattedValue = value.replace(/\./g, ""); // Remove any existing dots
+    let formattedValue = value.replace(/\./g, "");
 
-    // Only allow numbers
     if (!/^\d*$/.test(formattedValue)) {
       return;
     }
 
-    // Format with dots
     if (formattedValue.length > 0) {
-      // Add first dot after day (DD)
       if (formattedValue.length > 2) {
         formattedValue =
           formattedValue.slice(0, 2) + "." + formattedValue.slice(2);
       }
 
-      // Add second dot after month (MM)
       if (formattedValue.length > 5) {
         formattedValue =
           formattedValue.slice(0, 5) + "." + formattedValue.slice(5);
       }
 
-      // Limit to 10 characters (DD.MM.YYYY)
       if (formattedValue.length > 10) {
         formattedValue = formattedValue.slice(0, 10);
       }
     }
 
-    // Create a synthetic event to pass to the original handler
     const syntheticEvent = {
       target: {
         name,
@@ -96,7 +103,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     handleFormInputChange(syntheticEvent);
   };
 
-  // Function to get current date in DD.MM.YYYY format
   const getCurrentDate = () => {
     const now = new Date();
     const day = String(now.getDate()).padStart(2, "0");
@@ -105,12 +111,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     return `${day}.${month}.${year}`;
   };
 
-  // Function to fill date fields with current date when any input is filled
   const fillDateFieldsOnInput = (name, value, prevValue) => {
-    // Only proceed if:
-    // 1. The field being changed is not already a date field
-    // 2. The field is going from empty to having a value
-    // 3. The field name is not beneficiaryName (which has its own special handling)
     const dateFields = [
       "dateIssued",
       "billDate",
@@ -126,12 +127,9 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
       !prevValue &&
       value
     ) {
-      // Get current date
       const currentDate = getCurrentDate();
 
-      // Fill all date fields with current date
       dateFields.forEach((field) => {
-        // Only fill date fields that are currently empty
         if (!formData[field]) {
           handleInputChange({
             target: {
@@ -144,42 +142,33 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     }
   };
 
-  // Modify the handleInputChange function to use our new function
-  // Replace the existing handleInputChange references with this custom handler
   const handleFormInputChange = (e) => {
     const { name, value } = e.target;
     const prevValue = formData[name];
 
-    // First update the form data
     handleInputChange(e);
 
-    // Then check if we should fill date fields
     fillDateFieldsOnInput(name, value, prevValue);
   };
 
-  // Function to fill form fields based on beneficiary data
   const fillFormFields = (beneficiaryName) => {
     if (!beneficiaryName) return;
 
     const beneficiary = getBeneficiaryByName(beneficiaryName);
 
     if (beneficiary) {
-      // Create an array of field updates with correct mappings
       const fieldUpdates = [
-        // Map accountNumber from context to both accountNumber and bankNumber inputs
         {
           name: "Trezorerie_Furnizor",
           value: beneficiary.Trezorerie_Furnizor || "",
         },
         { name: "bankNumber", value: beneficiary.Trezorerie_Furnizor || "" },
         { name: "Adresa_Furnizor", value: beneficiary.Adresa_Furnizor || "" },
-        // Map treasuryNumber from context to both treasury and treasuryNumber inputs
         { name: "treasury", value: beneficiary.treasuryNumber || "" },
         { name: "CUI_CUI_CIF", value: beneficiary.CUI_CUI_CIF || "" },
         { name: "NR_CONT_IBAN", value: beneficiary.NR_CONT_IBAN || "" },
       ];
 
-      // Apply each field update one by one
       fieldUpdates.forEach((field) => {
         handleFormInputChange({
           target: {
@@ -191,59 +180,45 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     }
   };
 
-  // Handle beneficiary name change
   const handleBeneficiaryNameChange = (e) => {
-    // First update the form data with the new name
     handleFormInputChange(e);
 
-    // Then check if we should fill other fields
     const beneficiaryName = e.target.value;
 
-    // Only attempt to fill fields if we have a complete name (with space)
     if (beneficiaryName && beneficiaryName.includes(" ")) {
       fillFormFields(beneficiaryName);
     }
   };
 
-  // Handle paste event for beneficiary name
   const handlePaste = (e) => {
-    // Allow the paste to complete
     setTimeout(() => {
       const pastedName = e.target.value;
 
-      // If we have a valid name, fill the form fields
       if (pastedName && pastedName.trim() !== "") {
         fillFormFields(pastedName);
       }
     }, 10);
   };
 
-  // Add a custom print renderer for input values
   useEffect(() => {
     const handleBeforePrint = () => {
       if (containerRef.current) {
-        // Store original styles to restore later
         const originalTransform = containerRef.current.style.transform;
         const originalMarginTop = containerRef.current.style.marginTop;
         const originalMarginBottom = containerRef.current.style.marginBottom;
 
-        // Force the form to be at 100% zoom for printing
         containerRef.current.style.transform = "none";
         containerRef.current.style.margin = "0";
 
-        // Remove any existing overlays
         const existingOverlays = document.querySelectorAll(
           ".print-text-overlay"
         );
         existingOverlays.forEach((overlay) => overlay.remove());
 
-        // Create a print overlay container
         const overlayContainer = document.createElement("div");
         overlayContainer.className = "print-overlay-container";
         containerRef.current.appendChild(overlayContainer);
 
-        // Create fixed-position overlays for each input field
-        // These positions are based on the original form layout, not the current DOM
         const createFixedOverlay = (
           name,
           value,
@@ -259,7 +234,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           overlay.textContent = value;
           overlay.dataset.for = name;
 
-          // Use fixed positioning based on the form design
           overlay.style.position = "absolute";
           overlay.style.top = `${top}px`;
           overlay.style.left = `${left}px`;
@@ -270,12 +244,11 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           overlay.style.color = "rgb(31 41 55)";
           overlay.style.fontWeight = "500";
           overlay.style.zIndex = "1000";
-          overlay.style.display = "none"; // Will be shown in print
+          overlay.style.display = "none"; // Initially hidden, made visible by CSS
 
           overlayContainer.appendChild(overlay);
         };
 
-        // Alternative function to position from the right side
         const createFixedOverlayFromRight = (
           name,
           value,
@@ -291,16 +264,12 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           overlay.textContent = value;
           overlay.dataset.for = name;
 
-          // Use fixed positioning based on the form design
           overlay.style.position = "absolute";
           overlay.style.top = `${top}px`;
 
-          // Calculate position from the left to ensure it's all the way to the right
-          // A4 width is 210mm ≈ 794px, subtract width and right margin
           const leftPosition = 794 - width - right;
           overlay.style.left = `${leftPosition}px`;
 
-          // Also set right property as a fallback
           overlay.style.right = `${right}px`;
 
           overlay.style.width = `${width}px`;
@@ -310,13 +279,11 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           overlay.style.color = "rgb(31 41 55)";
           overlay.style.fontWeight = "500";
           overlay.style.zIndex = "1000";
-          overlay.style.display = "none"; // Will be shown in print
+          overlay.style.display = "none"; // Initially hidden, made visible by CSS
 
           overlayContainer.appendChild(overlay);
         };
 
-        // Create overlays for each field with fixed positions
-        // Date issued
         createFixedOverlayFromRight(
           "dateIssued",
           formData.dateIssued,
@@ -325,7 +292,32 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           150
         );
 
-        // Expense nature
+        // Category dropdown print overlay - positioned exactly where the dropdown is
+        if (selectedOptionText) {
+          const categoryOverlay = document.createElement("div");
+          categoryOverlay.className =
+            "print-text-overlay category-print-overlay"; // Add specific class
+          categoryOverlay.textContent = selectedOptionText;
+          categoryOverlay.dataset.for = "category";
+
+          // Use the exact same positioning as the dropdown container
+          categoryOverlay.style.position = "absolute";
+          categoryOverlay.style.top = "244px"; // Same as .categoryContainer top
+          categoryOverlay.style.left = "284px"; // Same as .categoryContainer left
+          categoryOverlay.style.width = "350px"; // Same as .categoryContainer width
+          categoryOverlay.style.textAlign = "center";
+          categoryOverlay.style.fontSize = "11pt";
+          categoryOverlay.style.fontFamily = "inherit";
+          categoryOverlay.style.color = "rgb(31 41 55)";
+          categoryOverlay.style.fontWeight = "500";
+          categoryOverlay.style.zIndex = "1001"; // Higher z-index to ensure visibility
+          categoryOverlay.style.display = "none"; // Initially hidden, made visible by CSS
+          categoryOverlay.style.lineHeight = "1";
+          categoryOverlay.style.paddingTop = "2px"; // Match the printSelectText padding
+
+          overlayContainer.appendChild(categoryOverlay);
+        }
+
         createFixedOverlay(
           "expenseNature",
           formData.expenseNature,
@@ -334,8 +326,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           200
         );
 
-        // Add these lines after the expense nature overlay:
-        // Additional inputs
         createFixedOverlay(
           "additionalInput1",
           formData.additionalInput1,
@@ -365,7 +355,29 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           200
         );
 
-        // Bill date
+        // New autofill inputs print overlays - NOW ON LEFT SIDE
+        createFixedOverlay(
+          "autofillInput4",
+          formData.autofillInput4,
+          582,
+          190,
+          30
+        );
+        createFixedOverlay(
+          "autofillInput5",
+          formData.autofillInput5,
+          582,
+          210,
+          30
+        );
+        createFixedOverlay(
+          "autofillInput6",
+          formData.autofillInput6,
+          582,
+          230,
+          30
+        );
+
         createFixedOverlayFromRight(
           "billDate",
           formData.billDate,
@@ -374,10 +386,8 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           140
         );
 
-        // Amount
         createFixedOverlayFromRight("amount", formData.amount, 414, 210, 122);
 
-        // Amount due (same as amount)
         createFixedOverlayFromRight(
           "amountDue",
           formData.amount,
@@ -386,7 +396,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           122
         );
 
-        // Bank number
         createFixedOverlayFromRight(
           "bankNumber",
           formData.bankNumber,
@@ -396,7 +405,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           "left"
         );
 
-        // Treasury number
         createFixedOverlayFromRight(
           "CUI_CUI_CIF",
           formData.CUI_CUI_CIF,
@@ -406,7 +414,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           "left"
         );
 
-        // Bank code
         createFixedOverlayFromRight(
           "NR_CONT_IBAN",
           formData.NR_CONT_IBAN,
@@ -416,7 +423,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           "left"
         );
 
-        // Beneficiary name
         createFixedOverlay(
           "beneficiaryName",
           formData.beneficiaryName,
@@ -424,44 +430,34 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           160,
           226
         );
-
-        // Beneficiary address
-        // Beneficiary address - special handling for multi-line text
         if (formData.Adresa_Furnizor) {
           const addressOverlay = document.createElement("div");
           addressOverlay.className = "print-text-overlay address-multiline";
           addressOverlay.textContent = formData.Adresa_Furnizor;
           addressOverlay.dataset.for = "Adresa_Furnizor";
 
-          // Use fixed positioning based on the form design
           addressOverlay.style.position = "absolute";
           addressOverlay.style.top = "748px";
           addressOverlay.style.left = "160px";
           addressOverlay.style.width = "226px";
-          addressOverlay.style.minHeight = "40px"; // Allow for two lines
-          addressOverlay.style.maxHeight = "50px"; // Limit to avoid overlapping other fields
+          addressOverlay.style.minHeight = "40px";
+          addressOverlay.style.maxHeight = "50px";
           addressOverlay.style.textAlign = "center";
           addressOverlay.style.fontSize = "11pt";
           addressOverlay.style.fontFamily = "inherit";
           addressOverlay.style.color = "rgb(31 41 55)";
           addressOverlay.style.fontWeight = "500";
           addressOverlay.style.zIndex = "1000";
-          addressOverlay.style.display = "none"; // Will be shown in print
-          addressOverlay.style.whiteSpace = "normal"; // Allow text wrapping
-          addressOverlay.style.wordBreak = "break-word"; // Break words if necessary
-          addressOverlay.style.lineHeight = "1.2"; // Tighter line height for wrapped text
-          addressOverlay.style.overflow = "hidden"; // Hide overflow
+          addressOverlay.style.display = "none";
+          addressOverlay.style.whiteSpace = "normal";
+          addressOverlay.style.wordBreak = "break-word";
+          addressOverlay.style.lineHeight = "1.2";
+          addressOverlay.style.overflow = "hidden";
 
           overlayContainer.appendChild(addressOverlay);
         }
 
-        // Add the print overlay for the new date fields in the handleBeforePrint function
-        // Find the section where print overlays are created (inside the handleBeforePrint function)
-        // Add these lines after the other createFixedOverlay calls:
-
-        // Bottom date 1
         if (formData.bottomDate1) {
-          // Create a single overlay for bottomDate1
           const bottomDate1Overlay = document.createElement("div");
           bottomDate1Overlay.className = "print-text-overlay";
           bottomDate1Overlay.textContent = formData.bottomDate1;
@@ -475,14 +471,12 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           bottomDate1Overlay.style.fontFamily = "inherit";
           bottomDate1Overlay.style.color = "rgb(31 41 55)";
           bottomDate1Overlay.style.fontWeight = "500";
-          bottomDate1Overlay.style.zIndex = "1001"; // Higher z-index to ensure visibility
-          bottomDate1Overlay.style.display = "none"; // Will be shown in print
+          bottomDate1Overlay.style.zIndex = "1001";
+          bottomDate1Overlay.style.display = "none";
           overlayContainer.appendChild(bottomDate1Overlay);
         }
 
-        // Bottom date 2
         if (formData.bottomDate2) {
-          // Create a single overlay for bottomDate2
           const bottomDate2Overlay = document.createElement("div");
           bottomDate2Overlay.className = "print-text-overlay";
           bottomDate2Overlay.textContent = formData.bottomDate2;
@@ -496,12 +490,11 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           bottomDate2Overlay.style.fontFamily = "inherit";
           bottomDate2Overlay.style.color = "rgb(31 41 55)";
           bottomDate2Overlay.style.fontWeight = "500";
-          bottomDate2Overlay.style.zIndex = "1001"; // Higher z-index to ensure visibility
-          bottomDate2Overlay.style.display = "none"; // Will be shown in print
+          bottomDate2Overlay.style.zIndex = "1001";
+          bottomDate2Overlay.style.display = "none";
           overlayContainer.appendChild(bottomDate2Overlay);
         }
 
-        // Add a style tag for print media
         let styleTag = document.getElementById("print-overlay-styles");
         if (!styleTag) {
           styleTag = document.createElement("style");
@@ -519,6 +512,10 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     padding: 0 !important;
     margin: 0 !important;
     font-weight: 500 !important;
+    color: rgb(31 41 55) !important; /* Ensure text color is visible */
+    -webkit-text-fill-color: rgb(31 41 55) !important;
+    opacity: 1 !important; /* Ensure visibility */
+    visibility: visible !important; /* Ensure visibility */
   }
   
   /* Special styles for bottom date overlays */
@@ -586,14 +583,11 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
 }
 `;
 
-        // After printing, restore the original styles
         window.addEventListener("afterprint", function restoreStyles() {
-          // Restore original styles
           containerRef.current.style.transform = originalTransform;
           containerRef.current.style.marginTop = originalMarginTop;
           containerRef.current.style.marginBottom = originalMarginBottom;
 
-          // Remove the print overlay container
           const overlayContainer = containerRef.current.querySelector(
             ".print-overlay-container"
           );
@@ -609,38 +603,40 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     window.addEventListener("beforeprint", handleBeforePrint);
     return () => {
       window.removeEventListener("beforeprint", handleBeforePrint);
+      const styleTag = document.getElementById("print-overlay-styles");
+      if (styleTag) {
+        styleTag.remove();
+      }
     };
-  }, [formData]);
+  }, [formData, selectedOptionText]); // Added selectedOptionText to dependencies
 
-  // Add a global style to override browser autofill styles
   useEffect(() => {
-    // Create a style element to override autofill styles
     const styleElement = document.createElement("style");
     styleElement.innerHTML = `
-      input:-webkit-autofill,
-      input:-webkit-autofill:hover,
-      input:-webkit-autofill:focus,
-      input:-webkit-autofill:active {
-        -webkit-box-shadow: 0 0 0 30px transparent inset !important;
-        -webkit-text-fill-color: rgb(31 41 55) !important;
-        transition: background-color 5000s ease-in-out 0s;
-        background-color: transparent !important;
-      }
-      
-      input:autofill {
-        background-color: transparent !important;
-        color: rgb(31 41 55) !important;
-      }
-      
-      select:-webkit-autofill,
-      select:-webkit-autofill:hover,
-      select:-webkit-autofill:focus,
-      select:-webkit-autofill:active {
-        -webkit-box-shadow: 0 0 0 30px transparent inset !important;
-        transition: background-color 5000s ease-in-out 0s;
-        background-color: transparent !important;
-      }
-    `;
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+-webkit-box-shadow: 0 0 0 30px transparent inset !important;
+-webkit-text-fill-color: rgb(31 41 55) !important;
+transition: background-color 5000s ease-in-out 0s;
+background-color: transparent !important;
+}
+
+input:autofill {
+background-color: transparent !important;
+color: rgb(31 41 55) !important;
+}
+
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active {
+-webkit-box-shadow: 0 0 0 30px transparent inset !important;
+transition: background-color 5000s ease-in-out 0s;
+background-color: transparent !important;
+}
+`;
     document.head.appendChild(styleElement);
 
     // Clean up
@@ -649,29 +645,21 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     };
   }, []);
 
-  // Add useEffect to detect mobile devices and adjust the view
   useEffect(() => {
     const handleResize = () => {
       if (containerRef.current) {
-        // Check if we're on a mobile device
         const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-          // On mobile, adjust the container to be scrollable
           containerRef.current.classList.add(styles.mobileView);
 
-          // Calculate the appropriate scale based on screen width
           const scale = Math.max(0.25, Math.min(0.6, window.innerWidth / 800));
 
-          // Apply the scale directly to maintain input field positions
           containerRef.current.style.transform = `scale(${scale})`;
 
-          // Adjust margins to compensate for scaling
           const marginAdjustment = ((1 - scale) * 297) / 2;
-          containerRef.current.style.marginTop = `-${marginAdjustment}mm`;
           containerRef.current.style.marginBottom = `-${marginAdjustment}mm`;
         } else {
-          // On desktop, remove mobile-specific adjustments
           containerRef.current.classList.remove(styles.mobileView);
           containerRef.current.style.transform = "";
           containerRef.current.style.marginTop = "";
@@ -689,13 +677,11 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     };
   }, []);
 
-  // Format beneficiaries data for the dropdown
   const beneficiariesForDropdown = formEntries.map((entry) => ({
     id: entry.id || String(Math.random()),
     Nume_Furnizor: entry.Nume_Furnizor,
   }));
 
-  // Define the input positions for the additional inputs
   const additionalInputPositions = [
     {
       name: "expenseNature",
@@ -738,9 +724,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
     },
   ];
 
-  // Add a useEffect hook to handle the print values specifically for the bottom date fields
-  // Add this after the other useEffect hooks:
-
   return (
     <div className={styles.formContainer} ref={containerRef}>
       <div className={styles.imageWrapper}>
@@ -752,8 +735,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
         />
       </div>
 
-      {/* EMITTING DATE */}
-
       <div className={styles.formOverlay}>
         <DateInput
           name="dateIssued"
@@ -764,7 +745,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           placeholder="DD.MM.YYYY"
         />
 
-        {/* EXPENSIVE NATURE */}
+        {/* New Category Dropdown */}
         <div
           className={`${styles.expensesNatureContainer} ${
             !formData.number ? styles.empty : ""
@@ -791,13 +772,11 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
             autoComplete="off"
           />
 
-          {/* This span will be visible all the time */}
           <span className={styles.printSelectText}>
             {selectedOptionText || "Selectați opțiunea"}
           </span>
         </div>
 
-        {/* Render all numeric input fields using the reusable component */}
         {additionalInputPositions.map((position) => (
           <InputNumber
             key={position.name}
@@ -836,7 +815,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           name="amountDue"
           value={formData.amount || ""}
           onChange={(e) => {
-            // Update both amount and amountDue with the same value
             handleInputChange({
               target: {
                 name: "amount",
@@ -853,6 +831,56 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
             textAlign: "center",
           }}
           inputColor={inputColor}
+        />
+
+        {/* New Autofill Inputs - NOW ON LEFT SIDE */}
+        <InputNumber
+          name="autofillInput4"
+          value={formData.autofillInput4 || ""}
+          onChange={handleInputChange}
+          className={`${styles.inputField} ${styles.autofillInput}`}
+          readOnly // Make it read-only as it's autofilled
+          style={{
+            top: "578px",
+            left: "190px", // Changed from right
+            width: "20px",
+            textAlign: "center",
+            backgroundColor: formData.autofillInput4
+              ? "transparent"
+              : inputColor,
+          }}
+        />
+        <InputNumber
+          name="autofillInput5"
+          value={formData.autofillInput5 || ""}
+          onChange={handleInputChange}
+          className={`${styles.inputField} ${styles.autofillInput}`}
+          readOnly // Make it read-only
+          style={{
+            top: "578px",
+            left: "210px", // Changed from right
+            width: "20px",
+            textAlign: "center",
+            backgroundColor: formData.autofillInput5
+              ? "transparent"
+              : inputColor,
+          }}
+        />
+        <InputNumber
+          name="autofillInput6"
+          value={formData.autofillInput6 || ""}
+          onChange={handleInputChange}
+          className={`${styles.inputField} ${styles.autofillInput}`}
+          readOnly // Make it read-only
+          style={{
+            top: "578px",
+            left: "230px", // Changed from right
+            width: "20px",
+            textAlign: "center",
+            backgroundColor: formData.autofillInput6
+              ? "transparent"
+              : inputColor,
+          }}
         />
 
         <DateInput
@@ -927,7 +955,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           autoComplete="off"
         />
 
-        {/* Replace the beneficiary name input with the dropdown component */}
         <BeneficiaryDropdown
           name="beneficiaryName"
           value={formData.beneficiaryName || ""}
@@ -969,7 +996,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           value={formData.bottomDate1 || ""}
           onChange={handleDateInput}
           className={`${styles.inputField} ${styles.dateSignatureField}`}
-          inputColor="rgba(189, 200, 204, 0.5)" // Light grey color
+          inputColor="rgba(189, 200, 204, 0.5)"
           placeholder="DD.MM.YYYY"
           style={{
             position: "absolute",
@@ -979,7 +1006,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
             height: "15px",
             textAlign: "center",
           }}
-          // Remove the data-print-value attribute to prevent duplication
         />
 
         <DateInput
@@ -987,7 +1013,7 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
           value={formData.bottomDate2 || ""}
           onChange={handleDateInput}
           className={`${styles.inputField} ${styles.dateSignatureField}`}
-          inputColor="rgba(189, 200, 204, 0.5)" // Light grey color
+          inputColor="rgba(189, 200, 204, 0.5)"
           placeholder="DD.MM.YYYY"
           style={{
             position: "absolute",
@@ -997,7 +1023,6 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
             height: "15px",
             textAlign: "center",
           }}
-          // Remove the data-print-value attribute to prevent duplication
         />
       </div>
     </div>

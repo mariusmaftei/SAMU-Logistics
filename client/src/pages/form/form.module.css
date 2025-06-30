@@ -5,7 +5,7 @@
   background-color: #e6f2ff;
   overflow: hidden;
   position: relative;
-  margin-left: 64px; /* Fixed sidebar width */
+  margin-left: 64px;
   padding-left: 0;
 }
 
@@ -13,20 +13,19 @@
   flex: 1;
   width: 100%;
   position: relative;
-  overflow-y: auto; /* Add vertical scrolling */
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Change from center to flex-start to handle tall content */
+  align-items: flex-start;
   padding: 2rem;
-  height: 100vh; /* Ensure it takes full viewport height */
+  height: 100vh;
 }
 
-/* Add styles to maintain form integrity at higher zoom levels */
 .formContainer {
   position: relative;
-  width: 210mm; /* A4 width */
-  height: auto; /* Allow height to adjust based on content */
+  width: 210mm;
+  height: auto;
   margin: 0 auto;
   transform-origin: top center;
   will-change: transform;
@@ -35,14 +34,12 @@
   align-items: flex-start;
 }
 
-/* Add padding at the bottom to ensure we can scroll to see the entire zoomed form */
 .main::after {
   content: "";
   display: block;
-  height: 100px; /* Add extra space at the bottom */
+  height: 100px;
 }
 
-/* Add this to ensure proper print behavior */
 @media print {
   .container {
     margin-left: 0 !important;
@@ -61,7 +58,6 @@
     display: block !important;
   }
 
-  /* Ensure the form is properly positioned and at 100% zoom */
   .formContainer {
     position: fixed !important;
     top: 0 !important;
@@ -75,7 +71,6 @@
   }
 }
 
-/* Add a specific class for when we're in print mode */
 body.printing .formContainer {
   transform: scale(1) !important;
   margin: 0 !important;

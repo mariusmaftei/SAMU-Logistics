@@ -25,7 +25,7 @@
 .title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: rgb(30 41 59); /* Updated to match header color */
+  color: rgb(30 41 59);
   margin-bottom: 0.75rem;
 }
 
@@ -50,17 +50,17 @@
 }
 
 .confirmButton {
-  background-color: rgb(30 41 59); /* Updated to match header color */
+  background-color: rgb(30 41 59);
   color: white;
 }
 
 .confirmButton:hover {
-  background-color: rgb(51 65 85); /* Slightly lighter on hover */
+  background-color: rgb(51 65 85);
 }
 
 .cancelButton {
   background-color: white;
-  color: rgb(30 41 59); /* Updated to match header color */
+  color: rgb(30 41 59);
   border: 1px solid rgb(203 213 225);
 }
 
@@ -88,7 +88,6 @@
   }
 }
 
-/* Add print styles to hide modal when printing */
 @media print {
   .overlay {
     display: none !important;

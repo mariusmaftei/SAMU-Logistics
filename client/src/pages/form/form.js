@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-import SideBar from "../../components/UI/SideBar/SideBar";
 import ProposalForm from "../../components/Form/proposal-form";
 import BudgetCommitmentForm from "../../components/Form/budget-commitment-form";
 import PaymentOrderForm from "../../components/Form/payment-order-form";
 import styles from "../form/form.module.css";
 import { useZoom } from "../../context/ZoomContext";
+import { useOutletContext } from "react-router-dom";
 
 export default function Form() {
-  const [currentFormType, setCurrentFormType] = useState("payment_order");
+  const { currentFormType } = useOutletContext();
   const formContainerRef = useRef(null);
   const { zoomLevel } = useZoom();
 
@@ -29,6 +29,10 @@ export default function Form() {
     additionalInput4: "",
     bottomDate1: "", // Add this new field
     bottomDate2: "", // Add this new field
+    category: "", // New field for category dropdown
+    inputField1: "", // New autofill field 1
+    inputField2: "", // New autofill field 2
+    inputField3: "", // New autofill field 3
   });
 
   // Apply zoom effect whenever zoomLevel changes
@@ -66,11 +70,11 @@ export default function Form() {
   const handleReset = () => {
     setFormData({
       dateIssued: "",
+      category: "", // Reset category
+      inputField1: "", // Reset autofill fields
+      inputField2: "",
+      inputField3: "",
     });
-  };
-
-  const handleFormTypeChange = (formType) => {
-    setCurrentFormType(formType);
   };
 
   const handleDateKeyDown = (e) => {
@@ -165,13 +169,14 @@ export default function Form() {
     }
   };
 
+  // Make handleReset and onFormTypeChange available to the RootLayout
+  useEffect(() => {
+    // Expose the reset function to the window so the sidebar can access it
+    window.handleFormReset = handleReset;
+  }, []);
+
   return (
     <div className={styles.container}>
-      <SideBar
-        onReset={handleReset}
-        currentFormType={currentFormType}
-        onFormTypeChange={handleFormTypeChange}
-      />
       <main className={styles.main}>
         <div
           ref={formContainerRef}

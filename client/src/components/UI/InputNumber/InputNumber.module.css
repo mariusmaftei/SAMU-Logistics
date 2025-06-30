@@ -12,7 +12,6 @@
   text-align: center;
 }
 
-/* Override browser autofill styles */
 .inputNumber:-webkit-autofill,
 .inputNumber:-webkit-autofill:hover,
 .inputNumber:-webkit-autofill:focus,
@@ -23,7 +22,6 @@
   background-color: transparent !important;
 }
 
-/* Firefox autofill override */
 .inputNumber:autofill {
   background-color: transparent !important;
   color: rgb(31 41 55) !important;
@@ -33,7 +31,6 @@
   outline: none;
 }
 
-/* Print styles */
 @media print {
   .inputNumber {
     color: transparent !important;

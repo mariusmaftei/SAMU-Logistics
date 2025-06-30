@@ -12,27 +12,27 @@
 }
 
 .logo {
-  width: 180px; /* Increased size */
+  width: 180px;
   height: auto;
   object-fit: contain;
 }
 
 .loadingText {
   margin-top: 1.5rem;
-  font-size: 1.5rem; /* Larger text */
+  font-size: 1.5rem;
   color: rgb(30 41 59);
   font-weight: 500;
 }
 
 .ldsRoller {
   position: relative;
-  width: 80px; /* Increased size */
-  height: 80px; /* Increased size */
+  width: 80px;
+  height: 80px;
 }
 
 .ldsRoller div {
   animation: ldsRoller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  transform-origin: 40px 40px; /* Adjusted for new size */
+  transform-origin: 40px 40px;
   position: absolute;
 }
 
@@ -40,14 +40,13 @@
   content: " ";
   display: block;
   position: absolute;
-  width: 8px; /* Larger dots */
-  height: 8px; /* Larger dots */
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: rgb(30 41 59);
-  margin: -4px 0 0 -4px; /* Adjusted for new dot size */
+  margin: -4px 0 0 -4px;
 }
 
-/* Update positions for the larger spinner */
 .ldsRoller div:nth-child(1) {
   animation-delay: -0.036s;
 }

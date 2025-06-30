@@ -1,14 +1,10 @@
-"use client";
-
 import { useState, useEffect, useRef } from "react";
-import { Pencil, Trash2, Plus } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { useFormEntries } from "../../context/FormEntriesContext";
 import styles from "../form-entries/form-entries.module.css";
-import SAMULogo from "../../assets/images/samu-logo.png";
-import EntryModal from "../../components/UI/entry-modal/EntryModal";
+import EntryModal from "../../components/UI/EntryModal/EntryModal";
 import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
 import ConfirmModal from "../../components/UI/confirm-modal/ConfirmModal";
-import { Link } from "react-router-dom";
 
 export default function FormEntries() {
   const { formEntries, loading, error, deleteEntry, refreshEntries } =
@@ -18,12 +14,12 @@ export default function FormEntries() {
   const [hasHorizontalScroll, setHasHorizontalScroll] = useState(false);
   const tableContainerRef = useRef(null);
   const [columnWidths, setColumnWidths] = useState({
-    0: "20%", // Name
-    1: "25%", // Address
-    2: "15%", // CUI/CIF
-    3: "9%", // IBAN (reduced by 40% from 15%)
-    4: "21%", // Treasury (increased to compensate)
-    5: "10%", // Actions
+    0: "20%",
+    1: "25%",
+    2: "15%",
+    3: "9%",
+    4: "21%",
+    5: "10%",
   });
   const [resizing, setResizing] = useState(null);
   const [startX, setStartX] = useState(0);
@@ -38,7 +34,7 @@ export default function FormEntries() {
   });
 
   const handleAddNew = () => {
-    setCurrentEntry(null); // Reset current entry to ensure we're in "add" mode
+    setCurrentEntry(null);
     setIsModalOpen(true);
   };
 
@@ -56,27 +52,29 @@ export default function FormEntries() {
       onConfirm: async () => {
         try {
           await deleteEntry(id);
-          // Close the modal after successful deletion
+
           setModalConfig((prev) => ({ ...prev, isOpen: false }));
         } catch (err) {
           console.error("Error deleting entry:", err);
-          // You could show an error notification here
+
           setModalConfig((prev) => ({ ...prev, isOpen: false }));
         }
       },
     });
   };
 
-  const handleSaveEntry = () => {
-    setIsModalOpen(false);
-    // The context will automatically refresh the entries
-  };
-
   const closeConfirmModal = () => {
     setModalConfig((prev) => ({ ...prev, isOpen: false }));
   };
 
-  // Check if table has horizontal scroll
+  const handleSaveEntry = () => {
+    setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    window.handleAddEntry = handleAddNew;
+  }, []);
+
   useEffect(() => {
     const checkForHorizontalScroll = () => {
       if (tableContainerRef.current) {
@@ -95,12 +93,10 @@ export default function FormEntries() {
     };
   }, [formEntries, columnWidths]);
 
-  // Column resizing handlers
   const handleResizeStart = (index, e) => {
     e.preventDefault();
     setResizing(index);
 
-    // Get the current width of the column
     const headerCell = tableRef.current.querySelector(
       `th:nth-child(${index + 1})`
     );
@@ -109,7 +105,6 @@ export default function FormEntries() {
     setStartX(e.clientX);
     setStartWidth(initialWidth);
 
-    // Show resize line at initial position
     if (resizeLineRef.current) {
       const headerRect = headerCell.getBoundingClientRect();
       const tableRect = tableRef.current.getBoundingClientRect();
@@ -121,7 +116,6 @@ export default function FormEntries() {
       resizeLineRef.current.style.opacity = 1;
     }
 
-    // Add event listeners for resize
     document.addEventListener("mousemove", handleResizeMove);
     document.addEventListener("mouseup", handleResizeEnd);
   };
@@ -136,65 +130,52 @@ export default function FormEntries() {
     );
     const headerRect = headerCell.getBoundingClientRect();
 
-    // Calculate the difference from the start position
     const diff = e.clientX - startX;
 
-    // Limit the resize range to ±200px from original size
     const limitedDiff = Math.max(
       Math.min(diff, 200),
       -Math.min(startWidth - 50, 200)
     );
 
-    // Calculate new position
     const newPosition = headerRect.right - tableRect.left + limitedDiff;
 
-    // Update resize line position
     resizeLineRef.current.style.left = `${newPosition}px`;
   };
 
   const handleResizeEnd = (e) => {
     if (resizing === null || !tableRef.current) return;
 
-    // Calculate new width with limits
     const diff = e.clientX - startX;
 
-    // Limit the resize range to ±200px from original size
     const limitedDiff = Math.max(
       Math.min(diff, 200),
       -Math.min(startWidth - 50, 200)
     );
     const newWidth = startWidth + limitedDiff;
 
-    // Get table width
     const tableWidth = tableRef.current.getBoundingClientRect().width;
 
-    // Calculate percentage width
     const percentWidth = `${Math.max(
       5,
       Math.min(80, (newWidth / tableWidth) * 100)
     )}%`;
 
-    // Update column widths
     setColumnWidths((prev) => ({
       ...prev,
       [resizing]: percentWidth,
     }));
 
-    // Hide resize line
     if (resizeLineRef.current) {
       resizeLineRef.current.classList.remove(styles.active);
       resizeLineRef.current.style.opacity = 0;
     }
 
-    // Clean up
     setResizing(null);
     document.removeEventListener("mousemove", handleResizeMove);
     document.removeEventListener("mouseup", handleResizeEnd);
   };
 
-  // Add a useEffect to handle initial scroll indicator visibility for 1366x768 screens
   useEffect(() => {
-    // Show scroll indicator initially on smaller screens
     const showInitialScrollIndicator = () => {
       if (window.innerWidth <= 1366 && tableContainerRef.current) {
         const hasScroll =
@@ -202,7 +183,6 @@ export default function FormEntries() {
           tableContainerRef.current.clientWidth;
 
         if (hasScroll) {
-          // Find or create the scroll indicator
           let indicator = tableContainerRef.current.querySelector(
             `.${styles.scrollIndicator}`
           );
@@ -214,10 +194,8 @@ export default function FormEntries() {
             tableContainerRef.current.appendChild(indicator);
           }
 
-          // Make it visible initially
           indicator.style.opacity = "0.8";
 
-          // Hide after 3 seconds
           setTimeout(() => {
             indicator.style.opacity = "";
           }, 3000);
@@ -225,41 +203,13 @@ export default function FormEntries() {
       }
     };
 
-    // Run after component mounts and table data is loaded
     if (!loading && formEntries.length > 0) {
       showInitialScrollIndicator();
     }
-  }, [loading, formEntries, styles.scrollIndicator]);
+  }, [loading, formEntries]);
 
   return (
     <div className={styles.container}>
-      <div className={styles.sidebar}>
-        {/* Logo at the top of sidebar */}
-        <Link to="/" className={styles.logoContainer}>
-          <img
-            src={SAMULogo || "/placeholder.svg"}
-            alt="SAMU Logistics Logo"
-            className={styles.logo}
-          />
-        </Link>
-
-        <div className={styles.buttonContainer}>
-          <div className={styles.buttonLabel}>Adaugă</div>
-          <div className={styles.tooltipContainer}>
-            <button
-              onClick={handleAddNew}
-              className={`${styles.button} ${styles.buttonAdd}`}
-              aria-label="Add Entry"
-            >
-              <Plus className={styles.icon} />
-            </button>
-            <div className={styles.tooltip}>
-              <div className={styles.tooltipContent}>Adaugă o nouă intrare</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <main className={styles.main}>
         {loading || (!formEntries.length && error) ? (
           <div className={styles.centeredSpinner}>
@@ -390,6 +340,13 @@ export default function FormEntries() {
           </div>
         )}
       </main>
+
+      {/* Hidden button that can be triggered by the sidebar */}
+      <button
+        onClick={handleAddNew}
+        style={{ display: "none" }}
+        aria-label="Add Entry"
+      />
 
       <EntryModal
         isOpen={isModalOpen}
