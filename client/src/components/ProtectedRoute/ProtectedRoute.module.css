@@ -1,0 +1,16 @@
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  gap: 20px;
+}
+
+.loadingText {
+  font-size: 18px;
+  color: #64748b;
+  font-weight: 500;
+  margin: 0;
+}

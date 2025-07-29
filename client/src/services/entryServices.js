@@ -1,6 +1,6 @@
 import api from "./api";
 
-const ENDPOINT = "/entry";
+const ENDPOINT = "/api/entry"; // Fixed: Added /api prefix
 
 const entryService = {
   getAllEntries: async () => {

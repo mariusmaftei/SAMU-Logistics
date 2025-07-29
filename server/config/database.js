@@ -1,22 +1,27 @@
 import mongoose from "mongoose";
+import MongoStore from "connect-mongo";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-// MongoDB connection string
 const MONGODB_URI = process.env.MONGODB_URI;
 
-// Connect to MongoDB
-const connectDB = async () => {
+const databaseConnect = async () => {
   try {
     const conn = await mongoose.connect(MONGODB_URI);
-
     console.log(`MongoDB Connected: ${conn.connection.host}`);
-    return conn;
   } catch (error) {
-    console.error(`Error connecting to MongoDB: ${error.message}`);
+    console.error("Database connection error:", error);
     process.exit(1);
   }
 };
 
-export default connectDB;
+export const createSessionStore = () => {
+  return MongoStore.create({
+    mongoUrl: MONGODB_URI,
+    touchAfter: 24 * 3600,
+    ttl: 24 * 60 * 60,
+  });
+};
+
+export default databaseConnect;

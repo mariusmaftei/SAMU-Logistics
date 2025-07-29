@@ -1,14 +1,23 @@
 import { useState, useRef, useEffect } from "react";
-import { Menu, X, FileText, Database } from "lucide-react";
+import { Menu, X, FileText, Database, LogOut, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import SamuLogo from "../../../assets/images/samu-logo.png";
 import styles from "./Header.module.css";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const location = useLocation();
+  const { isAuthenticated, logout, user } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -39,6 +48,11 @@ export default function Header() {
     setIsMenuOpen(false);
   };
 
+  // Don't show header on auth page
+  if (location.pathname === "/auth") {
+    return null;
+  }
+
   return (
     <>
       <button
@@ -54,43 +68,73 @@ export default function Header() {
         ref={menuRef}
         className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}
       >
-        <Link to="/" className={styles.userSection}>
-          <div className={styles.userIcon}>
-            <img src={SamuLogo} alt="samu-logo" />
+        {/* User section with profile */}
+        {isAuthenticated && user && (
+          <div className={styles.userSection}>
+            <div className={styles.userProfile}>
+              <div className={styles.userAvatar}>
+                {user.profileImage ? (
+                  <img
+                    src={user.profileImage || "/placeholder.svg"}
+                    alt={user.name}
+                    className={styles.avatarImage}
+                  />
+                ) : (
+                  <User className={styles.avatarIcon} />
+                )}
+              </div>
+              <div className={styles.userInfo}>
+                <span className={styles.userName}>{user.name}</span>
+                <span className={styles.userEmail}>{user.email}</span>
+              </div>
+            </div>
+
+            <button
+              onClick={handleLogout}
+              className={styles.logoutButton}
+              aria-label="Deconectare"
+            >
+              <LogOut className={styles.logoutIcon} />
+              <span className={styles.logoutText}>Deconectare</span>
+            </button>
           </div>
-          <span className={styles.username}>SAMU Logistics</span>
-        </Link>
+        )}
 
         <div className={styles.divider} />
 
-        <ul className={styles.navList}>
-          <li>
-            <Link
-              to="/form"
-              className={`${styles.navLink} ${
-                location.pathname === "/form" || location.pathname === "/"
-                  ? styles.active
-                  : ""
-              }`}
-              onClick={closeMenu}
-            >
-              <FileText className={styles.navIcon} />
-              <span>Formular</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/entries"
-              className={`${styles.navLink} ${
-                location.pathname === "/entries" ? styles.active : ""
-              }`}
-              onClick={closeMenu}
-            >
-              <Database className={styles.navIcon} />
-              <span>Intrări Formular</span>
-            </Link>
-          </li>
-        </ul>
+        {/* Show navigation only if authenticated */}
+        {isAuthenticated && (
+          <ul className={styles.navList}>
+            <li>
+              <Link
+                to="/form"
+                className={`${styles.navLink} ${
+                  location.pathname === "/form" || location.pathname === "/"
+                    ? styles.active
+                    : ""
+                }`}
+                onClick={closeMenu}
+              >
+                <FileText className={styles.navIcon} />
+                <span>Formular</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/entries"
+                className={`${styles.navLink} ${
+                  location.pathname === "/entries" ? styles.active : ""
+                }`}
+                onClick={closeMenu}
+              >
+                <Database className={styles.navIcon} />
+                <span>Intrări Formular</span>
+              </Link>
+            </li>
+          </ul>
+        )}
+
+        {/* Remove the UserMenu since we're handling it in the userSection now */}
       </nav>
 
       {isMenuOpen && <div className={styles.overlay} onClick={closeMenu} />}

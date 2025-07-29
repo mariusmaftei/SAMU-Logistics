@@ -1,38 +1,51 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import RootLayout from "./components/layout/root-layout/RootLayout";
-import Form from "./pages/form/form";
-import FormEntries from "./pages/form-entries/form-entries";
 import Home from "./pages/home/home";
-import { ZoomProvider } from "./context/ZoomContext";
-import { FormEntriesProvider } from "./context/FormEntriesContext";
+
+import AuthPage from "./pages/auth/AuthPage";
+import RootLayout from "./components/RootLayout/RootLayout";
+import FormEntriesPage from "./pages/form-entries/FormEntriesPage";
+import SubmitFormPage from "./pages/submit-form/SubmitFormPage";
+
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import UnauthorizedPage from "./pages/unauthorized/UnauthorizedPage";
 
 export default function App() {
   const router = createBrowserRouter([
     {
+      path: "/auth",
+      element: <AuthPage />,
+    },
+    {
+      path: "/unauthorized",
+      element: <UnauthorizedPage />,
+    },
+    {
       path: "/",
-      element: <RootLayout />,
+      element: (
+        <ProtectedRoute>
+          <RootLayout />
+        </ProtectedRoute>
+      ),
       children: [
         {
           path: "/",
           element: <Home />,
         },
         {
+          path: "/samu-logistics",
+          element: <Home />,
+        },
+        {
           path: "/form",
-          element: <Form />,
+          element: <SubmitFormPage />,
         },
         {
           path: "/entries",
-          element: <FormEntries />,
+          element: <FormEntriesPage />,
         },
       ],
     },
   ]);
 
-  return (
-    <FormEntriesProvider>
-      <ZoomProvider>
-        <RouterProvider router={router} />
-      </ZoomProvider>
-    </FormEntriesProvider>
-  );
+  return <RouterProvider router={router} />;
 }

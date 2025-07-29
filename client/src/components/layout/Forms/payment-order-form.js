@@ -1,13 +1,13 @@
-"use client";
-
 import { useRef, useEffect, useState, useMemo } from "react";
-import styles from "../Form/payment-order-form.module.css";
-import { useFormEntries } from "../../context/FormEntriesContext";
-import OPimage from "../../assets/images/ordonantare-de-plata.png";
-import BeneficiaryDropdown from "../UI/Dropdown/Dropdown";
-import SimpleDropdown from "../UI//SimpleDropdown/SimpleDropdown";
-import DateInput from "../UI/DateInput/DateInput";
-import InputNumber from "../UI/InputNumber/InputNumber";
+import styles from "./payment-order-form.module.css";
+
+import { useFormEntries } from "../../../context/FormEntriesContext";
+
+import OPimage from "../../../assets/images/ordonantare-de-plata.png";
+import BeneficiaryDropdown from "../../UI/BeneficiaryDropdown/BeneficiaryDropdown";
+import SimpleDropdown from "../../UI//SimpleDropdown/SimpleDropdown";
+import DateInput from "../../UI/DateInput/DateInput";
+import InputNumber from "../../UI/InputNumber/InputNumber";
 
 export default function PaymentOrderForm({ formData, handleInputChange }) {
   const containerRef = useRef(null);

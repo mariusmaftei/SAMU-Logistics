@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, Check } from "lucide-react";
-import styles from "../Dropdown/Dropdown.module.css";
+import styles from "./BeneficiaryDropdown.module.css";
 export default function BeneficiaryDropdown({
   value,
   onChange,

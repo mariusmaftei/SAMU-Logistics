@@ -112,7 +112,6 @@ export default function EntryModal({
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.compactFormLayout}>
-            {/* Personal Information */}
             <div className={styles.formSection}>
               <h3 className={styles.sectionTitle}>Informații personale</h3>
 

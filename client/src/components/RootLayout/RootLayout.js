@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
-import Header from "../Header/Header";
+import Header from "../layout/Header/Header";
 import { Outlet, useLocation } from "react-router-dom";
-import SideBar from "../../UI/SideBar/SideBar";
+import SideBar from "../layout/SideBar/SideBar";
 import { Plus } from "lucide-react";
 import styles from "./RootLayout.module.css";
 

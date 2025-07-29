@@ -1,43 +1,114 @@
 import express from "express";
+import dotenv from "dotenv";
 import cors from "cors";
+import session from "express-session";
+import passport from "passport";
+
+import databaseConnect from "./config/database.js";
+import { sessionConfig } from "./config/session.js";
+import "./config/passport.js";
+
+import authRoute from "./routes/authRoutes.js";
 import entryRoute from "./routes/entry.js";
-import connectDB from "./config/database.js";
+
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-// Middleware
+// CORS configuration - Fixed to work with credentials
+const allowedOrigins = ["http://localhost:3000"];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true, // This is crucial for cookies/sessions
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 200, // Some legacy browsers choke on 204
+  })
+);
+
 app.use(express.json());
-app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+
+// Session and Passport setup
+app.use(session(sessionConfig));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Log requests for debugging
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`, {
+    isAuthenticated: req.isAuthenticated ? req.isAuthenticated() : false,
+    user: req.user ? { id: req.user._id, name: req.user.name } : null,
+    sessionID: req.sessionID,
+  });
+  next();
+});
+
+// Health check
+app.get("/", (req, res) => {
+  res.json({
+    status: "OK",
+    service: "SAMU-Logistics API",
+    message: "The SAMU-Logistics backend service is up and running.",
+    version: "1.0.0",
+    timestamp: new Date().toISOString(),
+    user: req.user
+      ? {
+          id: req.user._id,
+          name: req.user.name,
+          email: req.user.email,
+        }
+      : null,
+    isAuthenticated: req.isAuthenticated ? req.isAuthenticated() : false,
+  });
+});
 
 // Routes
-app.get("/", (req, res) => {
-  res.send(`<h1>SAMU Logistics API</h1> 
-    <p>Welcome to the SAMU Logistics API</p>
-    <p>Use /entry endpoint to access the furnizor data</p>`);
+app.use("/auth", authRoute);
+app.use("/api/entry", entryRoute); // Fixed: Added /api prefix
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    message: "Route not found",
+    path: req.originalUrl,
+  });
 });
 
-app.use("/entry", entryRoute);
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
+// Error handler
+app.use((error, req, res, next) => {
+  console.error("Server error:", error);
+  res.status(500).json({
+    message: "Internal server error",
+    error:
+      process.env.NODE_ENV === "development"
+        ? error.message
+        : "Something went wrong",
+  });
 });
 
-// Connect to MongoDB and start server
-const startServer = async () => {
+// Launch server
+const server = () => {
   try {
-    await connectDB();
-
+    databaseConnect();
     app.listen(port, () => {
-      console.log(`Server has started on port ${port}`);
-      console.log("Connected to MongoDB");
+      console.log(`Server running on port ${port}`);
     });
   } catch (error) {
-    console.error(`Error starting server: ${error.message}`);
+    console.error("Server failed to start:", error);
     process.exit(1);
   }
 };
 
-startServer();
+server();

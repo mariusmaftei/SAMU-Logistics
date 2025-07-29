@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { useFormEntries } from "../../context/FormEntriesContext";
-import styles from "../form-entries/form-entries.module.css";
+import styles from "./FormEntriesPage.module.css";
 import EntryModal from "../../components/UI/EntryModal/EntryModal";
 import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
-import ConfirmModal from "../../components/UI/confirm-modal/ConfirmModal";
+import ConfirmModal from "../../components/UI/ConfirmModal/ConfirmModal";
 
-export default function FormEntries() {
+export default function FormEntriesPage() {
   const { formEntries, loading, error, deleteEntry, refreshEntries } =
     useFormEntries();
   const [isModalOpen, setIsModalOpen] = useState(false);

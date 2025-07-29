@@ -12,10 +12,10 @@ import {
   RefreshCw,
 } from "lucide-react";
 import html2pdf from "html2pdf.js";
-import styles from "../SideBar/SideBar.module.css";
+import styles from "./SideBar.module.css";
 import { useZoom } from "../../../context/ZoomContext";
 import SamuLogo from "../../../assets/images/samu-logo.png";
-import ConfirmModal from "../confirm-modal/ConfirmModal";
+import ConfirmModal from "../../UI/ConfirmModal/ConfirmModal";
 
 export default function SideBar({
   onReset,

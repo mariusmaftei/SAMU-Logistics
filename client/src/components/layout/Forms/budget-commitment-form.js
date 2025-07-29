@@ -1,10 +1,12 @@
 import { useState, useMemo, useRef, useEffect } from "react";
-import styles from "../Form/budget-commitment-form.module.css";
-import ABIimage from "../../assets/images/angajament-bugetar-individual.jpg";
-import DateInput from "../UI/DateInput/DateInput";
-import { useFormEntries } from "../../context/FormEntriesContext";
-import SimpleDropdown from "../UI/SimpleDropdown/SimpleDropdown";
-import BeneficiaryDropdown from "../UI/Dropdown/Dropdown";
+import styles from "./budget-commitment-form.module.css";
+
+import { useFormEntries } from "../../../context/FormEntriesContext";
+
+import ABIimage from "../../../assets/images/angajament-bugetar-individual.jpg";
+import DateInput from "../../UI/DateInput/DateInput";
+import SimpleDropdown from "../../UI/SimpleDropdown/SimpleDropdown";
+import BeneficiaryDropdown from "../../UI/BeneficiaryDropdown/BeneficiaryDropdown";
 
 export default function BudgetCommitmentForm({
   formData,
@@ -118,7 +120,7 @@ export default function BudgetCommitmentForm({
   };
 
   const handleCategoryChange = (e) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     handleFormInputChange(e); // Update the form data state
 
     // Update selected text for print overlay

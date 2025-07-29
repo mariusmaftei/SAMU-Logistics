@@ -1,36 +1,39 @@
 import axios from "axios";
 
+// let DEV_API_URL = "http://localhost:8080";
+let DEV_API_URL = "https://samu-logistics-server.qcpobm.easypanel.host";
+
 const api = axios.create({
-  baseURL: "https://samu-logistic-server-nosql.onrender.com",
+  baseURL: DEV_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true, // This is crucial for sending cookies/session data
 });
 
+// Add request interceptor for debugging
 api.interceptors.request.use(
   (config) => {
-    console.log(`API Request: ${config.method.toUpperCase()} ${config.url}`);
+    console.log(
+      `Making ${config.method?.toUpperCase()} request to:`,
+      config.url
+    );
     return config;
   },
   (error) => {
-    console.error("API Request Error:", error);
+    console.error("Request error:", error);
     return Promise.reject(error);
   }
 );
 
+// Add response interceptor for debugging
 api.interceptors.response.use(
   (response) => {
-    console.log(`API Response: ${response.status} from ${response.config.url}`);
+    console.log(`Response from ${response.config.url}:`, response.data);
     return response;
   },
   (error) => {
-    if (error.response) {
-      console.error(`API Error ${error.response.status}:`, error.response.data);
-    } else if (error.request) {
-      console.error("API No Response:", error.request);
-    } else {
-      console.error("API Error:", error.message);
-    }
+    console.error("Response error:", error.response?.data || error.message);
     return Promise.reject(error);
   }
 );

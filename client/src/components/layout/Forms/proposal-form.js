@@ -1,13 +1,14 @@
-"use client";
-
 import { useRef, useState, useEffect, useMemo } from "react";
 import styles from "./proposal-form.module.css";
-import ProposalFormImage from "../../assets/images/propunere-de-angajare.jpg";
-import DateInput from "../UI/DateInput/DateInput";
-import SimpleDropdown from "../UI/SimpleDropdown/SimpleDropdown";
-import BeneficiaryDropdown from "../UI/Dropdown/Dropdown";
-import { useFormEntries } from "../../context/FormEntriesContext";
-import InputNumber from "../UI/InputNumber/InputNumber"; // Import InputNumber
+
+import { useFormEntries } from "../../../context/FormEntriesContext";
+
+import ProposalFormImage from "../../../assets/images/propunere-de-angajare.jpg";
+import DateInput from "../../UI/DateInput/DateInput";
+import SimpleDropdown from "../../UI/SimpleDropdown/SimpleDropdown";
+import BeneficiaryDropdown from "../../UI/BeneficiaryDropdown/BeneficiaryDropdown";
+
+import InputNumber from "../../UI/InputNumber/InputNumber";
 
 export default function ProposalForm({
   formData,

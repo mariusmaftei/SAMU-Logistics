@@ -1,0 +1,277 @@
+.authPage {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #003366;
+  padding: 2rem;
+}
+
+/* Simple linear gradient background - same as home */
+.gradientBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffffff, #e6f2ff, #cce6ff);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Simple gradient animation - same as home */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Content styling - same as home */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  padding: 2rem;
+}
+
+.logoContainer {
+  margin-bottom: 2rem;
+  animation: gentleBounce 6s ease-in-out infinite;
+}
+
+.logo {
+  width: 280px;
+  height: auto;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #003366;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 3rem;
+  color: #0066cc;
+  max-width: 600px;
+}
+
+@keyframes gentleBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Auth Card */
+.authCard {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 40px rgba(0, 51, 102, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 450px;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.cardHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.cardTitle {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #003366;
+  margin-bottom: 0.5rem;
+}
+
+.cardSubtitle {
+  font-size: 1rem;
+  color: #0066cc;
+  margin: 0;
+}
+
+.loadingSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 0;
+}
+
+.loadingText {
+  font-size: 1rem;
+  color: #0066cc;
+  margin: 0;
+}
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  border: 1px solid #fecaca;
+}
+
+.errorIcon {
+  flex-shrink: 0;
+}
+
+.googleButton {
+  width: 100%;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.googleButton:hover:not(:disabled) {
+  border-color: #0066cc;
+  box-shadow: 0 8px 20px rgba(0, 102, 204, 0.15);
+  transform: translateY(-2px);
+}
+
+.googleButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.buttonContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.googleIcon {
+  flex-shrink: 0;
+}
+
+.buttonText {
+  color: #374151;
+}
+
+.spinner,
+.buttonSpinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e2e8f0;
+  border-top: 2px solid #0066cc;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.restrictionNotice {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  text-align: center;
+}
+
+.restrictionNotice p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #856404;
+  font-weight: 500;
+}
+
+/* Responsive styles - same as home */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+  }
+
+  .logo {
+    width: 220px;
+  }
+
+  .authCard {
+    padding: 2rem;
+    margin: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .logo {
+    width: 180px;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .authCard {
+    padding: 1.5rem;
+  }
+
+  .googleButton {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+
+  .buttonContent {
+    gap: 10px;
+  }
+}

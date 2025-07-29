@@ -1,5 +1,3 @@
-"use client";
-
 import { ZoomIn, ZoomOut, RefreshCw } from "lucide-react";
 import { useZoom } from "../../context/ZoomContext";
 import styles from "./ZoomControls.module.css";

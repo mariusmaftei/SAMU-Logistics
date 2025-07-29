@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import ProposalForm from "../../components/Form/proposal-form";
-import BudgetCommitmentForm from "../../components/Form/budget-commitment-form";
-import PaymentOrderForm from "../../components/Form/payment-order-form";
-import styles from "../form/form.module.css";
+import styles from "./SubmitFormPage.module.css";
+
 import { useZoom } from "../../context/ZoomContext";
 import { useOutletContext } from "react-router-dom";
+
+import ProposalForm from "../../components/layout/Forms/proposal-form";
+import BudgetCommitmentForm from "../../components/layout/Forms/budget-commitment-form";
+import PaymentOrderForm from "../../components/layout/Forms/payment-order-form";
 
 export default function Form() {
   const { currentFormType } = useOutletContext();

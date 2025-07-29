@@ -1,3 +1,5 @@
+"use client";
+
 import {
   createContext,
   useContext,
@@ -6,9 +8,12 @@ import {
   useCallback,
 } from "react";
 import entryService from "../services/entryServices";
+import { useAuth } from "./AuthContext";
 
+// Create the context
 const FormEntriesContext = createContext();
 
+// Custom hook to use the context
 export const useFormEntries = () => {
   const context = useContext(FormEntriesContext);
   if (!context) {
@@ -17,37 +22,51 @@ export const useFormEntries = () => {
   return context;
 };
 
+// Provider component
 export const FormEntriesProvider = ({ children }) => {
   const [formEntries, setFormEntries] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const { isAuthenticated } = useAuth();
 
+  // Function to refresh the data
   const refreshEntries = useCallback(() => {
     setRefreshTrigger((prev) => prev + 1);
   }, []);
 
+  // Fetch all entries - only when authenticated
   useEffect(() => {
+    if (!isAuthenticated) {
+      setFormEntries([]);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
     const fetchEntries = async () => {
       setLoading(true);
       setError(null);
       try {
         const result = await entryService.getAllEntries();
         setFormEntries(result.data || []);
-        setLoading(false);
       } catch (err) {
         console.error("Error fetching entries:", err);
-        setError(err.response?.data?.error || "Failed to fetch entries");
-
-        if (formEntries.length > 0) {
-          setLoading(false);
+        if (err.response?.status === 401) {
+          // Authentication error - don't show as error, just clear entries
+          setFormEntries([]);
+        } else {
+          setError(err.response?.data?.error || "Failed to fetch entries");
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchEntries();
-  }, [refreshTrigger, formEntries.length]);
+  }, [refreshTrigger, isAuthenticated]);
 
+  // Create a new entry
   const createEntry = async (entryData) => {
     setLoading(true);
     setError(null);
@@ -65,12 +84,14 @@ export const FormEntriesProvider = ({ children }) => {
     }
   };
 
+  // Update an existing entry
   const updateEntry = async (id, entryData) => {
     setLoading(true);
     setError(null);
     try {
       const result = await entryService.updateEntry(id, entryData);
 
+      // Update the entry in the local state
       setFormEntries((prev) =>
         prev.map((entry) =>
           entry._id === id || entry.id === id ? result.data : entry
@@ -88,6 +109,7 @@ export const FormEntriesProvider = ({ children }) => {
     }
   };
 
+  // Delete an entry
   const deleteEntry = async (id) => {
     setLoading(true);
     setError(null);
@@ -106,10 +128,12 @@ export const FormEntriesProvider = ({ children }) => {
     }
   };
 
+  // Helper function to find a beneficiary by name
   const getBeneficiaryByName = (name) => {
     return formEntries.find((entry) => entry.Nume_Furnizor === name) || null;
   };
 
+  // Value object to be provided by the context
   const value = {
     formEntries,
     loading,
