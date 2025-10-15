@@ -54,7 +54,29 @@ export const logout = (req, res) => {
           });
         }
 
-        res.clearCookie("connect.sid"); // Clear the session cookie
+        // Clear the session cookie explicitly for Firefox compatibility
+        const isFirefox =
+          req.headers["user-agent"] &&
+          req.headers["user-agent"].includes("Firefox");
+
+        res.clearCookie("samu-logistics.sid", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none", // Consistent with session config
+          partitioned: false,
+          // Firefox ETP specific settings
+          ...(isFirefox && {
+            priority: "high",
+          }),
+        });
+
+        // Firefox ETP compatibility: add additional headers for logout
+        if (isFirefox) {
+          res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+          res.header("Pragma", "no-cache");
+          res.header("Expires", "0");
+        }
+
         res.status(200).json({
           success: true,
           message: "Logged out successfully",
@@ -75,22 +97,33 @@ export const logout = (req, res) => {
 // @access  Public
 export const getAuthStatus = (req, res) => {
   try {
-    if (req.user) {
-      res.status(200).json({
-        success: true,
-        authenticated: true,
+    console.log("Auth status check:", {
+      isAuthenticated: req.isAuthenticated(),
+      sessionID: req.sessionID,
+      userEmail: req.user?.email,
+      userProfileImage: req.user?.profileImage,
+      cookies: req.headers.cookie,
+      origin: req.headers.origin,
+      userAgent: req.headers["user-agent"],
+      referer: req.headers.referer,
+      sessionCookie: req.session.cookie,
+    });
+
+    if (req.isAuthenticated()) {
+      res.json({
+        isAuthenticated: true,
         user: {
           id: req.user._id,
           name: req.user.name,
           email: req.user.email,
-          profileImage: req.user.profileImage, // Make sure this is included
+          profileImage: req.user.profileImage,
           role: req.user.role,
+          lastLogin: req.user.lastLogin,
         },
       });
     } else {
-      res.status(200).json({
-        success: true,
-        authenticated: false,
+      res.json({
+        isAuthenticated: false,
         user: null,
       });
     }

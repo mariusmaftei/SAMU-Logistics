@@ -11,13 +11,24 @@ const api = axios.create({
   withCredentials: true, // This is crucial for sending cookies/session data
 });
 
-// Add request interceptor for debugging
+// Add request interceptor for debugging and Firefox ETP compatibility
 api.interceptors.request.use(
   (config) => {
     console.log(
       `Making ${config.method?.toUpperCase()} request to:`,
       config.url
     );
+
+    // Firefox Enhanced Tracking Protection compatibility
+    const isFirefox = navigator.userAgent.includes("Firefox");
+    if (isFirefox) {
+      // Add Firefox-specific headers
+      config.headers["Cache-Control"] = "no-cache";
+      config.headers["Pragma"] = "no-cache";
+      // Ensure credentials are properly handled
+      config.withCredentials = true;
+    }
+
     return config;
   },
   (error) => {

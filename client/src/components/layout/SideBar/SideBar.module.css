@@ -28,6 +28,28 @@
   -ms-transform: none !important;
   -moz-transform: none !important;
   -o-transform: none !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar styling to hide or make it subtle */
+.sidebar::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+/* Firefox scrollbar */
+.sidebar {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
 }
 
 .logoContainer {
@@ -290,5 +312,7 @@ body.generating-pdf select {
     -ms-transform: none !important;
     -moz-transform: none !important;
     -o-transform: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
   }
 }

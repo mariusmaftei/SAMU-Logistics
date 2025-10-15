@@ -125,6 +125,7 @@ export default function EntryModal({
                   onChange={handleChange}
                   required
                   className={styles.input}
+                  placeholder="Numele complet al furnizorului"
                   disabled={isSubmitting}
                 />
               </div>
@@ -139,6 +140,7 @@ export default function EntryModal({
                   onChange={handleChange}
                   required
                   className={styles.input}
+                  placeholder="Strada, numărul, orașul, județul"
                   disabled={isSubmitting}
                 />
               </div>
@@ -150,26 +152,27 @@ export default function EntryModal({
 
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
-                  <label htmlFor="CUI_CUI_CIF">Trezorerie</label>
+                  <label htmlFor="Trezorerie_Furnizor">Trezorerie</label>
                   <input
                     type="text"
                     id="treasuryNumber"
-                    name="CUI_CUI_CIF"
-                    value={entry.CUI_CUI_CIF}
+                    name="Trezorerie_Furnizor"
+                    value={entry.Trezorerie_Furnizor}
                     onChange={handleChange}
                     required
                     className={styles.input}
+                    placeholder="Ex: 1234567890"
                     disabled={isSubmitting}
                   />
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label htmlFor="NR_CONT_IBAN">CUI/CIF</label>
+                  <label htmlFor="CUI_CUI_CIF">CUI/CIF</label>
                   <input
                     type="text"
                     id="roCode"
-                    name="NR_CONT_IBAN"
-                    value={entry.NR_CONT_IBAN}
+                    name="CUI_CUI_CIF"
+                    value={entry.CUI_CUI_CIF}
                     onChange={handleChange}
                     required
                     className={styles.input}
@@ -180,16 +183,16 @@ export default function EntryModal({
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="Trezorerie_Furnizor">IBAN</label>
+                <label htmlFor="NR_CONT_IBAN">IBAN</label>
                 <input
                   type="text"
                   id="accountNumber"
-                  name="Trezorerie_Furnizor"
-                  value={entry.Trezorerie_Furnizor}
+                  name="NR_CONT_IBAN"
+                  value={entry.NR_CONT_IBAN}
                   onChange={handleChange}
                   required
                   className={styles.input}
-                  placeholder="RO12TREZ..."
+                  placeholder="RO12TREZ1234567890123456"
                   disabled={isSubmitting}
                 />
               </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useFormEntries } from "../../context/FormEntriesContext";
 import styles from "./FormEntriesPage.module.css";
 import EntryModal from "../../components/UI/EntryModal/EntryModal";
@@ -32,6 +32,10 @@ export default function FormEntriesPage() {
     message: "",
     onConfirm: () => {},
   });
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   const handleAddNew = () => {
     setCurrentEntry(null);
@@ -70,6 +74,40 @@ export default function FormEntriesPage() {
   const handleSaveEntry = () => {
     setIsModalOpen(false);
   };
+
+  // Sort entries by creation date (newest first)
+  const sortedEntries = [...formEntries].sort((a, b) => {
+    const dateA = new Date(a.createdAt || a._id);
+    const dateB = new Date(b.createdAt || b._id);
+    return dateB - dateA; // Descending order (newest first)
+  });
+
+  // Pagination logic
+  const totalPages = Math.ceil(sortedEntries.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentEntries = sortedEntries.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Reset to first page when formEntries change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [sortedEntries.length]);
 
   useEffect(() => {
     window.handleAddEntry = handleAddNew;
@@ -277,7 +315,7 @@ export default function FormEntriesPage() {
                       </td>
                     </tr>
                   ) : (
-                    formEntries.map((entry) => (
+                    currentEntries.map((entry) => (
                       <tr key={entry._id || entry.id}>
                         <td
                           title={entry.Nume_Furnizor}
@@ -337,6 +375,91 @@ export default function FormEntriesPage() {
                 </tbody>
               </table>
             </div>
+
+            {/* Pagination */}
+            {formEntries.length > 0 && totalPages > 1 && (
+              <div className={styles.pagination}>
+                <div className={styles.paginationInfo}>
+                  Afișez {startIndex + 1}-
+                  {Math.min(endIndex, sortedEntries.length)} din{" "}
+                  {sortedEntries.length} intrări
+                </div>
+                <div className={styles.paginationControls}>
+                  <button
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                    className={`${styles.paginationButton} ${styles.previousButton}`}
+                    aria-label="Pagina anterioară"
+                  >
+                    <ChevronLeft className={styles.paginationIcon} />
+                    Anterior
+                  </button>
+
+                  <div className={styles.pageNumbers}>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => {
+                        // Show first page, last page, current page, and pages around current page
+                        const shouldShow =
+                          page === 1 ||
+                          page === totalPages ||
+                          Math.abs(page - currentPage) <= 1;
+
+                        if (!shouldShow) {
+                          // Show ellipsis for gaps
+                          if (page === 2 && currentPage > 4) {
+                            return (
+                              <span
+                                key={`ellipsis-${page}`}
+                                className={styles.ellipsis}
+                              >
+                                ...
+                              </span>
+                            );
+                          }
+                          if (
+                            page === totalPages - 1 &&
+                            currentPage < totalPages - 3
+                          ) {
+                            return (
+                              <span
+                                key={`ellipsis-${page}`}
+                                className={styles.ellipsis}
+                              >
+                                ...
+                              </span>
+                            );
+                          }
+                          return null;
+                        }
+
+                        return (
+                          <button
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            className={`${styles.pageButton} ${
+                              page === currentPage ? styles.activePage : ""
+                            }`}
+                            aria-label={`Pagina ${page}`}
+                          >
+                            {page}
+                          </button>
+                        );
+                      }
+                    )}
+                  </div>
+
+                  <button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                    className={`${styles.paginationButton} ${styles.nextButton}`}
+                    aria-label="Pagina următoare"
+                  >
+                    Următor
+                    <ChevronRight className={styles.paginationIcon} />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </main>

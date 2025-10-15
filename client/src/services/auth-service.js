@@ -23,6 +23,23 @@ const AuthService = {
     try {
       // Get the base URL from the api instance
       const baseURL = api.defaults.baseURL;
+
+      // Firefox Enhanced Tracking Protection compatibility
+      const isFirefox = navigator.userAgent.includes("Firefox");
+      if (isFirefox) {
+        console.log("Firefox detected - using ETP-compatible login method");
+        // For Firefox, we need to ensure the popup/redirect works properly
+        // Clear any existing cookies that might interfere
+        document.cookie.split(";").forEach(function (c) {
+          document.cookie = c
+            .replace(/^ +/, "")
+            .replace(
+              /=.*/,
+              "=;expires=" + new Date().toUTCString() + ";path=/"
+            );
+        });
+      }
+
       // Redirect to Google OAuth endpoint
       window.location.href = `${baseURL}/auth/google`;
     } catch (error) {

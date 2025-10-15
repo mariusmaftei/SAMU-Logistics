@@ -11,8 +11,13 @@ export const sessionConfig = {
     secure: isProduction,
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
-    sameSite: isProduction ? "none" : "lax",
+    sameSite: "none", // Use "none" for cross-origin requests to work in Chrome/Firefox
+    // Firefox ETP compatibility: ensure cookie is properly partitioned
+    partitioned: false, // Disable partitioning for better compatibility
   },
-  name: "softindex.sid",
+  name: "samu-logistics.sid", // Changed to avoid conflicts
   proxy: isProduction,
+  // Firefox-specific session options
+  rolling: true, // Extend session on activity
+  unset: "destroy", // Destroy session on logout
 };

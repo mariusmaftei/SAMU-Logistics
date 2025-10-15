@@ -50,7 +50,6 @@ export default function SideBar({
         sidebarRef.current.style.top = "0";
         sidebarRef.current.style.left = "0";
         sidebarRef.current.style.height = "100vh";
-        sidebarRef.current.style.overflowY = "auto";
       }
     };
 
