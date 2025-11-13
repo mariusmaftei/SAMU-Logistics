@@ -36,10 +36,10 @@ export default function BudgetCommitmentForm({
       const fieldUpdates = [
         {
           name: "beneficiaryAddress",
-          value: beneficiary.Adresa_Furnizor || "",
+          value: beneficiary.address || "",
         },
-        { name: "treasuryNumber", value: beneficiary.CUI_CUI_CIF || "" },
-        { name: "accountNumber", value: beneficiary.NR_CONT_IBAN || "" },
+        { name: "treasuryNumber", value: beneficiary.cui_cif || "" },
+        { name: "accountNumber", value: beneficiary.iban || "" },
       ];
 
       fieldUpdates.forEach((field) => {
@@ -146,7 +146,7 @@ export default function BudgetCommitmentForm({
 
   const beneficiariesForDropdown = formEntries.map((entry) => ({
     id: entry.id || String(Math.random()),
-    Nume_Furnizor: entry.Nume_Furnizor,
+    providers: entry.providers,
   }));
 
   useEffect(() => {

@@ -11,6 +11,20 @@
   padding: 2rem;
 }
 
+/* Container used by AuthPage.js */
+.authContainer {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #003366;
+  padding: 2rem;
+}
+
 /* Simple linear gradient background - same as home */
 .gradientBackground {
   position: absolute;
@@ -46,7 +60,7 @@
   justify-content: center;
   text-align: center;
   z-index: 10;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   position: relative;
   padding: 2rem;
@@ -96,7 +110,7 @@
   padding: 2.5rem;
   box-shadow: 0 20px 40px rgba(0, 51, 102, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  max-width: 450px;
+  max-width: 800px;
   width: 100%;
   margin-top: 1rem;
 }
@@ -273,5 +287,25 @@
 
   .buttonContent {
     gap: 10px;
+  }
+}
+
+/* Scale down for medium-large screens between 1200px and 1400px */
+@media (min-width: 1200px) and (max-width: 1400px) {
+  .logo {
+    width: 200px; /* Increased from 140px */
+  }
+
+  .title {
+    font-size: 2.2rem; /* Increased from 1.5rem */
+  }
+
+  .subtitle {
+    font-size: 1.1rem; /* Increased from 0.75rem */
+  }
+
+  .authCard {
+    max-width: 600px; /* Increased from 275px */
+    padding: 2rem; /* Increased from 1.25rem */
   }
 }

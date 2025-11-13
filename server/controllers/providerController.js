@@ -1,9 +1,9 @@
-import Entry from "../models/Entry.js";
+import Provider from "../models/Provider.js";
 
 // Get all entries
 export const getAllEntries = async (req, res) => {
   try {
-    const entries = await Entry.find();
+    const entries = await Provider.find();
 
     res.status(200).json({
       success: true,
@@ -22,7 +22,7 @@ export const getAllEntries = async (req, res) => {
 // Get single entry
 export const getEntry = async (req, res) => {
   try {
-    const entry = await Entry.findById(req.params.id);
+    const entry = await Provider.findById(req.params.id);
 
     if (!entry) {
       return res.status(404).json({
@@ -57,22 +57,10 @@ export const getEntry = async (req, res) => {
 export const createEntry = async (req, res) => {
   try {
     // Extract data from request body
-    const {
-      Nume_Furnizor,
-      Adresa_Furnizor,
-      CUI_CUI_CIF,
-      Trezorerie_Furnizor,
-      NR_CONT_IBAN,
-    } = req.body;
+    const { providers, address, cui_cif, treasury, iban } = req.body;
 
     // Validate required fields
-    if (
-      !Nume_Furnizor ||
-      !Adresa_Furnizor ||
-      !CUI_CUI_CIF ||
-      !Trezorerie_Furnizor ||
-      !NR_CONT_IBAN
-    ) {
+    if (!providers || !address || !cui_cif || !treasury || !iban) {
       return res.status(400).json({
         success: false,
         error: "Please provide all required fields",
@@ -80,12 +68,12 @@ export const createEntry = async (req, res) => {
     }
 
     // Create entry in database
-    const entry = await Entry.create({
-      Nume_Furnizor,
-      Adresa_Furnizor,
-      CUI_CUI_CIF,
-      Trezorerie_Furnizor,
-      NR_CONT_IBAN,
+    const entry = await Provider.create({
+      providers,
+      address,
+      cui_cif,
+      treasury,
+      iban,
     });
 
     res.status(201).json({
@@ -105,7 +93,7 @@ export const createEntry = async (req, res) => {
 export const updateEntry = async (req, res) => {
   try {
     // Find and update entry with the new data, and return the updated document
-    const entry = await Entry.findByIdAndUpdate(req.params.id, req.body, {
+    const entry = await Provider.findByIdAndUpdate(req.params.id, req.body, {
       new: true, // Return updated document
       runValidators: true, // Run model validators
     });
@@ -142,7 +130,7 @@ export const updateEntry = async (req, res) => {
 // Delete entry
 export const deleteEntry = async (req, res) => {
   try {
-    const entry = await Entry.findByIdAndDelete(req.params.id);
+    const entry = await Provider.findByIdAndDelete(req.params.id);
 
     if (!entry) {
       return res.status(404).json({

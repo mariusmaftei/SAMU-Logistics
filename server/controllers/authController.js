@@ -58,11 +58,12 @@ export const logout = (req, res) => {
         const isFirefox =
           req.headers["user-agent"] &&
           req.headers["user-agent"].includes("Firefox");
+        const isProduction = process.env.NODE_ENV === "production";
 
         res.clearCookie("samu-logistics.sid", {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "none", // Consistent with session config
+          secure: isProduction,
+          sameSite: isProduction ? "none" : "lax", // Consistent with session config
           partitioned: false,
           // Firefox ETP specific settings
           ...(isFirefox && {

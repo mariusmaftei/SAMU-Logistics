@@ -9,14 +9,14 @@ import { sessionConfig } from "./config/session.js";
 import "./config/passport.js";
 
 import authRoute from "./routes/authRoutes.js";
-import entryRoute from "./routes/entry.js";
+import providerRoute from "./routes/providerRoutes.js";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-// CORS configuration - Fixed to work with credentials and Firefox
+// CORS configuration
 const allowedOrigins = [
   "https://samu-logistics-app.web.app",
   "http://localhost:3000",
@@ -25,15 +25,12 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
+      if (!origin || allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
       return callback(new Error("Not allowed by CORS"));
     },
-    credentials: true, // This is crucial for cookies/sessions
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [
       "Content-Type",
@@ -42,20 +39,8 @@ app.use(
       "X-Requested-With",
       "Accept",
       "Origin",
-      "User-Agent", // Firefox ETP compatibility
-      "Cache-Control",
-      "Pragma",
     ],
-    exposedHeaders: [
-      "Set-Cookie", // Expose Set-Cookie header for cross-origin requests
-      "Cache-Control", // Firefox ETP compatibility
-      "Pragma",
-      "Expires",
-    ],
-    optionsSuccessStatus: 200, // Some legacy browsers choke on 204
-    preflightContinue: false, // Firefox compatibility
-    // Firefox ETP specific options
-    maxAge: 86400, // Cache preflight for 24 hours
+    exposedHeaders: ["Set-Cookie"],
   })
 );
 
@@ -66,32 +51,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Additional middleware for cross-origin cookie handling and Firefox ETP compatibility
-app.use((req, res, next) => {
-  // Ensure cookies are properly handled for cross-origin requests
-  if (req.headers.origin && allowedOrigins.includes(req.headers.origin)) {
-    res.header("Access-Control-Allow-Credentials", "true");
-  }
-
-  // Firefox Enhanced Tracking Protection compatibility headers
-  res.header("Cross-Origin-Embedder-Policy", "unsafe-none");
-  res.header("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
-  res.header("Cross-Origin-Resource-Policy", "cross-origin");
-
-  // Content Security Policy to prevent tracking protection issues
-  res.header(
-    "Content-Security-Policy",
-    "default-src 'self' https://samu-logistics-app.web.app https://samu-logistics-server.qcpobm.easypanel.host https://accounts.google.com; " +
-      "script-src 'self' 'unsafe-inline' https://accounts.google.com; " +
-      "style-src 'self' 'unsafe-inline'; " +
-      "img-src 'self' data: https:; " +
-      "connect-src 'self' https://samu-logistics-server.qcpobm.easypanel.host https://accounts.google.com; " +
-      "frame-src https://accounts.google.com;"
-  );
-
-  next();
-});
 
 // Log requests for debugging
 app.use((req, res, next) => {
@@ -124,7 +83,7 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/auth", authRoute);
-app.use("/api/entry", entryRoute); // Fixed: Added /api prefix
+app.use("/api/entry", providerRoute);
 
 // 404 handler
 app.use((req, res) => {

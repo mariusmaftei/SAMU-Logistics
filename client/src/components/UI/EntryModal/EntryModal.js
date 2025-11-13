@@ -13,11 +13,11 @@ export default function EntryModal({
   const isEditMode = !!editEntry;
 
   const [entry, setEntry] = useState({
-    Nume_Furnizor: "",
-    Adresa_Furnizor: "",
-    CUI_CUI_CIF: "",
-    Trezorerie_Furnizor: "",
-    NR_CONT_IBAN: "",
+    providers: "",
+    address: "",
+    cui_cif: "",
+    treasury: "",
+    iban: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -25,19 +25,19 @@ export default function EntryModal({
   useEffect(() => {
     if (editEntry && isOpen) {
       setEntry({
-        Nume_Furnizor: editEntry.Nume_Furnizor || "",
-        Adresa_Furnizor: editEntry.Adresa_Furnizor || "",
-        CUI_CUI_CIF: editEntry.CUI_CUI_CIF || "",
-        Trezorerie_Furnizor: editEntry.Trezorerie_Furnizor || "",
-        NR_CONT_IBAN: editEntry.NR_CONT_IBAN || "",
+        providers: editEntry.providers || "",
+        address: editEntry.address || "",
+        cui_cif: editEntry.cui_cif || "",
+        treasury: editEntry.treasury || "",
+        iban: editEntry.iban || "",
       });
     } else if (!editEntry && isOpen) {
       setEntry({
-        Nume_Furnizor: "",
-        Adresa_Furnizor: "",
-        CUI_CUI_CIF: "",
-        Trezorerie_Furnizor: "",
-        NR_CONT_IBAN: "",
+        providers: "",
+        address: "",
+        cui_cif: "",
+        treasury: "",
+        iban: "",
       });
     }
   }, [editEntry, isOpen]);
@@ -58,11 +58,11 @@ export default function EntryModal({
       }
 
       setEntry({
-        Nume_Furnizor: "",
-        Adresa_Furnizor: "",
-        CUI_CUI_CIF: "",
-        Trezorerie_Furnizor: "",
-        NR_CONT_IBAN: "",
+        providers: "",
+        address: "",
+        cui_cif: "",
+        treasury: "",
+        iban: "",
       });
 
       onSave(result);
@@ -116,12 +116,12 @@ export default function EntryModal({
               <h3 className={styles.sectionTitle}>Informații personale</h3>
 
               <div className={styles.formGroup}>
-                <label htmlFor="Nume_Furnizor">Nume</label>
+                <label htmlFor="providers">Nume</label>
                 <input
                   type="text"
-                  id="Nume_Furnizor"
-                  name="Nume_Furnizor"
-                  value={entry.Nume_Furnizor}
+                  id="providers"
+                  name="providers"
+                  value={entry.providers}
                   onChange={handleChange}
                   required
                   className={styles.input}
@@ -131,12 +131,12 @@ export default function EntryModal({
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="Adresa_Furnizor">Adresa beneficiarului</label>
+                <label htmlFor="address">Adresa beneficiarului</label>
                 <input
                   type="text"
                   id="address"
-                  name="Adresa_Furnizor"
-                  value={entry.Adresa_Furnizor}
+                  name="address"
+                  value={entry.address}
                   onChange={handleChange}
                   required
                   className={styles.input}
@@ -152,12 +152,12 @@ export default function EntryModal({
 
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
-                  <label htmlFor="Trezorerie_Furnizor">Trezorerie</label>
+                  <label htmlFor="treasury">Trezorerie</label>
                   <input
                     type="text"
                     id="treasuryNumber"
-                    name="Trezorerie_Furnizor"
-                    value={entry.Trezorerie_Furnizor}
+                    name="treasury"
+                    value={entry.treasury}
                     onChange={handleChange}
                     required
                     className={styles.input}
@@ -167,12 +167,12 @@ export default function EntryModal({
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label htmlFor="CUI_CUI_CIF">CUI/CIF</label>
+                  <label htmlFor="cui_cif">CUI/CIF</label>
                   <input
                     type="text"
                     id="roCode"
-                    name="CUI_CUI_CIF"
-                    value={entry.CUI_CUI_CIF}
+                    name="cui_cif"
+                    value={entry.cui_cif}
                     onChange={handleChange}
                     required
                     className={styles.input}
@@ -183,12 +183,12 @@ export default function EntryModal({
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="NR_CONT_IBAN">IBAN</label>
+                <label htmlFor="iban">IBAN</label>
                 <input
                   type="text"
                   id="accountNumber"
-                  name="NR_CONT_IBAN"
-                  value={entry.NR_CONT_IBAN}
+                  name="iban"
+                  value={entry.iban}
                   onChange={handleChange}
                   required
                   className={styles.input}

@@ -1,40 +1,40 @@
 import mongoose from "mongoose";
 
-// Create Mongoose schema (equivalent to Sequelize model)
-const EntrySchema = new mongoose.Schema(
+// Create Mongoose schema
+const ProviderSchema = new mongoose.Schema(
   {
-    Nume_Furnizor: {
+    providers: {
       type: String,
-      required: [true, "Please add a name"],
+      required: [true, "Please add a provider name"],
       trim: true,
     },
-    Adresa_Furnizor: {
+    address: {
       type: String,
       required: [true, "Please add an address"],
       trim: true,
     },
-    CUI_CUI_CIF: {
+    cui_cif: {
       type: String,
       required: [true, "Please add a CUI/CIF"],
       trim: true,
     },
-    Trezorerie_Furnizor: {
+    treasury: {
       type: String,
       required: [true, "Please add a treasury"],
       trim: true,
     },
-    NR_CONT_IBAN: {
+    iban: {
       type: String,
       required: [true, "Please add an IBAN"],
       trim: true,
     },
   },
   {
-    timestamps: true, // Equivalent to Sequelize's timestamps: true
+    timestamps: true,
   }
 );
 
 // Create and export the model
-const Entry = mongoose.model("Furnizor", EntrySchema);
+const Provider = mongoose.model("Provider", ProviderSchema);
 
-export default Entry;
+export default Provider;

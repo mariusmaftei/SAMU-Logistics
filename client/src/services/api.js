@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// let DEV_API_URL = "http://localhost:8080";
-let DEV_API_URL = "https://samu-logistics-server.qcpobm.easypanel.host";
+let DEV_API_URL = "http://localhost:8080";
+// let DEV_API_URL = "https://samu-logistics-server.qcpobm.easypanel.host";
 
 const api = axios.create({
   baseURL: DEV_API_URL,

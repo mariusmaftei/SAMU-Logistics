@@ -130,7 +130,7 @@ export const FormEntriesProvider = ({ children }) => {
 
   // Helper function to find a beneficiary by name
   const getBeneficiaryByName = (name) => {
-    return formEntries.find((entry) => entry.Nume_Furnizor === name) || null;
+    return formEntries.find((entry) => entry.providers === name) || null;
   };
 
   // Value object to be provided by the context

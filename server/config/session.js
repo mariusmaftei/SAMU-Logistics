@@ -8,10 +8,12 @@ export const sessionConfig = {
   saveUninitialized: false,
   store: isProduction ? createSessionStore() : undefined,
   cookie: {
-    secure: isProduction,
+    secure: isProduction, // In production, must be true for sameSite: "none"
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
-    sameSite: "none", // Use "none" for cross-origin requests to work in Chrome/Firefox
+    // Use "lax" in development (works with secure: false on localhost)
+    // Use "none" in production (requires secure: true for cross-origin)
+    sameSite: isProduction ? "none" : "lax",
     // Firefox ETP compatibility: ensure cookie is properly partitioned
     partitioned: false, // Disable partitioning for better compatibility
   },

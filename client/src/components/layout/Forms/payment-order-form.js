@@ -160,13 +160,13 @@ export default function PaymentOrderForm({ formData, handleInputChange }) {
       const fieldUpdates = [
         {
           name: "Trezorerie_Furnizor",
-          value: beneficiary.Trezorerie_Furnizor || "",
+          value: beneficiary.treasury || "",
         },
-        { name: "bankNumber", value: beneficiary.Trezorerie_Furnizor || "" },
-        { name: "Adresa_Furnizor", value: beneficiary.Adresa_Furnizor || "" },
+        { name: "bankNumber", value: beneficiary.treasury || "" },
+        { name: "Adresa_Furnizor", value: beneficiary.address || "" },
         { name: "treasury", value: beneficiary.treasuryNumber || "" },
-        { name: "CUI_CUI_CIF", value: beneficiary.CUI_CUI_CIF || "" },
-        { name: "NR_CONT_IBAN", value: beneficiary.NR_CONT_IBAN || "" },
+        { name: "CUI_CUI_CIF", value: beneficiary.cui_cif || "" },
+        { name: "NR_CONT_IBAN", value: beneficiary.iban || "" },
       ];
 
       fieldUpdates.forEach((field) => {
@@ -679,7 +679,7 @@ background-color: transparent !important;
 
   const beneficiariesForDropdown = formEntries.map((entry) => ({
     id: entry.id || String(Math.random()),
-    Nume_Furnizor: entry.Nume_Furnizor,
+    providers: entry.providers,
   }));
 
   const additionalInputPositions = [

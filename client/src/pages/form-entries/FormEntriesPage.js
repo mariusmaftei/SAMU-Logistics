@@ -317,35 +317,40 @@ export default function FormEntriesPage() {
                   ) : (
                     currentEntries.map((entry) => (
                       <tr key={entry._id || entry.id}>
+                        {/* Column 1: Nume → providers */}
                         <td
-                          title={entry.Nume_Furnizor}
+                          title={entry.providers}
                           style={{ width: columnWidths[0] }}
                         >
-                          {entry.Nume_Furnizor}
+                          {entry.providers}
                         </td>
+                        {/* Column 2: Adresa beneficiarului → address */}
                         <td
-                          title={entry.Adresa_Furnizor}
+                          title={entry.address}
                           style={{ width: columnWidths[1] }}
                         >
-                          {entry.Adresa_Furnizor}
+                          {entry.address}
                         </td>
+                        {/* Column 3: Trezorerie → treasury */}
                         <td
-                          title={entry.CUI_CUI_CIF}
+                          title={entry.treasury}
                           style={{ width: columnWidths[2] }}
                         >
-                          {entry.CUI_CUI_CIF}
+                          {entry.treasury}
                         </td>
+                        {/* Column 4: CUI/CIF → cui_cif */}
                         <td
-                          title={entry.NR_CONT_IBAN}
+                          title={entry.cui_cif}
                           style={{ width: columnWidths[3] }}
                         >
-                          {entry.NR_CONT_IBAN}
+                          {entry.cui_cif}
                         </td>
+                        {/* Column 5: IBAN → iban */}
                         <td
-                          title={entry.Trezorerie_Furnizor}
+                          title={entry.iban}
                           style={{ width: columnWidths[4] }}
                         >
-                          {entry.Trezorerie_Furnizor}
+                          {entry.iban}
                         </td>
                         <td style={{ width: columnWidths[5] }}>
                           <div className={styles.actions}>

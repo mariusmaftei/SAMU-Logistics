@@ -98,10 +98,11 @@ router.get(
             req.headers["user-agent"] &&
             req.headers["user-agent"].includes("Firefox");
 
+          const isProduction = process.env.NODE_ENV === "production";
           res.cookie("samu-logistics.sid", req.sessionID, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "none", // Consistent with session config
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax", // Consistent with session config
             maxAge: 24 * 60 * 60 * 1000,
             // Firefox ETP specific settings
             partitioned: false,
@@ -146,10 +147,11 @@ router.get("/logout", requireAuth, (req, res) => {
       console.log("User logged out successfully");
 
       // Clear the session cookie explicitly for Firefox compatibility
+      const isProduction = process.env.NODE_ENV === "production";
       res.clearCookie("samu-logistics.sid", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none", // Consistent with session config
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax", // Consistent with session config
       });
 
       res.status(200).json({ message: "Logged out successfully" });

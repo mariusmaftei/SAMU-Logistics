@@ -1,0 +1,682 @@
+[
+  {
+    "_id": {
+      "$oid": "682e1a353fdf197529eb7e24"
+    },
+    "providers": "SC NAFKA GRUP SRL",
+    "address": "BUCURESTI SECT 1",
+    "cui_cif": "RO 16320869",
+    "treasury": "BUCURESTI SECT 1",
+    "iban": "RO64TREZ7015069XXX023783",
+    "createdAt": {
+      "$date": "2025-05-21T18:23:49.578Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:23:49.578Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1a783fdf197529eb7e26"
+    },
+    "providers": "HELLIMED SRL",
+    "address": "BUCURESTI SECT 1, str. TUDOR VIANU nr.5-7",
+    "cui_cif": "RO 4885207",
+    "treasury": "BUCURESTI",
+    "iban": "RO73TREZ7005069XXX008066",
+    "createdAt": {
+      "$date": "2025-05-21T18:24:56.629Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:24:56.629Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1a9d3fdf197529eb7e28"
+    },
+    "providers": "MEDIST IMAGING & P.O.C SRL",
+    "address": "BUCURESTI SECT 5",
+    "cui_cif": "RO 24205100",
+    "treasury": "BUCURESTI",
+    "iban": "RO93TREZ7005069XXX007900",
+    "createdAt": {
+      "$date": "2025-05-21T18:25:33.735Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:25:33.735Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1aba3fdf197529eb7e2a"
+    },
+    "providers": "FILDAS TRADING SRL",
+    "address": "PITESTI",
+    "cui_cif": "RO 4851409",
+    "treasury": "PITESTI",
+    "iban": "RO28TREZ0465069XXX006550",
+    "createdAt": {
+      "$date": "2025-05-21T18:26:02.523Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:26:02.523Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1ad43fdf197529eb7e2c"
+    },
+    "providers": "LUAN VISION SRL",
+    "address": "PALEU Str. Margaritarelor",
+    "cui_cif": "RO 23801784",
+    "treasury": "ORADEA",
+    "iban": "RO38TREZ0765069XXX007905",
+    "createdAt": {
+      "$date": "2025-05-21T18:26:28.769Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:26:28.769Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1b303fdf197529eb7e2e"
+    },
+    "providers": "MEDCLAS TRADING SRL",
+    "address": "BRAILA, sos. Ramnicu Sarat nr. 88E",
+    "cui_cif": "RO17149792",
+    "treasury": "TREZORERIA STATULUI",
+    "iban": "RO58TREZ1515069XXX004253",
+    "createdAt": {
+      "$date": "2025-05-21T18:28:00.554Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:28:00.554Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1b573fdf197529eb7e30"
+    },
+    "providers": "ORGANON BIOTEC SRL",
+    "address": "IASI,str.ION CREANGA nr.75a",
+    "cui_cif": "RO31676771",
+    "treasury": "TREZORERIA STATULUI",
+    "iban": "RO053TREZ4065069XXX019185",
+    "createdAt": {
+      "$date": "2025-05-21T18:28:39.017Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:28:39.017Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1b893fdf197529eb7e32"
+    },
+    "providers": "NOVA FIT SRL",
+    "address": "BUCURESTI Sector 1, Str. Cernesti nr. 7",
+    "cui_cif": "RO 15178082",
+    "treasury": "TREZORERIA STATULUI",
+    "iban": "RO10TREZ7005069XXX007842",
+    "createdAt": {
+      "$date": "2025-05-21T18:29:29.220Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:29:29.220Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1bca3fdf197529eb7e34"
+    },
+    "providers": "TZMO ROMANIA SRL",
+    "address": "ILFOV, Sos. de Centura Nr.3E, Comuna Clinceni",
+    "cui_cif": "RO9693687",
+    "treasury": "TREZORERIA OPERATIVA",
+    "iban": "RO35TREZ7005069XXX001669",
+    "createdAt": {
+      "$date": "2025-05-21T18:30:34.422Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:30:34.422Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1be93fdf197529eb7e36"
+    },
+    "providers": "ROPHARMA SA",
+    "address": "BRASOV Str. Iuliu Maniu nr. 55",
+    "cui_cif": "RO1962437",
+    "treasury": "TREZORERIA BRASOV",
+    "iban": "RO89TREZ1315069XXX008815",
+    "createdAt": {
+      "$date": "2025-05-21T18:31:05.409Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:31:05.409Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1c093fdf197529eb7e38"
+    },
+    "providers": "CRIO - 2 S.R.L",
+    "address": "IASI,str.Pdurii, Nr 6",
+    "cui_cif": "RO 4414293",
+    "treasury": "TREZORERIA IASI",
+    "iban": "RO63TREZ4065069XXX003000",
+    "createdAt": {
+      "$date": "2025-05-21T18:31:37.842Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:31:37.842Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1c4c3fdf197529eb7e3a"
+    },
+    "providers": "VETRO DESIGN S.R.L",
+    "address": "BUCURESTI Str. Veronica Micle, nr. 20",
+    "cui_cif": "RO 8409931",
+    "treasury": "TREZORERIA BUCURESTI",
+    "iban": "RO93TREZ7005069XXX003632",
+    "createdAt": {
+      "$date": "2025-05-21T18:32:44.753Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:32:44.753Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1c6d3fdf197529eb7e3c"
+    },
+    "providers": "S.C DANCRI MEDICAL S.R.L",
+    "address": "COM CHIAJNA,str.SERG.ILIE PETRE.nr.39,JUD ILFOV",
+    "cui_cif": "RO41274178",
+    "treasury": "TREZORERIA ILFOV",
+    "iban": "RO28TREZ4215069XXX017444",
+    "createdAt": {
+      "$date": "2025-05-21T18:33:17.470Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:33:17.470Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1ca03fdf197529eb7e3e"
+    },
+    "providers": "MINISTERUL SANATATII",
+    "address": "DIRECTIA FARMACEUTICA SI DISPOZITIVE MEDICALE",
+    "cui_cif": "RO 426645",
+    "treasury": "TREZORERIA BUCURESTI",
+    "iban": "RO96TREZ70020160103XXXXX",
+    "createdAt": {
+      "$date": "2025-05-21T18:34:08.068Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:34:08.068Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1cd53fdf197529eb7e40"
+    },
+    "providers": "ND PHARMA SRL",
+    "address": "BACAU, Calea Moldovei 197",
+    "cui_cif": "RO22082443",
+    "treasury": "TREZORERIA BACAU",
+    "iban": "RO30TREZ0615069XXX005196",
+    "createdAt": {
+      "$date": "2025-05-21T18:35:01.251Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:35:01.251Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1cf13fdf197529eb7e42"
+    },
+    "providers": "ALPHA BRIO MEDICAL SRL",
+    "address": "BUCURESTIS SECT. 3, STR FOISORULUI NR. 146",
+    "cui_cif": "RO15788340",
+    "treasury": "TREZORERIA BUCURESTI",
+    "iban": "RO18TREZ7005069XXX008183",
+    "createdAt": {
+      "$date": "2025-05-21T18:35:29.052Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:35:29.052Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1d113fdf197529eb7e44"
+    },
+    "providers": "INA MEDICAL PRODUCTS SRL",
+    "address": "BRASOV, CRISTIAN, POMARIUS NR. 3 Ap. 7",
+    "cui_cif": "RO41687468",
+    "treasury": "TREZORERIA BRASOV",
+    "iban": "RO17TREZ1315069XXX020781",
+    "createdAt": {
+      "$date": "2025-05-21T18:36:01.172Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:36:01.172Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1d2a3fdf197529eb7e46"
+    },
+    "providers": "DONA LOGISTICA",
+    "address": "CHITILA, STR PADURII, NR. 4, ILFOV",
+    "cui_cif": "RO3596251",
+    "treasury": "TREZORERIA STATULUI",
+    "iban": "RO67TREZ7005069XXX001287",
+    "createdAt": {
+      "$date": "2025-05-21T18:36:26.322Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:36:26.322Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1d433fdf197529eb7e48"
+    },
+    "providers": "ARTISANA MEDICAL SRL",
+    "address": "BUCURESTI str. TELEAJEN, nr. 50, sector 2",
+    "cui_cif": "RO 22742850",
+    "treasury": "TREZORERIA BUCURESTI",
+    "iban": "RO27TREZ7025069XXX024387",
+    "createdAt": {
+      "$date": "2025-05-21T18:36:51.825Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:36:51.825Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1d663fdf197529eb7e4a"
+    },
+    "providers": "S.C TAISSIS CONCEPT S.R.L",
+    "address": "ARGES, CAMPULUG MUSCEL,str. Ion Ticaloiu nr. 17",
+    "cui_cif": "RO10122358",
+    "treasury": "TREZORERIA PITESTI",
+    "iban": "RO88TREZ0465069XXX015461",
+    "createdAt": {
+      "$date": "2025-05-21T18:37:26.684Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:37:26.684Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1d873fdf197529eb7e4c"
+    },
+    "providers": "SC TMS-TOP MEDICAL SUPPLIER SRL",
+    "address": "BUCURESTI SECTOR 4 str. SPLAIUL UNIRII nr. 86",
+    "cui_cif": "RO26950950",
+    "treasury": "BUCURESTI SECT 4",
+    "iban": "RO19TREZ7045069XXX008499",
+    "createdAt": {
+      "$date": "2025-05-21T18:37:59.619Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:37:59.619Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1da03fdf197529eb7e4e"
+    },
+    "providers": "NOVA FIT SRL",
+    "address": "BUCURESTI SECT 1,Str.CERNESTI,nr.7",
+    "cui_cif": "RO15178082",
+    "treasury": "TREZORERIA STATULUI",
+    "iban": "RO10TREZ7005069XXX007842",
+    "createdAt": {
+      "$date": "2025-05-21T18:38:24.168Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:38:24.168Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1dbd3fdf197529eb7e50"
+    },
+    "providers": "INFORMATIONAL SRL",
+    "address": "CALAFAT,JUD DOLJ,Str.1MAI,nr.10,CAMERA 1",
+    "cui_cif": "RO46975402",
+    "treasury": "TREZORERIA STATULUI",
+    "iban": "RO51TREZ2935069XXX006245",
+    "createdAt": {
+      "$date": "2025-05-21T18:38:53.470Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:38:53.470Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1ddd3fdf197529eb7e52"
+    },
+    "providers": "S.C PHARMA S.A",
+    "address": "IASI, sos. BUCIUM 73E",
+    "cui_cif": "RO13591928",
+    "treasury": "TREZORERIA IASI",
+    "iban": "RO51TREZ4065069XXX001276",
+    "createdAt": {
+      "$date": "2025-05-21T18:39:25.398Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:39:25.398Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1dfb3fdf197529eb7e54"
+    },
+    "providers": "DR.MAX S.R.L",
+    "address": "MOGOSOAIA,JUD.ILFOV,Str.AEROPORTULUI Nr.53",
+    "cui_cif": "RO9378655",
+    "treasury": "D.T.C.P.M.B",
+    "iban": "RO81TREZ7005069XXX001035",
+    "createdAt": {
+      "$date": "2025-05-21T18:39:55.321Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:39:55.321Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1f0f3fdf197529eb7e56"
+    },
+    "providers": "CHIMIMPORTEXPORT PLURIMEX SRL",
+    "address": "BUCURESTI SECT 2, str. TUNARI NR 26",
+    "cui_cif": "RO12498",
+    "treasury": "BUCURESTI",
+    "iban": "RO72TREZ7005069XXX002652",
+    "createdAt": {
+      "$date": "2025-05-21T18:44:31.635Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:44:31.635Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1f2a3fdf197529eb7e58"
+    },
+    "providers": "PRODCONFARM SRL",
+    "address": "PITESTI,JUD ARGES,Str CAPITAN ION CUTUI,Nr 2",
+    "cui_cif": "RO5172210",
+    "treasury": "PITESTI",
+    "iban": "RO34TREZ0465069XXX001883",
+    "createdAt": {
+      "$date": "2025-05-21T18:44:58.515Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:44:58.515Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1f433fdf197529eb7e5a"
+    },
+    "providers": "PHARMA VISION PLUS SRL",
+    "address": "BUCURESTI SECT 4, BD. METALURGIEI NR 130",
+    "cui_cif": "RO 13647450",
+    "treasury": "STATULUI",
+    "iban": "RO29TREZ7005069XXX007888",
+    "createdAt": {
+      "$date": "2025-05-21T18:45:23.532Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-27T08:14:51.071Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1f793fdf197529eb7e5c"
+    },
+    "providers": "BIOEEL SRL",
+    "address": "TARGU MURES, str. BEGA nr. 5",
+    "cui_cif": "RO1199107",
+    "treasury": "TREZORERIA STATULUI",
+    "iban": "ROTREZ4765069XXX002856",
+    "createdAt": {
+      "$date": "2025-05-21T18:46:17.081Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-21T18:46:17.081Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "682e1f953fdf197529eb7e5e"
+    },
+    "providers": "COMPANIA NATIONALA UNIFARM SA",
+    "address": "BUCURESTI SECT 1, str. AV.SANATESCU,Nr.48",
+    "cui_cif": "RO11653560",
+    "treasury": "TREZORERIA MUN. BUC",
+    "iban": "RO72TREZ7005069XXX002555",
+    "createdAt": {
+      "$date": "2025-05-21T18:46:45.758Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-30T05:28:38.177Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68342caf6bbc0ea8389632c2"
+    },
+    "providers": "MEDIMPACT S.R.L",
+    "address": "CLUJ-NAPOCA,Str.LUNETEI ,Nr 14,JUD CLUJ",
+    "cui_cif": "RO13720895",
+    "treasury": "TREZORERIA CLUJ-NAPOCA",
+    "iban": "RO20TREZ2165069XXX009734",
+    "createdAt": {
+      "$date": "2025-05-26T08:56:15.698Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-26T08:56:15.698Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68356fa41e26e00fcf644d1a"
+    },
+    "providers": "DRAEGER ROMANIA S.R.L",
+    "address": "BUCURESTI SECT 1,AFI nr 169A,Corp B,et 3",
+    "cui_cif": "RO2836925",
+    "treasury": "TREZORERIA",
+    "iban": "RO88TREZ7005069XXX002655",
+    "createdAt": {
+      "$date": "2025-05-27T07:54:12.506Z"
+    },
+    "updatedAt": {
+      "$date": "2025-05-27T07:55:30.720Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6842a4dfafa10303c7be0eb4"
+    },
+    "providers": "FRESENIUS KABI ROMANIA SRL",
+    "address": "GHIMBAV, Str. HENRI COANDA nr. 2",
+    "cui_cif": "RO3391027",
+    "treasury": "TREZORERIA BRASOV",
+    "iban": "RO17TREZ1315069XXX002351",
+    "createdAt": {
+      "$date": "2025-06-06T08:20:47.705Z"
+    },
+    "updatedAt": {
+      "$date": "2025-06-06T08:20:47.705Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6842a801afa10303c7be0ebf"
+    },
+    "providers": "TRIDENT MEDICAL COMPANY SRL",
+    "address": "BUCURESTI SECT 2, sos. Colentina nr 4",
+    "cui_cif": "RO9384088",
+    "treasury": "TREZORERIA SECTOR 2",
+    "iban": "RO46TREZ7025069XXX004257",
+    "createdAt": {
+      "$date": "2025-06-06T08:34:09.452Z"
+    },
+    "updatedAt": {
+      "$date": "2025-06-06T08:34:09.452Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68624d020ade806b6165f935"
+    },
+    "providers": "INTERPLUS DISTRIBUTION S.R.L",
+    "address": "BUCURESTI SECTOR 4,SOS.DAMBULUI,NR 74",
+    "cui_cif": "RO40912103",
+    "treasury": "TREZORERIA STATULUI",
+    "iban": "RO78TREZ7045069XXX013936",
+    "createdAt": {
+      "$date": "2025-06-30T08:38:26.229Z"
+    },
+    "updatedAt": {
+      "$date": "2025-06-30T08:38:26.229Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68c27bee03c1878bcff68f4c"
+    },
+    "providers": "TIS FARMACEUTIC S.R.L",
+    "address": "BUCURESTI,SECT.3,INDUSTRIILOR NR.16",
+    "cui_cif": "RO6638122",
+    "treasury": "TREZORERIE",
+    "iban": "RO76TREZ7005069XXX003938",
+    "createdAt": {
+      "$date": "2025-09-11T07:36:14.747Z"
+    },
+    "updatedAt": {
+      "$date": "2025-09-12T10:02:16.673Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68c3f00303c1878bcff68f59"
+    },
+    "providers": "VALDOMEDICA TRADING SRL",
+    "address": "BUCURESTI,SECT.6,str.Cpt.EFTIMIE Z.CROITORU,nr.32",
+    "cui_cif": "RO23100700",
+    "treasury": "OPERATIVA BUCURESTI",
+    "iban": "RO75TREZ7005069XXX010649",
+    "createdAt": {
+      "$date": "2025-09-12T10:03:47.591Z"
+    },
+    "updatedAt": {
+      "$date": "2025-09-12T10:03:47.591Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68e492b35df993386715ad38"
+    },
+    "providers": "FARMEXIM SA",
+    "address": "BUCURESTI SECT 1, PICTOR ROSENTHAL nr. 14",
+    "cui_cif": "RO335278",
+    "treasury": "BUCURESTI",
+    "iban": "RO96TREZ7005069XXX000571",
+    "createdAt": {
+      "$date": "2025-10-07T04:10:27.316Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-07T04:10:27.316Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6902f805d2a8499cf2851055"
+    },
+    "providers": "MEDICAL CARE S.R.L",
+    "address": "BRASOV, str. URANUS nr.10 bl.10 sc.C et 1 ap.7",
+    "cui_cif": "RO60TREZ1315069XXX007300",
+    "treasury": "RO20684949",
+    "iban": "BRASOV",
+    "createdAt": {
+      "$date": "2025-10-30T05:30:45.555Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-30T05:30:45.555Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "691650ebd2a8499cf28510ee"
+    },
+    "providers": "FARMEXIM SA TEST",
+    "address": "BUCURESTI SECT 1, PICTOR ROSENTHAL nr. 14 TEST",
+    "cui_cif": "RO96TREZ7005069XXX000571 TEST",
+    "treasury": "RO335278 TEST",
+    "iban": "BUCURESTI TEST",
+    "createdAt": {
+      "$date": "2025-11-13T21:43:07.572Z"
+    },
+    "updatedAt": {
+      "$date": "2025-11-13T21:43:07.572Z"
+    },
+    "__v": 0
+  }
+]
